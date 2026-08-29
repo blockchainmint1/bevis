@@ -81,11 +81,36 @@ async function fetchCoinGecko(ids: string[]): Promise<Map<string, number>> {
   return out;
 }
 
+/**
+ * ISK price — source of truth is the wISK pool oracle on Ethereum mainnet.
+ * 30m TWAP (settlement-safe); the endpoint falls back to spot itself.
+ */
+async function fetchIskUsd(): Promise<number | null> {
+  try {
+    const res = await fetch("https://wisk.iskandercoin.com/api/public/price?twap=30m", {
+      headers: { accept: "application/json" },
+    });
+    if (!res.ok) return null;
+    const j = (await res.json()) as { usd?: number };
+    return typeof j.usd === "number" && isFinite(j.usd) ? j.usd : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Resolve USD price for a single chain (cached, batched). */
 export async function priceUsd(chain: ChainId): Promise<number | null> {
   const now = Date.now();
   const hit = cache.get(chain);
   if (hit && hit.expires > now) return hit.price;
+
+  if (chain === "iskander") {
+    const price = await fetchIskUsd();
+    cache.set(chain, { price, expires: now + TTL_MS });
+    return price;
+  }
+
+
 
   // Batch all chains we know about in one CMC call to amortize the key spend.
   if (!cmcInflight) {
