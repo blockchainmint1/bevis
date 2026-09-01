@@ -365,6 +365,8 @@ function Receipt({ result, onAnother }: { result: PublishOutcome; onAnother: () 
       <dl className="space-y-2 rounded-xl border border-border bg-card p-4 text-left text-xs">
         <Row label="Asset ID" value={result.assetId} mono />
         <Row label="Public key" value={result.publicKey} mono />
+        {result.manifestCid && <Row label="IPFS record" value={result.manifestCid} mono />}
+        {result.fileCid && <Row label="IPFS file" value={result.fileCid} mono />}
         {result.txid && <Row label="Transaction" value={result.txid} mono />}
         {result.anchorError && <Row label="Note" value={result.anchorError} />}
       </dl>

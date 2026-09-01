@@ -26,6 +26,8 @@ export type PublishOutcome = {
   assetId: string;
   publicKey: string;
   fileId: string;
+  fileCid: string | null;
+  manifestCid: string | null;
   anchorStatus: string;
   txid: string | null;
   anchorError: string | null;
@@ -62,7 +64,7 @@ export async function uploadAndPublish(
     });
   if (uploadError) throw new Error(uploadError.message);
 
-  opts.onStep?.("Stamping the TEXITcoin chain…");
+  opts.onStep?.("Pinning to IPFS and stamping the TEXITcoin chain…");
   return publishFn({
     data: {
       assetId: opts.assetId ?? undefined,

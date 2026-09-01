@@ -38,6 +38,8 @@ export type BevisFileRecord = {
   sha256: string;
   encrypted: boolean;
   storagePath: string | null;
+  fileCid: string | null;
+  manifestCid: string | null;
   metadata: Record<string, Json>;
   anchorStatus: string;
   anchorTxid: string | null;
@@ -128,16 +130,67 @@ export const publishBevisFile = createServerFn({ method: "POST" })
       .single();
     if (fileError) throw new Error(fileError.message);
 
-    const { anchorSha256 } = await import("@/lib/bevis/txc.server");
-    const anchor = await anchorSha256(data.sha256);
+    // Pin the bytes, then pin a manifest that points at them, then stamp the
+    // manifest's CID onto the chain and pay dust to the asset's own address.
+    const { pinFile, pinJson, gatewayUrl, MAX_IPFS_FILE_BYTES } = await import("@/lib/bevis/ipfs.server");
+    const { supabaseAdmin: admin } = await import("@/integrations/supabase/client.server");
+
+    let fileCid: string | null = null;
+    if (data.sizeBytes <= MAX_IPFS_FILE_BYTES) {
+      const { data: blob } = await admin.storage.from("bevis-files").download(data.storagePath);
+      if (blob) {
+        fileCid = await pinFile(
+          data.fileName,
+          await blob.arrayBuffer(),
+          data.encrypted ? "application/octet-stream" : data.mimeType || "application/octet-stream",
+        );
+      }
+    }
+
+    const manifest = {
+      bevis: "1",
+      service: "Blockchain-enabled Verification & Information Service",
+      chain: "txc",
+      asset: {
+        assetId: assetRow.asset_id,
+        address: assetRow.public_key,
+      },
+      file: {
+        name: data.fileName,
+        mimeType: data.mimeType ?? null,
+        sizeBytes: data.sizeBytes,
+        sha256: data.sha256,
+        encrypted: data.encrypted,
+        cid: fileCid,
+        url: fileCid ? gatewayUrl(fileCid) : null,
+      },
+      metadata: data.metadata,
+      notarisedAt: new Date().toISOString(),
+      verify: `https://app.bevis.sg/verify/${assetRow.asset_id}`,
+    };
+    const manifestCid = await pinJson(`bevis-${assetRow.asset_id}-${data.sha256.slice(0, 12)}.json`, manifest);
+
+    const { anchorBevis } = await import("@/lib/bevis/txc.server");
+    const anchor = await anchorBevis({
+      sha256Hex: data.sha256,
+      manifestCid,
+      address: assetRow.public_key,
+    });
 
     await supabase
       .from("bevis_files")
-      .update(
-        anchor.ok
-          ? { anchor_status: "anchored", anchor_txid: anchor.txid, anchored_at: new Date().toISOString() }
-          : { anchor_status: "pending", anchor_error: anchor.error },
-      )
+      .update({
+        file_cid: fileCid,
+        manifest_cid: manifestCid,
+        ...(anchor.ok
+          ? {
+              anchor_status: "anchored",
+              anchor_txid: anchor.txid,
+              anchor_address: anchor.address,
+              anchored_at: new Date().toISOString(),
+            }
+          : { anchor_status: "pending", anchor_error: anchor.error }),
+      })
       .eq("id", fileRow.id);
 
     return {
@@ -145,11 +198,14 @@ export const publishBevisFile = createServerFn({ method: "POST" })
       assetId: assetRow.asset_id,
       publicKey: assetRow.public_key,
       fileId: fileRow.id,
+      fileCid,
+      manifestCid,
       anchorStatus: anchor.ok ? "anchored" : "pending",
       txid: anchor.ok ? anchor.txid : null,
       anchorError: anchor.ok ? null : anchor.error,
     };
   });
+
 
 export const retryAnchor = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -158,23 +214,40 @@ export const retryAnchor = createServerFn({ method: "POST" })
     const { supabase } = context;
     const { data: row, error } = await supabase
       .from("bevis_files")
-      .select("id, sha256, anchor_status")
+      .select("id, sha256, anchor_status, manifest_cid, asset_uuid")
       .eq("id", data.fileId)
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!row) throw new Error("File not found.");
     if (row.anchor_status === "anchored") return { ok: true, txid: null, alreadyAnchored: true };
 
-    const { anchorSha256 } = await import("@/lib/bevis/txc.server");
-    const anchor = await anchorSha256(row.sha256);
+    const { data: asset } = await supabase
+      .from("bevis_assets")
+      .select("public_key")
+      .eq("id", row.asset_uuid)
+      .maybeSingle();
+
+    const { anchorBevis } = await import("@/lib/bevis/txc.server");
+    const anchor = await anchorBevis({
+      sha256Hex: row.sha256,
+      manifestCid: row.manifest_cid,
+      address: asset?.public_key ?? null,
+    });
     await supabase
       .from("bevis_files")
       .update(
         anchor.ok
-          ? { anchor_status: "anchored", anchor_txid: anchor.txid, anchored_at: new Date().toISOString(), anchor_error: null }
+          ? {
+              anchor_status: "anchored",
+              anchor_txid: anchor.txid,
+              anchor_address: anchor.address,
+              anchored_at: new Date().toISOString(),
+              anchor_error: null,
+            }
           : { anchor_error: anchor.error },
       )
       .eq("id", row.id);
+
     return anchor.ok
       ? { ok: true as const, txid: anchor.txid, alreadyAnchored: false }
       : { ok: false as const, error: anchor.error };
@@ -306,7 +379,7 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
     const { data: files } = await supabaseAdmin
       .from("bevis_files")
       .select(
-        "id, file_name, mime_type, size_bytes, sha256, encrypted, metadata, anchor_status, anchor_txid, anchored_at, created_at",
+        "id, file_name, mime_type, size_bytes, sha256, encrypted, metadata, file_cid, manifest_cid, anchor_status, anchor_txid, anchor_address, anchored_at, created_at",
       )
       .eq("asset_uuid", asset.id)
       .order("created_at", { ascending: false });
@@ -327,6 +400,8 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
         sizeBytes: Number(f.size_bytes ?? 0),
         sha256: f.sha256,
         encrypted: f.encrypted,
+        fileCid: f.file_cid ?? null,
+        manifestCid: f.manifest_cid ?? null,
         metadata: (f.metadata ?? {}) as Record<string, Json>,
         anchorStatus: f.anchor_status,
         anchorTxid: f.anchor_txid,
@@ -383,6 +458,8 @@ async function lookupLegacyRecord(raw: string, base: string | null) {
         sizeBytes: number;
         sha256: string;
         encrypted: boolean;
+        fileCid: string | null;
+        manifestCid: string | null;
         metadata: Record<string, Json>;
         anchorStatus: string;
         anchorTxid: string | null;
@@ -423,6 +500,8 @@ type RawFile = {
   sha256: string;
   encrypted: boolean;
   storage_path: string | null;
+  file_cid?: string | null;
+  manifest_cid?: string | null;
   metadata: unknown;
   anchor_status: string;
   anchor_txid: string | null;
@@ -440,6 +519,8 @@ function mapFile(f: RawFile): BevisFileRecord {
     sha256: f.sha256,
     encrypted: f.encrypted,
     storagePath: f.storage_path,
+    fileCid: f.file_cid ?? null,
+    manifestCid: f.manifest_cid ?? null,
     metadata: (f.metadata ?? {}) as Record<string, Json>,
     anchorStatus: f.anchor_status,
     anchorTxid: f.anchor_txid,

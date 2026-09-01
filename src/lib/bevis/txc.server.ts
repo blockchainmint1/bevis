@@ -1,20 +1,29 @@
 /**
  * TEXITcoin anchoring for BEVIS.
  *
- * A BEVIS notarisation is an OP_RETURN output carrying a 38-byte payload:
+ * A notarisation is one transaction with two outputs:
  *
- *   "BEVIS1" (6 bytes ASCII) || sha256 of the document (32 bytes)
+ *   1. OP_RETURN  "BEVIS1" (6 bytes ASCII) || the manifest's IPFS CID (ASCII)
+ *   2. a dust payment to the asset's own freshly-minted TXC address
  *
- * We build it through the TXC node's wallet RPC: create a raw transaction
- * with the data output, let the node fund it, sign it, and broadcast. If the
- * node is unreachable or unfunded the caller records the file as `pending`
- * rather than failing the whole publish — the fingerprint is already stored
- * and can be re-anchored later.
+ * The OP_RETURN carries the record: the CID resolves to a JSON manifest with
+ * the file's SHA-256, its own CID, and all declared metadata. The dust output
+ * turns the asset address into a read-only inbox — every stamp ever made for
+ * that asset shows up together in any block explorer. Nobody ever spends from
+ * it, so no key for it is needed or kept.
+ *
+ * Funding and signing happen through the node's own wallet RPC.
  *
  * Docs for the chain and the Omni layer 2: https://texitcoin.org/build
  */
 
 const PREFIX = "BEVIS1";
+
+/** Standard relay policy caps an OP_RETURN payload at 80 bytes. */
+const MAX_OP_RETURN_BYTES = 80;
+
+/** Value sent to the asset address so it appears in explorers. */
+const DUST_TXC = 0.00001;
 
 type RpcOk<T> = { result: T; error: null };
 type RpcErr = { result: null; error: { code: number; message: string } };
@@ -43,24 +52,48 @@ async function rpc<T>(method: string, params: unknown[] = []): Promise<T> {
   return json.result as T;
 }
 
-/** The hex data payload stamped into the OP_RETURN output. */
-export function anchorPayloadHex(sha256Hex: string): string {
-  const prefix = [...PREFIX].map(c => c.charCodeAt(0).toString(16).padStart(2, "0")).join("");
-  return prefix + sha256Hex.toLowerCase();
+function asciiToHex(text: string): string {
+  return [...text].map(c => c.charCodeAt(0).toString(16).padStart(2, "0")).join("");
+}
+
+/**
+ * The hex data payload stamped into the OP_RETURN output: the BEVIS marker
+ * followed by the manifest CID (or, with no CID, the bare SHA-256).
+ */
+export function anchorPayloadHex(input: { manifestCid?: string | null; sha256Hex: string }): string {
+  const body = input.manifestCid?.trim() ? input.manifestCid.trim() : input.sha256Hex.toLowerCase();
+  return asciiToHex(PREFIX + body);
 }
 
 export type AnchorResult =
-  | { ok: true; txid: string }
+  | { ok: true; txid: string; address: string | null }
   | { ok: false; error: string };
 
+export type AnchorInput = {
+  /** SHA-256 of the original file — the fallback payload and the record's core proof. */
+  sha256Hex: string;
+  /** IPFS CID of the JSON manifest. Preferred payload when present. */
+  manifestCid?: string | null;
+  /** The asset's TXC address; receives the dust output so stamps group there. */
+  address?: string | null;
+};
+
 /**
- * Broadcast the OP_RETURN anchor. Never throws — anchoring is best-effort so
- * a node outage can't lose the user's notarisation record.
+ * Broadcast the anchor. Never throws — anchoring is best-effort so a node
+ * outage can't lose the user's notarisation record.
  */
-export async function anchorSha256(sha256Hex: string): Promise<AnchorResult> {
+export async function anchorBevis(input: AnchorInput): Promise<AnchorResult> {
   try {
-    const data = anchorPayloadHex(sha256Hex);
-    const raw = await rpc<string>("createrawtransaction", [[], { data }]);
+    const data = anchorPayloadHex(input);
+    if (data.length / 2 > MAX_OP_RETURN_BYTES) {
+      return { ok: false, error: "Anchor payload exceeds the 80-byte OP_RETURN limit." };
+    }
+
+    const address = input.address?.trim() || null;
+    const outputs: Record<string, unknown> = { data };
+    if (address) outputs[address] = DUST_TXC;
+
+    const raw = await rpc<string>("createrawtransaction", [[], outputs]);
     const funded = await rpc<{ hex: string }>("fundrawtransaction", [raw]);
     const signed = await rpc<{ hex: string; complete: boolean; errors?: unknown }>(
       "signrawtransactionwithwallet",
@@ -68,8 +101,14 @@ export async function anchorSha256(sha256Hex: string): Promise<AnchorResult> {
     );
     if (!signed.complete) return { ok: false, error: "Node could not sign the anchor transaction." };
     const txid = await rpc<string>("sendrawtransaction", [signed.hex]);
-    return { ok: true, txid };
+    return { ok: true, txid, address };
   } catch (e) {
     return { ok: false, error: (e as Error).message || "TXC anchoring unavailable." };
   }
 }
+
+/** Back-compat helper: anchor a bare fingerprint with no manifest or address. */
+export async function anchorSha256(sha256Hex: string): Promise<AnchorResult> {
+  return anchorBevis({ sha256Hex });
+}
+
