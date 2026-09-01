@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import {
@@ -53,7 +53,6 @@ const KIND_ICON = {
 
 function PublishPage() {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const publishFn = useServerFn(publishBevisFile);
   const guestPublishFn = useServerFn(guestPublishBevisFile);
 
