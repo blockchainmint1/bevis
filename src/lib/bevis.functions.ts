@@ -102,6 +102,7 @@ export const retryAnchor = createServerFn({ method: "POST" })
       sha256Hex: row.sha256,
       manifestCid: row.manifest_cid,
       address: asset?.public_key ?? null,
+      ownerKey: `user:${context.userId}`,
     });
     await supabase
       .from("bevis_files")
