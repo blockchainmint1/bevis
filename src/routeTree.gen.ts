@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverRouteImport } from './routes/recover'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ManifestoRouteImport } from './routes/manifesto'
@@ -37,6 +38,11 @@ import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecoverRoute = RecoverRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/manifesto': typeof ManifestoRoute
   '/privacy': typeof PrivacyRoute
   '/recover': typeof RecoverRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/manifesto': typeof ManifestoRoute
   '/privacy': typeof PrivacyRoute
   '/recover': typeof RecoverRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
@@ -214,6 +222,7 @@ export interface FileRoutesById {
   '/manifesto': typeof ManifestoRoute
   '/privacy': typeof PrivacyRoute
   '/recover': typeof RecoverRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/_app/alerts': typeof AppAlertsRoute
   '/_app/assets': typeof AppAssetsRoute
@@ -241,6 +250,7 @@ export interface FileRouteTypes {
     | '/manifesto'
     | '/privacy'
     | '/recover'
+    | '/reset-password'
     | '/terms'
     | '/alerts'
     | '/assets'
@@ -266,6 +276,7 @@ export interface FileRouteTypes {
     | '/manifesto'
     | '/privacy'
     | '/recover'
+    | '/reset-password'
     | '/terms'
     | '/alerts'
     | '/assets'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/manifesto'
     | '/privacy'
     | '/recover'
+    | '/reset-password'
     | '/terms'
     | '/_app/alerts'
     | '/_app/assets'
@@ -319,6 +331,7 @@ export interface RootRouteChildren {
   ManifestoRoute: typeof ManifestoRoute
   PrivacyRoute: typeof PrivacyRoute
   RecoverRoute: typeof RecoverRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recover': {
@@ -540,6 +560,7 @@ const rootRouteChildren: RootRouteChildren = {
   ManifestoRoute: ManifestoRoute,
   PrivacyRoute: PrivacyRoute,
   RecoverRoute: RecoverRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
   VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
