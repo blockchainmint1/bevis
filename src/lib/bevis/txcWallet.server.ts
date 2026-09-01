@@ -158,8 +158,9 @@ export function buildSignedTx(wallet: AnchorWallet, utxos: Utxo[], outputs: Outp
     const forSigning = inputs.map((inp, i) => ({ ...inp, script: i === index ? wallet.script : new Uint8Array(0) }));
     const preimage = concat(serialize(forSigning, outputs), u32le(1)); // SIGHASH_ALL
     const digest = sha256(sha256(preimage));
-    const sig = secp.sign(digest, wallet.privKey, { lowS: true });
-    return concat(sig.toBytes("der"), Uint8Array.from([0x01]));
+    const compact = secp.sign(digest, wallet.privKey, { lowS: true, format: "compact" });
+    return concat(compactToDer(compact), Uint8Array.from([0x01]));
+
   });
 
   const signed = inputs.map((inp, i) => {
