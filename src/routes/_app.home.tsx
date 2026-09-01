@@ -5,7 +5,7 @@ import { useLookupAddress } from "@/lib/api/backendClient";
 import { useBackend } from "@/lib/backend";
 import { CoinLogo } from "@/components/CoinLogo";
 import { CHAINS, cscId, fmtAmount, fmtUsd } from "@/lib/chains";
-import { ScanLine, Plus, RefreshCw, MoreVertical, Pencil, ArrowDownToLine, KeyRound, Trash2 } from "lucide-react";
+import { ScanLine, Plus, RefreshCw, MoreVertical, Pencil, ScrollText, FilePlus, Trash2 } from "lucide-react";
 import { useLocalPortfolio, removeLocalCoin, renameLocalCoin, type LocalCoin } from "@/lib/localPortfolio";
 import { cacheCoinHistory, clearCachedHistory, getCachedHistory } from "@/lib/localHistory";
 import logoAsset from "@/assets/bevis-logo.png.asset.json";
@@ -205,11 +205,11 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
           <DropdownMenuItem onSelect={() => { setLabel(coin.label ?? ""); setRenameOpen(true); }}>
             <Pencil className="size-4" /> Rename
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate({ to: "/coin/$id", params: { id: coin.id } })}>
-            <ArrowDownToLine className="size-4" /> Add value
+          <DropdownMenuItem onSelect={() => navigate({ to: "/verify/$key", params: { key: coin.address } })}>
+            <ScrollText className="size-4" /> Record book
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate({ to: "/sweep", search: { chain: coin.chain, address: coin.address } })}>
-            <KeyRound className="size-4" /> Redeem value
+          <DropdownMenuItem onSelect={() => navigate({ to: "/publish", search: {} })}>
+            <FilePlus className="size-4" /> File a record
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

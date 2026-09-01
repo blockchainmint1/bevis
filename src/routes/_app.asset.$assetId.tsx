@@ -15,6 +15,7 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { formatBytes } from "@/lib/bevis/metadata";
 import { Input } from "@/components/ui/input";
+import { ChainLedger } from "@/components/ChainLedger";
 
 export const Route = createFileRoute("/_app/asset/$assetId")({
   head: ({ params }) => ({
@@ -205,13 +206,9 @@ function AssetDetailPage() {
         ))}
       </ul>
 
+      <ChainLedger address={data.publicKey} assetId={data.assetId} />
+
       <div className="mt-8 grid gap-2">
-        <Link
-          to="/publish"
-          className="rounded-md border border-border px-4 py-3 text-center text-sm font-semibold hover:bg-secondary"
-        >
-          Add a file to this asset
-        </Link>
         <button onClick={() => void destroy()} className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold text-destructive hover:bg-destructive/10">
           <Trash2 className="size-4" /> Delete asset
         </button>

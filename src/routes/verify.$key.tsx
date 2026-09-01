@@ -8,6 +8,7 @@ import { lookupBevisRecord } from "@/lib/bevis.functions";
 import { getAdminBaseUrl } from "@/lib/backend";
 import { formatBytes } from "@/lib/bevis/metadata";
 import { Footer } from "@/components/Footer";
+import { ChainLedger } from "@/components/ChainLedger";
 
 export const Route = createFileRoute("/verify/$key")({
   head: ({ params }) => ({
@@ -146,6 +147,8 @@ function PublicVerifyPage() {
               </li>
             ))}
           </ul>
+
+          <ChainLedger address={data.publicKey} />
 
           <p className="mt-8 text-xs text-muted-foreground">
             BEVIS stores the fingerprint, not your trust. Hash the original file yourself and compare it with the

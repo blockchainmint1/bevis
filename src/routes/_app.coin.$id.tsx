@@ -6,7 +6,7 @@ import { TokenList } from "@/components/TokenList";
 import { CoinLogo } from "@/components/CoinLogo";
 import { CoinAlerts } from "@/components/CoinAlerts";
 import { CHAINS, fmtAmount, fmtUsd } from "@/lib/chains";
-import { ArrowLeft, ArrowDownLeft, ArrowUpRight, Copy, ExternalLink, ShieldCheck, KeyRound, Trash2, Pencil, Check, X, QrCode } from "lucide-react";
+import { ArrowLeft, ArrowDownLeft, ArrowUpRight, Copy, ExternalLink, ShieldCheck, ScrollText, Trash2, Pencil, Check, X, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { getLocalCoin, removeLocalCoin, renameLocalCoin, type LocalCoin } from "@/lib/localPortfolio";
@@ -111,10 +111,10 @@ function CoinPage() {
           <ShieldCheck className="size-4" /> Verify
         </Link>
         <Link
-          to="/sweep" search={{ chain: coin.chain, address: coin.address }}
+          to="/verify/$key" params={{ key: coin.address }}
           className="flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent/90"
         >
-          <KeyRound className="size-4" /> Sweep
+          <ScrollText className="size-4" /> Records
         </Link>
       </div>
 
