@@ -35,7 +35,9 @@ function SplashPage() {
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center px-6 py-14 text-center">
         <img src={logoAsset.url} alt="BEVIS" className="h-28 w-auto" />
         <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.32em] text-muted-foreground">
-          Blockchain notary
+           BLOCKCHAIN ENABLED<br />
+           VERIFICATION &<br />
+           INFORMATION SERVICE
         </p>
         <h1 className="mt-4 font-serif text-3xl text-foreground">Your records, permanently.</h1>
         <p className="mt-3 max-w-sm text-sm text-muted-foreground">
