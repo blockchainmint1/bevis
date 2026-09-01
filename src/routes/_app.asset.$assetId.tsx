@@ -123,13 +123,15 @@ function AssetDetailPage() {
         ) : (
           <div className="flex items-start justify-between gap-3">
             <h1 className="text-2xl font-semibold tracking-tight">{data.name ?? "Untitled asset"}</h1>
-            <button
-              onClick={() => { setDraftName(data.name ?? ""); setEditing(true); }}
-              className="mt-1 text-muted-foreground hover:text-foreground"
-              aria-label="Rename asset"
-            >
-              <Pencil className="size-4" />
-            </button>
+            {user && (
+              <button
+                onClick={() => { setDraftName(data.name ?? ""); setEditing(true); }}
+                className="mt-1 text-muted-foreground hover:text-foreground"
+                aria-label="Rename asset"
+              >
+                <Pencil className="size-4" />
+              </button>
+            )}
           </div>
         )}
         <p className="mt-1 font-mono text-xs text-muted-foreground">
@@ -195,10 +197,12 @@ function AssetDetailPage() {
               </div>
             </div>
             <div className="mt-3 flex gap-2">
+              {user && (
               <button onClick={() => void download(f.id)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-secondary">
                 <Download className="size-3" /> Download
               </button>
-              {f.anchorStatus !== "anchored" && (
+              )}
+              {user && f.anchorStatus !== "anchored" && (
                 <button onClick={() => void reAnchor(f.id)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-secondary">
                   <RefreshCw className="size-3" /> Retry anchor
                 </button>
@@ -210,10 +214,19 @@ function AssetDetailPage() {
 
       <ChainLedger address={data.publicKey} assetId={data.assetId} />
 
+      {!user && (
+        <p className="mt-6 rounded-xl border border-border bg-card p-4 text-xs text-muted-foreground">
+          This record was created without an account. It's already stamped on the chain — sign in on this device to
+          claim it, download the stored file, and keep it across devices.
+        </p>
+      )}
+
       <div className="mt-8 grid gap-2">
+        {user && (
         <button onClick={() => void destroy()} className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold text-destructive hover:bg-destructive/10">
           <Trash2 className="size-4" /> Delete asset
         </button>
+        )}
       </div>
     </div>
   );
