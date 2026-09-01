@@ -133,14 +133,14 @@ function HomePage() {
       {ready && coins.length === 0 && <EmptyState />}
 
       <ul className="space-y-3">
-        {coins.map((coin, idx) => {
+        {coins.map((asset, idx) => {
           const ch = CHAINS[coin.chain];
           const s = summaries[idx]?.data;
           return (
             <li key={coin.id}>
               <div className="group flex items-center gap-2 rounded-xl border border-border bg-card pr-2 transition hover:border-primary/40">
                 <Link
-                  to="/coin/$id"
+                  to="/asset/$id"
                   params={{ id: coin.id }}
                   className="flex min-w-0 flex-1 items-center gap-4 p-4"
                 >
@@ -205,7 +205,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
           <DropdownMenuItem onSelect={() => { setLabel(coin.label ?? ""); setRenameOpen(true); }}>
             <Pencil className="size-4" /> Rename
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate({ to: "/coin/$id", params: { id: coin.id } })}>
+          <DropdownMenuItem onSelect={() => navigate({ to: "/asset/$id", params: { id: coin.id } })}>
             <ArrowDownToLine className="size-4" /> Add value
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => navigate({ to: "/sweep", search: { chain: coin.chain, address: coin.address } })}>
@@ -233,7 +233,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
             maxLength={40}
             onChange={(e) => setLabel(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") saveRename(); }}
-            placeholder={`${CHAINS[coin.chain].name} coin`}
+            placeholder={`${CHAINS[coin.chain].name} asset`}
           />
           <DialogFooter>
             <button onClick={() => setRenameOpen(false)} className="rounded-md border border-border bg-secondary px-3 py-1.5 text-sm hover:bg-secondary/80">Cancel</button>
@@ -247,7 +247,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
           <DialogHeader>
             <DialogTitle>Remove this asset?</DialogTitle>
             <DialogDescription>
-              The physical coin and its funds are unaffected — this only removes the watch entry from this device.
+              The physical asset and its funds are unaffected — this only removes the watch entry from this device.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

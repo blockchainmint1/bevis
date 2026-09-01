@@ -70,7 +70,7 @@ function ScanPage() {
     const detected = detectChain(address.trim()) ?? { chain, address: address.trim() };
     const coin = addLocalCoin({ chain: detected.chain, address: detected.address, label: label.trim() || undefined });
     toast.success("Asset added to your portfolio.");
-    navigate({ to: "/coin/$id", params: { id: coin.id } });
+    navigate({ to: "/asset/$id", params: { id: coin.id } });
   }
 
   function handleScanned(text: string) {
@@ -125,7 +125,7 @@ function ScanPage() {
     if (!scanned || scanned.type === "seed") return;
     const coin = addLocalCoin({ chain: scanned.chain, address: scanned.address, label: label.trim() || undefined });
     toast.success("Asset added.");
-    navigate({ to: "/coin/$id", params: { id: coin.id } });
+    navigate({ to: "/asset/$id", params: { id: coin.id } });
   }
 
   function verifyScanned() {
@@ -140,7 +140,7 @@ function ScanPage() {
     if (scanned?.type !== "seed") return;
     const coin = addLocalCoin({ chain: "txc", address: scanned.result.address, label: label.trim() || undefined });
     toast.success("TXC asset added.");
-    navigate({ to: "/coin/$id", params: { id: coin.id } });
+    navigate({ to: "/asset/$id", params: { id: coin.id } });
   }
 
   useEffect(() => {
@@ -464,13 +464,13 @@ function AuthenticityBadge({ chain, address }: { chain: ChainId; address: string
     <div className="mt-3 flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2.5">
       <XCircle className="size-5 text-destructive" />
       <p className="text-xs font-medium text-destructive">
-        Not found in the mint registry — this isn't a coin we manufactured.
+        Not found in the mint registry — this isn't a asset we manufactured.
       </p>
     </div>
   );
 }
 
-/** Manual entry of the six-digit Coin ID printed on the sticker. */
+/** Manual entry of the six-digit Asset ID printed on the sticker. */
 function AssetIdLookup({
   open,
   onToggle,

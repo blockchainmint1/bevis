@@ -143,7 +143,7 @@ function RecoverPage() {
 
       <p className="mt-4 text-[11px] text-muted-foreground">
         You currently have {coins.length} {coins.length === 1 ? "asset" : "assets"} on this device. The
-        transfer only adds coins — nothing already here is removed or overwritten.
+        transfer only adds assets — nothing already here is removed or overwritten.
       </p>
 
       <Footer />

@@ -87,7 +87,7 @@ function AuthPage() {
           <div className="mt-5 flex items-start gap-2 rounded-md border border-border/60 bg-secondary/40 p-3 text-[11px] text-muted-foreground">
             <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
             <p>
-              We never see your coin's private key. Backup syncs only the public list — chain, address, and label.
+              We never see your asset's private key. Backup syncs only the public list — chain, address, and label.
             </p>
           </div>
         </div>

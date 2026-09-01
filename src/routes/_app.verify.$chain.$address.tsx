@@ -37,7 +37,7 @@ function VerifyPage() {
 
       <div className="mt-6 flex flex-col items-center text-center">
         <CoinMedallion chain={c} size={140} />
-        <h1 className="mt-5 font-serif text-2xl text-foreground">{ch.name} coin</h1>
+        <h1 className="mt-5 font-serif text-2xl text-foreground">{ch.name} asset</h1>
         <p className="mt-1 break-all font-mono text-[11px] text-muted-foreground">{address}</p>
       </div>
 
@@ -82,7 +82,7 @@ function VerifyPage() {
             <ShieldAlert className="mx-auto size-8 text-accent" />
             <p className="mt-2 font-serif text-xl text-foreground">Registry unreachable</p>
             <p className="mt-1 text-xs text-muted-foreground">
-              We couldn't reach the BEVIS registry right now. This doesn't mean the coin is fake — try again shortly.
+              We couldn't reach the BEVIS registry right now. This doesn't mean the asset is fake — try again shortly.
             </p>
           </div>
         ) : (
