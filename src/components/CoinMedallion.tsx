@@ -26,7 +26,7 @@ export function CoinMedallion({
     <div
       className={`${metalClass} relative inline-flex items-center justify-center rounded-full ${className}`}
       style={{ width: size, height: size }}
-      aria-label={`${CHAINS[chain].name} coin`}
+      aria-label={`${CHAINS[chain].name} asset`}
     >
       {/* milled inner ring */}
       <span

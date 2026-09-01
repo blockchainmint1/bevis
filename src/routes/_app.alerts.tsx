@@ -75,7 +75,7 @@ function AlertsPage() {
           <BellOff className="mx-auto size-8 text-muted-foreground" />
           <h2 className="mt-3 font-serif text-lg text-foreground">No alerts yet</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            We check every watched coin every 15 minutes. As soon as something moves you'll see it here — and on your home screen once the native app is installed.
+            We check every watched asset every 15 minutes. As soon as something moves you'll see it here — and on your home screen once the native app is installed.
           </p>
         </div>
       )}
@@ -107,7 +107,7 @@ function AlertsPage() {
       </ul>
 
       <p className="mt-8 text-center text-[11px] text-muted-foreground">
-        Tip: tap a coin on <Link to="/home" className="text-primary hover:underline">Home</Link> to set per-coin thresholds.
+        Tip: tap an asset on <Link to="/home" className="text-primary hover:underline">Home</Link> to set per-asset thresholds.
       </p>
     </div>
   );

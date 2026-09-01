@@ -98,7 +98,7 @@ function ImportPage() {
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Migration</p>
         <h1 className="mt-1 font-serif text-3xl text-foreground">Import old assets</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          On a device that already has the previous BEVIS installed, your coins are imported automatically the first time you open the new app.
+          On a device that already has the previous BEVIS installed, your assets are imported automatically the first time you open the new app.
           To bring them over by hand, paste a JSON export below.
         </p>
       </header>
@@ -142,7 +142,7 @@ function ImportPage() {
               ))}
             </ul>
           </div>
-          <Button onClick={doImport} className="mt-3 w-full">Import {preview.importable.length} coins</Button>
+          <Button onClick={doImport} className="mt-3 w-full">Import {preview.importable.length} assets</Button>
         </section>
       )}
 
@@ -151,7 +151,7 @@ function ImportPage() {
           <Stethoscope className="size-4 text-primary" /> Diagnostic
         </div>
         <p className="mb-3 text-xs text-muted-foreground">
-          Not seeing your old coins auto-import? Tap below and send the output to support.
+          Not seeing your old assets auto-import? Tap below and send the output to support.
         </p>
         <Button variant="outline" onClick={runDiagnostic} className="w-full">Run legacy bridge diagnostic</Button>
         {diag && (

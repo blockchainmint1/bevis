@@ -148,7 +148,7 @@ function SweepPage() {
           <div className="mt-2">
             <p className="text-sm text-foreground">No asset selected.</p>
             <button onClick={() => navigate({ to: "/home" })} className="mt-2 text-xs text-primary hover:underline">
-              Pick a coin to sweep →
+              Pick an asset to sweep →
             </button>
           </div>
         )}
@@ -232,7 +232,7 @@ function SweepPage() {
                     <ShieldAlert className="mt-0.5 size-4 shrink-0 text-amber-500" />
                     <div className="min-w-0 flex-1 text-[11px]">
                       <p className="font-medium text-foreground">
-                        Key is valid, but doesn't match this coin's {chain.toUpperCase()} address.
+                        Key is valid, but doesn't match this asset's {chain.toUpperCase()} address.
                       </p>
                       {derivedForChain.length > 0 && (
                         <div className="mt-1 space-y-0.5 text-muted-foreground">

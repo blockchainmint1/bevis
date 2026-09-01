@@ -6,9 +6,9 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — BEVIS" },
-      { name: "description", content: "BEVIS mints physical Cold Storage Coins. The app is the digital twin of the coin in your hand." },
+      { name: "description", content: "BEVIS mints physical Cold Storage Coins. The app is the digital twin of the asset in your hand." },
       { property: "og:title", content: "About BEVIS" },
-      { property: "og:description", content: "The digital twin of the coin in your hand." },
+      { property: "og:description", content: "The digital twin of the asset in your hand." },
     ],
   }),
   component: About,
@@ -23,10 +23,10 @@ function About() {
       <h1 className="mt-6 font-serif text-4xl text-foreground">About BEVIS</h1>
       <div className="prose prose-invert mt-6 space-y-4 text-muted-foreground">
         <p>
-          BEVIS strikes physical coins that carry real cryptocurrency value. Each coin is loaded with a private key, sealed under a tamper-evident hologram, and shipped honest weight in silver, gold, copper, or brass.
+          BEVIS strikes physical assets that carry real cryptocurrency value. Each asset is loaded with a private key, sealed under a tamper-evident hologram, and shipped honest weight in silver, gold, copper, or brass.
         </p>
         <p>
-          This app is the digital twin of the coin in your hand. Use it to verify the coin's authenticity against the public mint registry, watch its balance across eleven blockchains, receive funds into it, get notified when something moves, and — when you're ready — sweep it on the device that never let your private key leave it.
+          This app is the digital twin of the asset in your hand. Use it to verify the asset's authenticity against the public mint registry, watch its balance across eleven blockchains, receive funds into it, get notified when something moves, and — when you're ready — sweep it on the device that never let your private key leave it.
         </p>
         <p>{"\n"}</p>
       </div>

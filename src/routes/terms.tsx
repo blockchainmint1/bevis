@@ -24,10 +24,10 @@ function Terms() {
 
       <div className="prose prose-invert mt-6 space-y-4 text-sm text-muted-foreground">
         <h2 className="font-serif text-xl text-foreground">1. The product</h2>
-        <p>BEVIS sells physical coins (the "Coins") that contain a cryptocurrency private key. The accompanying mobile and web app (the "App") helps you verify authenticity, monitor public address activity, and optionally broadcast a sweep transaction using a key you provide.</p>
+        <p>BEVIS sells physical assets (the "Assets") that contain a cryptocurrency private key. The accompanying mobile and web app (the "App") helps you verify authenticity, monitor public address activity, and optionally broadcast a sweep transaction using a key you provide.</p>
 
         <h2 className="font-serif text-xl text-foreground">2. Custody</h2>
-        <p>BEVIS is not a custodian. We do not hold, store, or have access to the private keys loaded onto your Coins. Loss of a Coin, destruction of a Coin, or removal of the tamper seal may result in irrecoverable loss of the funds it controls. You are solely responsible for the security of your Coins and any keys you reveal from them.</p>
+        <p>BEVIS is not a custodian. We do not hold, store, or have access to the private keys loaded onto your Assets. Loss of a Asset, destruction of a Asset, or removal of the tamper seal may result in irrecoverable loss of the funds it controls. You are solely responsible for the security of your Assets and any keys you reveal from them.</p>
 
         <h2 className="font-serif text-xl text-foreground">3. No financial advice</h2>
         <p>Nothing in the App or on our packaging is investment, tax, or legal advice. Cryptocurrency values fluctuate.</p>
@@ -36,10 +36,10 @@ function Terms() {
         <p>The App provides read-only blockchain information via public explorers and a key-handling sweep flow that runs entirely on your device. We make commercially reasonable efforts to keep balance data accurate but do not warrant it.</p>
 
         <h2 className="font-serif text-xl text-foreground">5. Acceptable use</h2>
-        <p>You agree not to use the App to facilitate illegal activity, to misrepresent the authenticity of a Coin you do not own, or to abuse the verification registry.</p>
+        <p>You agree not to use the App to facilitate illegal activity, to misrepresent the authenticity of a Asset you do not own, or to abuse the verification registry.</p>
 
         <h2 className="font-serif text-xl text-foreground">6. Liability</h2>
-        <p>To the maximum extent permitted by law, BEVIS's liability is limited to the purchase price of the Coin in question. We disclaim all consequential damages.</p>
+        <p>To the maximum extent permitted by law, BEVIS's liability is limited to the purchase price of the Asset in question. We disclaim all consequential damages.</p>
 
         <h2 className="font-serif text-xl text-foreground">7. Contact</h2>
         <p>Questions: mint@blockchainmint.com</p>

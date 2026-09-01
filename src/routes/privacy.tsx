@@ -26,7 +26,7 @@ function Privacy() {
         <h2 className="font-serif text-xl text-foreground">What we collect</h2>
         <ul className="list-disc pl-5">
           <li>Your email address and the public addresses you choose to watch.</li>
-          <li>Order details (shipping address, items purchased) when you buy a Coin.</li>
+          <li>Order details (shipping address, items purchased) when you buy a Asset.</li>
           <li>Push notification device tokens, only if you enable alerts.</li>
         </ul>
 
