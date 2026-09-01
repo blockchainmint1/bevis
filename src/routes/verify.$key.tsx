@@ -1,3 +1,4 @@
+import { ipfsLink } from "@/lib/bevis/ipfsLink";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -124,6 +125,18 @@ function PublicVerifyPage() {
                 </p>
                 {f.anchorTxid && (
                   <p className="mt-1 break-all font-mono text-[10px] text-muted-foreground">TXID {f.anchorTxid}</p>
+                )}
+                {f.manifestCid && (
+                  <p className="mt-0.5 break-all text-[10px]">
+                    <a
+                      href={ipfsLink(f.manifestCid)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-mono text-primary underline underline-offset-2"
+                    >
+                      IPFS record {f.manifestCid}
+                    </a>
+                  </p>
                 )}
                 {f.anchoredAt && (
                   <p className="mt-0.5 text-[10px] text-muted-foreground">

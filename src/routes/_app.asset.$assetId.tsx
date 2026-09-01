@@ -1,3 +1,4 @@
+import { ipfsLink } from "@/lib/bevis/ipfsLink";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -176,6 +177,18 @@ function AssetDetailPage() {
                     </span>
                   )}
                 </p>
+                {f.manifestCid && (
+                  <p className="mt-1 break-all text-[10px]">
+                    <a
+                      href={ipfsLink(f.manifestCid)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-mono text-primary underline underline-offset-2"
+                    >
+                      IPFS record {f.manifestCid.slice(0, 20)}…
+                    </a>
+                  </p>
+                )}
               </div>
             </div>
             <div className="mt-3 flex gap-2">
