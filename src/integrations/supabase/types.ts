@@ -198,7 +198,6 @@ export type Database = {
           last_name: string | null
           legacy_created_at: string | null
           legacy_id: string
-          password_hash: string | null
           saved_assets: number
         }
         Insert: {
@@ -213,7 +212,6 @@ export type Database = {
           last_name?: string | null
           legacy_created_at?: string | null
           legacy_id: string
-          password_hash?: string | null
           saved_assets?: number
         }
         Update: {
@@ -228,7 +226,6 @@ export type Database = {
           last_name?: string | null
           legacy_created_at?: string | null
           legacy_id?: string
-          password_hash?: string | null
           saved_assets?: number
         }
         Relationships: []
