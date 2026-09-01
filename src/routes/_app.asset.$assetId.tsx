@@ -2,11 +2,12 @@ import { ipfsLink } from "@/lib/bevis/ipfsLink";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import QRCode from "qrcode";
 import { toast } from "sonner";
 import {
   ArrowLeft, ShieldCheck, Clock, Lock, Download, RefreshCw, Trash2, Pencil, ExternalLink, FileText,
+  Loader2,
 } from "lucide-react";
 
 import {
@@ -52,6 +53,26 @@ function AssetDetailPage() {
   const [qr, setQr] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState("");
+  /** Which action/file id is currently in flight, e.g. `anchor:abc`, `download:abc`, `delete`, `rename`. */
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const run = useCallback(
+    async <T,>(key: string, label: string, fn: () => Promise<T>): Promise<T | undefined> => {
+      setBusy(key);
+      const tid = toast.loading(`${label}…`);
+      try {
+        const result = await fn();
+        toast.success(`${label} done`, { id: tid });
+        return result;
+      } catch (e) {
+        toast.error(`${label} failed: ${(e as Error).message}`, { id: tid });
+        return undefined;
+      } finally {
+        setBusy(null);
+      }
+    },
+    [],
+  );
 
   const { data, isLoading } = useQuery({
     queryKey: ["bevis-asset", assetId, user?.id ?? "guest"],
