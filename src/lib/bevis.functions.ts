@@ -294,7 +294,14 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
       .or(`asset_id.eq.${raw.toUpperCase()},public_key.eq.${raw}`)
       .maybeSingle();
 
-    if (!asset) return { found: false as const, key: raw };
+    // New records live here. Anything older was minted on the Cold Storage
+    // Coins Admin backend, so a miss falls through to that registry rather
+    // than dragging its whole dataset over.
+    if (!asset) {
+      const legacy = await lookupLegacyRecord(raw, data.adminBase ?? null);
+      if (legacy) return legacy;
+      return { found: false as const, key: raw };
+    }
 
     const { data: files } = await supabaseAdmin
       .from("bevis_files")
