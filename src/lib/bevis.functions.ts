@@ -275,7 +275,15 @@ export const deleteBevisAsset = createServerFn({ method: "POST" })
  * anchors, declared metadata) but never the stored file itself.
  */
 export const lookupBevisRecord = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => z.object({ key: z.string().trim().min(6).max(120) }).parse(d))
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        key: z.string().trim().min(6).max(120),
+        /** Optional override so testers can point at a different admin host. */
+        adminBase: z.string().trim().url().max(200).optional().nullable(),
+      })
+      .parse(d),
+  )
   .handler(async ({ data }) => {
     const raw = data.key.trim().replace(/^bevis:\/\//i, "");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
