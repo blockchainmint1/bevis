@@ -70,7 +70,7 @@ function ScanPage() {
     const detected = detectChain(address.trim()) ?? { chain, address: address.trim() };
     const coin = addLocalCoin({ chain: detected.chain, address: detected.address, label: label.trim() || undefined });
     toast.success("Asset added to your portfolio.");
-    navigate({ to: "/asset/$id", params: { id: coin.id } });
+    navigate({ to: "/coin/$id", params: { id: coin.id } });
   }
 
   function handleScanned(text: string) {
@@ -125,7 +125,7 @@ function ScanPage() {
     if (!scanned || scanned.type === "seed") return;
     const coin = addLocalCoin({ chain: scanned.chain, address: scanned.address, label: label.trim() || undefined });
     toast.success("Asset added.");
-    navigate({ to: "/asset/$id", params: { id: coin.id } });
+    navigate({ to: "/coin/$id", params: { id: coin.id } });
   }
 
   function verifyScanned() {
@@ -140,7 +140,7 @@ function ScanPage() {
     if (scanned?.type !== "seed") return;
     const coin = addLocalCoin({ chain: "txc", address: scanned.result.address, label: label.trim() || undefined });
     toast.success("TXC asset added.");
-    navigate({ to: "/asset/$id", params: { id: coin.id } });
+    navigate({ to: "/coin/$id", params: { id: coin.id } });
   }
 
   useEffect(() => {

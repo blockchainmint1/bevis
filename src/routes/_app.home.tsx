@@ -140,7 +140,7 @@ function HomePage() {
             <li key={coin.id}>
               <div className="group flex items-center gap-2 rounded-xl border border-border bg-card pr-2 transition hover:border-primary/40">
                 <Link
-                  to="/asset/$id"
+                  to="/coin/$id"
                   params={{ id: coin.id }}
                   className="flex min-w-0 flex-1 items-center gap-4 p-4"
                 >
@@ -205,7 +205,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
           <DropdownMenuItem onSelect={() => { setLabel(coin.label ?? ""); setRenameOpen(true); }}>
             <Pencil className="size-4" /> Rename
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate({ to: "/asset/$id", params: { id: coin.id } })}>
+          <DropdownMenuItem onSelect={() => navigate({ to: "/coin/$id", params: { id: coin.id } })}>
             <ArrowDownToLine className="size-4" /> Add value
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => navigate({ to: "/sweep", search: { chain: coin.chain, address: coin.address } })}>
