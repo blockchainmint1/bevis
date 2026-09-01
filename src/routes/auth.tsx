@@ -128,6 +128,54 @@ function AuthPage() {
             </button>
           </div>
 
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-border" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">or email</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+
+          <form onSubmit={submitEmail} className="space-y-2">
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+            />
+            <input
+              type="password"
+              required
+              autoComplete={mode === "signup" ? "new-password" : "current-password"}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+            />
+            <button
+              type="submit"
+              disabled={!!busy}
+              className="w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
+            >
+              {busy === "email" ? "Working…" : mode === "signup" ? "Create account" : "Sign in"}
+            </button>
+          </form>
+
+          <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
+            <button type="button" className="hover:text-foreground" onClick={() => setMode(mode === "signup" ? "signin" : "signup")}>
+              {mode === "signup" ? "Have an account? Sign in" : "New here? Create an account"}
+            </button>
+            <button type="button" className="hover:text-foreground" onClick={forgotPassword}>
+              Forgot password?
+            </button>
+          </div>
+
+          <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+            Used the old Cold Storage Coins app? Sign in with the same email and password you had there — your existing
+            records come across automatically. Nothing on the old system is deleted or changed.
+          </p>
+
           <div className="mt-5 flex items-start gap-2 rounded-md border border-border/60 bg-secondary/40 p-3 text-[11px] text-muted-foreground">
             <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
             <p>
