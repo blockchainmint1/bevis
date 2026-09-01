@@ -17,9 +17,30 @@ import { mnemonicToSeedSync, validateMnemonic } from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english.js";
 import { HDKey } from "@scure/bip32";
 import { sha256 } from "@noble/hashes/sha2.js";
+import { hmac } from "@noble/hashes/hmac.js";
 import { ripemd160 } from "@noble/hashes/legacy.js";
 import { base58check } from "@scure/base";
 import * as secp from "@noble/secp256k1";
+
+/**
+ * noble-secp256k1 v3 ships without a bundled hash: synchronous signing needs
+ * SHA-256 and HMAC-SHA256 wired in explicitly, or it throws
+ * "hashes.sha256 not set".
+ */
+secp.hashes.sha256 = (...msgs: Uint8Array[]) => sha256(concatBytes(...msgs));
+secp.hashes.hmacSha256 = (key: Uint8Array, ...msgs: Uint8Array[]) =>
+  hmac(sha256, key, concatBytes(...msgs));
+
+function concatBytes(...parts: Uint8Array[]): Uint8Array {
+  const total = parts.reduce((n, p) => n + p.length, 0);
+  const out = new Uint8Array(total);
+  let o = 0;
+  for (const p of parts) {
+    out.set(p, o);
+    o += p.length;
+  }
+  return out;
+}
 
 const TXC_PUBKEY_VERSION = 0x42;
 const TXC_PATH = "m/44'/696969'/0'/0/0";
