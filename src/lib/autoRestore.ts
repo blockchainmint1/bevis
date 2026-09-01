@@ -39,11 +39,9 @@ export function useAutoRestore() {
         const fresh = Math.max(0, after - before);
 
         localStorage.setItem(flagKey(user.id), String(Date.now()));
+        void added;
         if (fresh > 0) {
           toast.success(`Restored ${fresh} ${fresh === 1 ? "record" : "records"} from your account`);
-          window.dispatchEvent(new Event("bevis:portfolio-changed"));
-        } else if (added > 0) {
-          // Everything was already here — nothing to announce.
         }
       } catch {
         // Silent: the manual /import screen remains as a fallback.
