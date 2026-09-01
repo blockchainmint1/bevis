@@ -64,7 +64,12 @@ export const registerDevice = createServerFn({ method: "POST" })
     if (data.push_platform !== undefined) row.push_platform = data.push_platform;
     if (data.app_version !== undefined) row.app_version = data.app_version;
     const { error } = await sb.from("devices").upsert(row, { onConflict: "device_id" });
-    if (error) throw new Error(error.message);
+    if (error) {
+      // Non-fatal: device registration is best-effort telemetry/push plumbing.
+      // Never let it take the app down (e.g. transient auth/clock-skew errors).
+      console.error("[registerDevice] upsert failed", error.message);
+      return { ok: false, error: error.message };
+    }
     return { ok: true };
   });
 
