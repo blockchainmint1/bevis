@@ -1,49 +1,39 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 /**
- * Capacitor config for Blockchain Mint / Cold Storage Coins.
+ * Capacitor config for BEVIS.
  *
- * Strategy: the app is a TanStack Start SSR site, so the native shell loads
- * the live published web app inside a managed webview. That means every web
- * change ships instantly without an app store resubmission. Native binary
- * only needs to be re-released when bundle id, icons, splash, permissions,
- * or installed Capacitor plugins change.
+ * The app is a TanStack Start SSR site, so the native shell loads the live
+ * published web app inside a managed webview. Web changes ship instantly —
+ * no store resubmission. A native rebuild is only needed when the bundle id,
+ * icons, splash, permissions, plugins, or `server.url` change.
  *
- * Bundle IDs are intentionally identical to the legacy React Native app so
- * an over-the-top install preserves the OS sandbox (and the legacy importer
- * can read its old AsyncStorage files).
+ *   Android: sg.bevis.app   (Play Store listing)
+ *   iOS:     sg.bevis.app
  *
- *   iOS:     com.rearden-metals.Cold-Storage-Coins   (App Store id 1352363663)
- *   Android: com.coldstoragecoins                     (Play Store listing)
- *
- * To build locally:
- *   1. npm run build              # produce web bundle
- *   2. npx cap add ios            # one-time
- *   3. npx cap add android        # one-time
- *   4. npx cap sync               # after every dep / config change
- *   5. npx cap open ios|android   # launch native IDE for signing + release
+ * Build:
+ *   bun run build        # produces .output/public
+ *   bun run cap:sync     # copy web + plugins into native projects
+ *   bun run android:apk  # debug APK straight to android/app/build/outputs
  */
 const config: CapacitorConfig = {
-  appId: "com.coldstoragecoins",
-  appName: "Blockchain Mint",
-  // webDir is only used when bundling local assets. We load the live URL
-  // instead (see `server.url` below), but Capacitor still requires the path
-  // to exist — `dist` is created by `npm run build`.
+  appId: "sg.bevis.app",
+  appName: "BEVIS",
+  // Only used when bundling local assets. We load the live URL instead
+  // (see `server.url`), but the path must exist — `bun run build` creates it.
   webDir: ".output/public",
   server: {
-    // Point the native shell at the live published web app. Change this to
-    // the Lovable preview URL during development to test new builds without
-    // republishing.
-    url: "https://app.blockchainmint.com",
+    // Point the native shell at the live published web app. Swap to the
+    // Lovable preview URL to test unpublished builds.
+    url: "https://app.bevis.sg",
     cleartext: false,
     androidScheme: "https",
     iosScheme: "https",
-    // Allow navigation to the wallet explorers, blockchainmint.com store,
-    // and the texitcoin.org docs without bouncing out to Safari/Chrome.
+    // Keep these in the webview instead of bouncing out to the browser.
     allowNavigation: [
-      "app.blockchainmint.com",
-      "blockchainmint.com",
-      "*.blockchainmint.com",
+      "app.bevis.sg",
+      "bevis.sg",
+      "*.bevis.sg",
       "honest.money",
       "*.honest.money",
       "texitcoin.org",
