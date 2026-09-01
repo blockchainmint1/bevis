@@ -23,6 +23,7 @@ import { Route as AppShopRouteImport } from './routes/_app.shop'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppScanRouteImport } from './routes/_app.scan'
 import { Route as AppPublishRouteImport } from './routes/_app.publish'
+import { Route as AppLookupRouteImport } from './routes/_app.lookup'
 import { Route as AppImportRouteImport } from './routes/_app.import'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
@@ -101,6 +102,11 @@ const AppPublishRoute = AppPublishRouteImport.update({
   path: '/publish',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLookupRoute = AppLookupRouteImport.update({
+  id: '/lookup',
+  path: '/lookup',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppImportRoute = AppImportRouteImport.update({
   id: '/import',
   path: '/import',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
   '/import': typeof AppImportRoute
+  '/lookup': typeof AppLookupRoute
   '/publish': typeof AppPublishRoute
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
   '/import': typeof AppImportRoute
+  '/lookup': typeof AppLookupRoute
   '/publish': typeof AppPublishRoute
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   '/_app/assets': typeof AppAssetsRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/import': typeof AppImportRoute
+  '/_app/lookup': typeof AppLookupRoute
   '/_app/publish': typeof AppPublishRoute
   '/_app/scan': typeof AppScanRoute
   '/_app/settings': typeof AppSettingsRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/assets'
     | '/home'
     | '/import'
+    | '/lookup'
     | '/publish'
     | '/scan'
     | '/settings'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/assets'
     | '/home'
     | '/import'
+    | '/lookup'
     | '/publish'
     | '/scan'
     | '/settings'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/_app/assets'
     | '/_app/home'
     | '/_app/import'
+    | '/_app/lookup'
     | '/_app/publish'
     | '/_app/scan'
     | '/_app/settings'
@@ -399,6 +411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPublishRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/lookup': {
+      id: '/_app/lookup'
+      path: '/lookup'
+      fullPath: '/lookup'
+      preLoaderRoute: typeof AppLookupRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/import': {
       id: '/_app/import'
       path: '/import'
@@ -463,6 +482,7 @@ interface AppRouteChildren {
   AppAssetsRoute: typeof AppAssetsRoute
   AppHomeRoute: typeof AppHomeRoute
   AppImportRoute: typeof AppImportRoute
+  AppLookupRoute: typeof AppLookupRoute
   AppPublishRoute: typeof AppPublishRoute
   AppScanRoute: typeof AppScanRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -478,6 +498,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAssetsRoute: AppAssetsRoute,
   AppHomeRoute: AppHomeRoute,
   AppImportRoute: AppImportRoute,
+  AppLookupRoute: AppLookupRoute,
   AppPublishRoute: AppPublishRoute,
   AppScanRoute: AppScanRoute,
   AppSettingsRoute: AppSettingsRoute,
