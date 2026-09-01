@@ -212,23 +212,40 @@ export const retryAnchor = createServerFn({ method: "POST" })
     const { supabase } = context;
     const { data: row, error } = await supabase
       .from("bevis_files")
-      .select("id, sha256, anchor_status")
+      .select("id, sha256, anchor_status, manifest_cid, asset_uuid")
       .eq("id", data.fileId)
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!row) throw new Error("File not found.");
     if (row.anchor_status === "anchored") return { ok: true, txid: null, alreadyAnchored: true };
 
-    const { anchorSha256 } = await import("@/lib/bevis/txc.server");
-    const anchor = await anchorSha256(row.sha256);
+    const { data: asset } = await supabase
+      .from("bevis_assets")
+      .select("public_key")
+      .eq("id", row.asset_uuid)
+      .maybeSingle();
+
+    const { anchorBevis } = await import("@/lib/bevis/txc.server");
+    const anchor = await anchorBevis({
+      sha256Hex: row.sha256,
+      manifestCid: row.manifest_cid,
+      address: asset?.public_key ?? null,
+    });
     await supabase
       .from("bevis_files")
       .update(
         anchor.ok
-          ? { anchor_status: "anchored", anchor_txid: anchor.txid, anchored_at: new Date().toISOString(), anchor_error: null }
+          ? {
+              anchor_status: "anchored",
+              anchor_txid: anchor.txid,
+              anchor_address: anchor.address,
+              anchored_at: new Date().toISOString(),
+              anchor_error: null,
+            }
           : { anchor_error: anchor.error },
       )
       .eq("id", row.id);
+
     return anchor.ok
       ? { ok: true as const, txid: anchor.txid, alreadyAnchored: false }
       : { ok: false as const, error: anchor.error };
