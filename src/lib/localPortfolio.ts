@@ -62,6 +62,11 @@ export function getLocalCoin(id: string): LocalCoin | undefined {
   return read().find(c => c.id === id);
 }
 
+/** Snapshot of the device's list — for one-off reads outside React. */
+export function listLocalCoins(): LocalCoin[] {
+  return read();
+}
+
 export function useLocalPortfolio() {
   const [coins, setCoins] = useState<LocalCoin[]>([]);
   const [ready, setReady] = useState(false);
