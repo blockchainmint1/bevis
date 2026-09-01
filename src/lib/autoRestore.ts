@@ -1,25 +1,25 @@
 /**
  * Signing in IS the import.
  *
- * Whenever a session appears, we quietly pull the account's saved asset list
- * from the legacy registry and merge it into this device's local list. It runs
- * at most once per user per device (the merge itself is idempotent anyway), so
- * a returning user just sees their records — no /import trip required.
+ * Whenever a session appears we quietly pull the account's saved records out
+ * of the legacy registry and write any missing ones into the account's own
+ * record list. Idempotent, and flagged once per user per device so it doesn't
+ * run on every navigation.
  */
 
 import { useEffect, useRef } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
-import { fetchLegacyList } from "@/lib/legacyList.functions";
-import { previewLegacyBlob, applyLegacyImport } from "@/lib/legacyImport";
-import { listLocalCoins } from "@/lib/localPortfolio";
+import { restoreLegacyRecords } from "@/lib/records.functions";
 
-const flagKey = (userId: string) => `bevis.autorestore.v1.${userId}`;
+const flagKey = (userId: string) => `bevis.autorestore.v2.${userId}`;
 
 export function useAutoRestore() {
   const { user } = useAuth();
-  const pull = useServerFn(fetchLegacyList);
+  const restore = useServerFn(restoreLegacyRecords);
+  const queryClient = useQueryClient();
   const running = useRef(false);
 
   useEffect(() => {
@@ -30,24 +30,17 @@ export function useAutoRestore() {
     running.current = true;
     void (async () => {
       try {
-        const res = await pull();
-        if (!res.available || res.wallets.length === 0) return;
-
-        const before = listLocalCoins().length;
-        const added = applyLegacyImport(previewLegacyBlob({ wallets: res.wallets }));
-        const after = listLocalCoins().length;
-        const fresh = Math.max(0, after - before);
-
+        const res = await restore();
         localStorage.setItem(flagKey(user.id), String(Date.now()));
-        void added;
-        if (fresh > 0) {
-          toast.success(`Restored ${fresh} ${fresh === 1 ? "record" : "records"} from your account`);
+        if (res.available && res.added > 0) {
+          await queryClient.invalidateQueries({ queryKey: ["records"] });
+          toast.success(`Restored ${res.added} ${res.added === 1 ? "record" : "records"} to your account`);
         }
       } catch {
-        // Silent: the manual /import screen remains as a fallback.
+        // Silent: /import remains as a manual fallback.
       } finally {
         running.current = false;
       }
     })();
-  }, [user, pull]);
+  }, [user, restore, queryClient]);
 }
