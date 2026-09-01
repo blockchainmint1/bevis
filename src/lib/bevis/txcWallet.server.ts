@@ -36,8 +36,13 @@ const SATS = 100_000_000;
 
 /** Flat fee per anchor, in satoshis. Anchors are tiny (1–2 inputs). */
 const FEE_SATS = 100_000; // 0.001 TXC
-/** Ignore change below this; it costs more to spend than it is worth. */
-const DUST_SATS = 1_000;
+/**
+ * Minimum value any output may carry. TXC inherits Litecoin's relay policy, so
+ * a 0.00001 output is rejected outright ("dust"). Keep every output — the
+ * asset's inbox payment and our own change — at or above 0.001 TXC.
+ */
+const DUST_SATS = 100_000; // 0.001 TXC
+
 
 const b58 = base58check(sha256);
 
