@@ -36,10 +36,12 @@ export type PublishOutcome = {
 export async function uploadAndPublish(
   publishFn: (args: { data: Record<string, unknown> }) => Promise<PublishOutcome>,
   opts: PublishOptions,
+  /** Guest path: no account, so the bytes go up through the server function. */
+  guestPublishFn?: (args: { data: Record<string, unknown> }) => Promise<PublishOutcome>,
 ): Promise<PublishOutcome> {
   const { data: sessionData } = await supabase.auth.getSession();
   const userId = sessionData.session?.user.id;
-  if (!userId) throw new Error("Sign in to publish an asset.");
+  if (!userId && !guestPublishFn) throw new Error("Sign in to publish an asset.");
 
   let body: Blob = opts.file;
   if (opts.encrypt) {
