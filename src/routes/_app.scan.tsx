@@ -211,7 +211,7 @@ function ScanPage() {
                   onClick={addDerivedTxc}
                   className="flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
                 >
-                  <Coins className="size-4" /> Add coin
+                  <Coins className="size-4" /> Add asset
                 </button>
               </div>
               <button
@@ -224,7 +224,7 @@ function ScanPage() {
                 onClick={reset}
                 className="mt-2 w-full text-center text-[11px] text-muted-foreground hover:text-foreground"
               >
-                Scan a different coin
+                Scan a different asset
               </button>
             </div>
           )}
@@ -264,7 +264,7 @@ function ScanPage() {
                 onClick={reset}
                 className="mt-2 w-full text-center text-[11px] text-muted-foreground hover:text-foreground"
               >
-                Scan a different coin
+                Scan a different asset
               </button>
             </div>
           )}
@@ -312,14 +312,14 @@ function ScanPage() {
                   onClick={confirmScanned}
                   className="flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
                 >
-                  <Coins className="size-4" /> Add coin
+                  <Coins className="size-4" /> Add asset
                 </button>
               </div>
               <button
                 onClick={reset}
                 className="mt-2 w-full text-center text-[11px] text-muted-foreground hover:text-foreground"
               >
-                Scan a different coin
+                Scan a different asset
               </button>
             </div>
           )}
@@ -390,7 +390,7 @@ function ScanPage() {
               onClick={handleAdd}
               className="flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
-              <Coins className="size-4" /> Add coin
+              <Coins className="size-4" /> Add asset
             </button>
           </div>
 

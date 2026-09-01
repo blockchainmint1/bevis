@@ -112,7 +112,7 @@ export function QrScanner({ onResult, paused: _paused }: Props) {
           <div className="px-6 text-center">
             <Camera className="mx-auto size-10 text-muted-foreground" />
             <p className="mt-2 text-xs text-muted-foreground">
-              Point your camera at the QR engraved on the coin.
+              Point your camera at the QR engraved on the asset.
             </p>
             <button
               onClick={start}
