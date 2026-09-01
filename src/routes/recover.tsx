@@ -83,7 +83,7 @@ function RecoverPage() {
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Recover</p>
         <h1 className="mt-1 font-serif text-3xl text-foreground">Bring your asset list over</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Your coin list is stored in your browser, and browsers keep that storage separate per web
+          Your asset list is stored in your browser, and browsers keep that storage separate per web
           address. If you used the app at an older address, your list is still there — pull it across
           below. Nothing but the public addresses and nicknames moves.
         </p>
@@ -109,7 +109,7 @@ function RecoverPage() {
             to="/home"
             className="mt-3 block rounded-md bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            View my coins
+            View my assets
           </Link>
         </section>
       )}

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Back up your coins — BEVIS" },
-      { name: "description", content: "Optional sign-in to back up your coin list across devices." },
+      { name: "description", content: "Optional sign-in to back up your asset list across devices." },
     ],
   }),
   component: AuthPage,
@@ -53,7 +53,7 @@ function AuthPage() {
           <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Cold Storage Coins</p>
           <h1 className="mt-2 font-serif text-3xl text-foreground">Back up your coins</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            Your coin list lives on this device. Sign in to back it up and reach it from any phone or browser.
+            Your asset list lives on this device. Sign in to back it up and reach it from any phone or browser.
           </p>
         </div>
 

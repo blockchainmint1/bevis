@@ -337,7 +337,7 @@ function ScanPage() {
               onClick={() => { setManual(true); setAssetIdMode(true); }}
               className="mt-2 flex w-full items-center justify-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground"
             >
-              <Hash className="size-3.5" /> Add by 6-digit Coin ID
+              <Hash className="size-3.5" /> Add by 6-digit Asset ID
             </button>
           )}
         </>
@@ -508,7 +508,7 @@ function AssetIdLookup({
         onClick={onToggle}
         className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground"
       >
-        <Hash className="size-3.5" /> Look up by 6-digit Coin ID
+        <Hash className="size-3.5" /> Look up by 6-digit Asset ID
       </button>
     );
   }
@@ -516,7 +516,7 @@ function AssetIdLookup({
   return (
     <div className="rounded-lg border border-border bg-background p-3">
       <span className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-        Coin ID (6 characters on the sticker)
+        Asset ID (6 characters on the sticker)
       </span>
       <div className="flex gap-2">
         <input
