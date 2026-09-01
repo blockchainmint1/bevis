@@ -418,20 +418,45 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
  */
 async function lookupLegacyRecord(raw: string, base: string | null) {
   const host = (base ?? "https://admin.coldstoragecoins.com").replace(/\/+$/, "");
-  const keys = Array.from(new Set([raw, raw.toUpperCase()]));
+  const keys = Array.from(new Set([raw, raw.toLowerCase(), raw.toUpperCase()]));
 
   try {
-    const res = await fetch(`${host}/api/public/app/v1/coins/lookup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-app-version": "5.0.3" },
-      body: JSON.stringify({ keys }),
-    });
-    if (!res.ok) return null;
-    const json = (await res.json().catch(() => null)) as
-      | { coins?: Array<Record<string, unknown>> }
-      | null;
-    const coin = json?.coins?.[0];
+    // `/coins/verify` is the single-key resolver and is the one that actually
+    // matches short Asset IDs; `/coins/lookup` is a batch endpoint keyed on
+    // full public keys, so it misses a scanned six-character ID. Try verify
+    // first, then fall back to the batch form.
+    let coin: Record<string, unknown> | undefined;
+
+    for (const key of keys) {
+      const vres = await fetch(`${host}/api/public/app/v1/coins/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-app-version": "5.0.3" },
+        body: JSON.stringify({ key }),
+      });
+      if (!vres.ok) continue;
+      const vjson = (await vres.json().catch(() => null)) as
+        | { authentic?: boolean; coin?: Record<string, unknown> }
+        | null;
+      if (vjson?.coin) {
+        coin = vjson.coin;
+        break;
+      }
+    }
+
+    if (!coin) {
+      const res = await fetch(`${host}/api/public/app/v1/coins/lookup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-app-version": "5.0.3" },
+        body: JSON.stringify({ keys }),
+      });
+      if (!res.ok) return null;
+      const json = (await res.json().catch(() => null)) as
+        | { coins?: Array<Record<string, unknown>> }
+        | null;
+      coin = json?.coins?.[0];
+    }
     if (!coin) return null;
+
 
     const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
     const publicKey = str(coin["publicKey"]) ?? raw;
