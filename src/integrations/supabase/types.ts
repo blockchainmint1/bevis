@@ -185,6 +185,54 @@ export type Database = {
           },
         ]
       }
+      bevis_legacy_users: {
+        Row: {
+          activated: boolean
+          created_at: string
+          default_currency: string | null
+          email: string
+          first_name: string | null
+          import_error: string | null
+          imported_at: string | null
+          imported_user_id: string | null
+          last_name: string | null
+          legacy_created_at: string | null
+          legacy_id: string
+          password_hash: string | null
+          saved_assets: number
+        }
+        Insert: {
+          activated?: boolean
+          created_at?: string
+          default_currency?: string | null
+          email: string
+          first_name?: string | null
+          import_error?: string | null
+          imported_at?: string | null
+          imported_user_id?: string | null
+          last_name?: string | null
+          legacy_created_at?: string | null
+          legacy_id: string
+          password_hash?: string | null
+          saved_assets?: number
+        }
+        Update: {
+          activated?: boolean
+          created_at?: string
+          default_currency?: string | null
+          email?: string
+          first_name?: string | null
+          import_error?: string | null
+          imported_at?: string | null
+          imported_user_id?: string | null
+          last_name?: string | null
+          legacy_created_at?: string | null
+          legacy_id?: string
+          password_hash?: string | null
+          saved_assets?: number
+        }
+        Relationships: []
+      }
       chain_price_state: {
         Row: {
           chain: string

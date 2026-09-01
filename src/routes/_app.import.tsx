@@ -1,13 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, FileJson, CheckCircle2, AlertTriangle, Stethoscope } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { ArrowLeft, FileJson, CheckCircle2, AlertTriangle, Stethoscope, CloudDownload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
   applyLegacyImport, previewLegacyBlob, readLegacyBlobNative,
   type LegacyBlob, type LegacyImportPreview,
 } from "@/lib/legacyImport";
+import { fetchLegacyList } from "@/lib/legacyList.functions";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/_app/import")({
   head: () => ({ meta: [{ title: "Import old assets — BEVIS" }] }),
@@ -20,6 +23,36 @@ function ImportPage() {
   const [preview, setPreview] = useState<LegacyImportPreview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [diag, setDiag] = useState<string | null>(null);
+  const [restoring, setRestoring] = useState(false);
+  const pullLegacyList = useServerFn(fetchLegacyList);
+
+  async function restoreFromAccount() {
+    setRestoring(true);
+    setError(null);
+    try {
+      const res = await pullLegacyList();
+      if (!res.available) {
+        setError(
+          res.reason === "not_configured"
+            ? "Account restore isn't switched on yet — paste a JSON export below in the meantime."
+            : "Couldn't reach your old account records right now. Try again shortly.",
+        );
+        return;
+      }
+      if (res.wallets.length === 0) {
+        setError("No saved assets were found on your old account for this email.");
+        return;
+      }
+      const p = previewLegacyBlob({ wallets: res.wallets });
+      setPreview(p);
+      toast.success(`Found ${res.wallets.length} saved assets`);
+    } catch {
+      setError("Couldn't reach your old account records right now. Try again shortly.");
+    } finally {
+      setRestoring(false);
+    }
+  }
+
 
   async function runDiagnostic() {
     const lines: string[] = [];
@@ -102,6 +135,21 @@ function ImportPage() {
           To bring them over by hand, paste a JSON export below.
         </p>
       </header>
+
+      <section className="mb-4 rounded-xl border border-primary/40 bg-card p-4">
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <CloudDownload className="size-4 text-primary" /> Restore from my old account
+        </div>
+        <p className="mb-3 text-xs text-muted-foreground">
+          Signed in with the same email you used on Cold Storage Coins? Pull your saved asset list straight
+          across — nothing on the old system is changed or deleted.
+        </p>
+        <Button onClick={restoreFromAccount} disabled={restoring} className="w-full">
+          {restoring ? "Looking up your assets…" : "Restore my asset list"}
+        </Button>
+      </section>
+
+
 
       <section className="mb-4 rounded-xl border border-border bg-card p-4">
         <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
