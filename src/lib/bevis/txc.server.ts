@@ -81,34 +81,62 @@ export type AnchorInput = {
 /**
  * Broadcast the anchor. Never throws — anchoring is best-effort so a node
  * outage can't lose the user's notarisation record.
+ *
+ * Signing is done here from the `SEED` secret, so the anchor budget sits on
+ * an address we control and can top up. If the seed is unavailable we fall
+ * back to the node's own wallet RPC.
  */
 export async function anchorBevis(input: AnchorInput): Promise<AnchorResult> {
-  try {
-    const data = anchorPayloadHex(input);
-    if (data.length / 2 > MAX_OP_RETURN_BYTES) {
-      return { ok: false, error: "Anchor payload exceeds the 80-byte OP_RETURN limit." };
-    }
-
-    const address = input.address?.trim() || null;
-    const outputs: Record<string, unknown> = { data };
-    if (address) outputs[address] = DUST_TXC;
-
-    const raw = await rpc<string>("createrawtransaction", [[], outputs]);
-    const funded = await rpc<{ hex: string }>("fundrawtransaction", [raw]);
-    const signed = await rpc<{ hex: string; complete: boolean; errors?: unknown }>(
-      "signrawtransactionwithwallet",
-      [funded.hex],
-    );
-    if (!signed.complete) return { ok: false, error: "Node could not sign the anchor transaction." };
-    const txid = await rpc<string>("sendrawtransaction", [signed.hex]);
-    return { ok: true, txid, address };
-  } catch (e) {
-    return { ok: false, error: (e as Error).message || "TXC anchoring unavailable." };
+  const data = anchorPayloadHex(input);
+  if (data.length / 2 > MAX_OP_RETURN_BYTES) {
+    return { ok: false, error: "Anchor payload exceeds the 80-byte OP_RETURN limit." };
   }
+  const address = input.address?.trim() || null;
+
+  // Preferred path: build and sign locally from our own seed wallet.
+  try {
+    const { buildSeedAnchorTx } = await import("./txcWallet.server");
+    const hex = await buildSeedAnchorTx(rpc, {
+      data: hexToBytes(data),
+      address,
+      dustSats: Math.round(DUST_TXC * 100_000_000),
+    });
+    const txid = await rpc<string>("sendrawtransaction", [hex]);
+    return { ok: true, txid, address };
+  } catch (seedError) {
+    // Fall through to the node wallet rather than lose the anchor.
+    try {
+      const outputs: Record<string, unknown> = { data };
+      if (address) outputs[address] = DUST_TXC;
+      const raw = await rpc<string>("createrawtransaction", [[], outputs]);
+      const funded = await rpc<{ hex: string }>("fundrawtransaction", [raw]);
+      const signed = await rpc<{ hex: string; complete: boolean }>("signrawtransactionwithwallet", [funded.hex]);
+      if (!signed.complete) return { ok: false, error: "Node could not sign the anchor transaction." };
+      const txid = await rpc<string>("sendrawtransaction", [signed.hex]);
+      return { ok: true, txid, address };
+    } catch (nodeError) {
+      const seedMsg = (seedError as Error).message;
+      const nodeMsg = (nodeError as Error).message;
+      return { ok: false, error: `Seed signing failed (${seedMsg}); node wallet failed (${nodeMsg}).` };
+    }
+  }
+}
+
+function hexToBytes(hex: string): Uint8Array {
+  const out = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  return out;
+}
+
+/** Health read for the anchoring budget: address, balance and runway. */
+export async function anchorWalletStatus() {
+  const { anchorWalletBalance } = await import("./txcWallet.server");
+  return anchorWalletBalance(rpc);
 }
 
 /** Back-compat helper: anchor a bare fingerprint with no manifest or address. */
 export async function anchorSha256(sha256Hex: string): Promise<AnchorResult> {
   return anchorBevis({ sha256Hex });
 }
+
 

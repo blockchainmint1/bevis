@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { LogOut, FileText, Shield, BookOpen, ExternalLink, CloudUpload, UserCircle2, DownloadCloud, ArrowLeftRight } from "lucide-react";
 import { useLocalPortfolio } from "@/lib/localPortfolio";
 import { BackendSwitcher } from "@/components/BackendSwitcher";
+import { AnchorWalletCard } from "@/components/AnchorWalletCard";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
 
 export const Route = createFileRoute("/_app/settings")({
@@ -57,6 +58,8 @@ function SettingsPage() {
       </section>
 
       <BackendSwitcher />
+
+      <AnchorWalletCard />
 
       <CloudBackupCard />
 
