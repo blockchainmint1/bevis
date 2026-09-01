@@ -38,6 +38,8 @@ export type BevisFileRecord = {
   sha256: string;
   encrypted: boolean;
   storagePath: string | null;
+  fileCid: string | null;
+  manifestCid: string | null;
   metadata: Record<string, Json>;
   anchorStatus: string;
   anchorTxid: string | null;
@@ -377,7 +379,7 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
     const { data: files } = await supabaseAdmin
       .from("bevis_files")
       .select(
-        "id, file_name, mime_type, size_bytes, sha256, encrypted, metadata, anchor_status, anchor_txid, anchored_at, created_at",
+        "id, file_name, mime_type, size_bytes, sha256, encrypted, metadata, file_cid, manifest_cid, anchor_status, anchor_txid, anchor_address, anchored_at, created_at",
       )
       .eq("asset_uuid", asset.id)
       .order("created_at", { ascending: false });
@@ -398,6 +400,8 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
         sizeBytes: Number(f.size_bytes ?? 0),
         sha256: f.sha256,
         encrypted: f.encrypted,
+        fileCid: f.file_cid ?? null,
+        manifestCid: f.manifest_cid ?? null,
         metadata: (f.metadata ?? {}) as Record<string, Json>,
         anchorStatus: f.anchor_status,
         anchorTxid: f.anchor_txid,
@@ -494,6 +498,8 @@ type RawFile = {
   sha256: string;
   encrypted: boolean;
   storage_path: string | null;
+  file_cid?: string | null;
+  manifest_cid?: string | null;
   metadata: unknown;
   anchor_status: string;
   anchor_txid: string | null;
@@ -511,6 +517,8 @@ function mapFile(f: RawFile): BevisFileRecord {
     sha256: f.sha256,
     encrypted: f.encrypted,
     storagePath: f.storage_path,
+    fileCid: f.file_cid ?? null,
+    manifestCid: f.manifest_cid ?? null,
     metadata: (f.metadata ?? {}) as Record<string, Json>,
     anchorStatus: f.anchor_status,
     anchorTxid: f.anchor_txid,
