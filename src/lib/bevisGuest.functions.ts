@@ -12,6 +12,7 @@
 
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { BevisAssetSummary, BevisFileRecord, Json } from "@/lib/bevis.functions";
 
 /** Guests upload through the server, so keep the payload sane. */
