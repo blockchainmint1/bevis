@@ -6,7 +6,7 @@ type Tab = { to: string; label: string; Icon: ComponentType<{ className?: string
 
 const TABS: Tab[] = [
   { to: "/assets",   label: "Assets",  Icon: FileStack },
-  { to: "/publish",  label: "Notarise", Icon: FilePlus2 },
+  { to: "/publish",  label: "Create", Icon: FilePlus2 },
   { to: "/lookup",   label: "Scan",    Icon: ScanLine },
   { to: "/settings", label: "Me",      Icon: Settings },
 ];

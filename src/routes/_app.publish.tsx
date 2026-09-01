@@ -18,13 +18,13 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/_app/publish")({
   head: () => ({
     meta: [
-      { title: "Notarise a file — BEVIS" },
+      { title: "Create a record — BEVIS" },
       {
         name: "description",
         content:
           "Capture or choose a file, review its detected metadata, encrypt it if you want, and stamp its fingerprint onto the TEXITcoin blockchain.",
       },
-      { property: "og:title", content: "Notarise a file — BEVIS" },
+      { property: "og:title", content: "Create a record — BEVIS" },
       {
         property: "og:description",
         content: "Blockchain-enabled Verification & Information Service: a digital notary for any file.",
@@ -127,7 +127,7 @@ function PublishPage() {
   if (ready && !user) {
     return (
       <div className="px-5 py-16 text-center">
-        <h1 className="text-lg font-semibold">Sign in to notarise</h1>
+        <h1 className="text-lg font-semibold">Sign in to create</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Your BEVIS records are tied to your account so only you can manage them.
         </p>
@@ -145,7 +145,7 @@ function PublishPage() {
     <div className="px-5 pb-10 pt-6">
       <header className="mb-5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">BEVIS</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">Notarise a file</h1>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight">Create a record</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Its fingerprint gets stamped onto the TEXITcoin chain. The proof is permanent; the file stays yours.
         </p>
@@ -380,7 +380,7 @@ function Receipt({ result, onAnother }: { result: PublishOutcome; onAnother: () 
           View certificate
         </Link>
         <button onClick={onAnother} className="rounded-md border border-border px-4 py-3 text-sm font-semibold">
-          Notarise another
+          Create another
         </button>
       </div>
     </div>
