@@ -17,9 +17,18 @@ import { mnemonicToSeedSync, validateMnemonic } from "@scure/bip39";
 import { wordlist } from "@scure/bip39/wordlists/english.js";
 import { HDKey } from "@scure/bip32";
 import { sha256 } from "@noble/hashes/sha2.js";
+import { hmac } from "@noble/hashes/hmac.js";
 import { ripemd160 } from "@noble/hashes/legacy.js";
 import { base58check } from "@scure/base";
 import * as secp from "@noble/secp256k1";
+
+/**
+ * noble-secp256k1 v3 ships without a bundled hash: synchronous signing needs
+ * SHA-256 and HMAC-SHA256 wired in explicitly, or it throws
+ * "hashes.sha256 not set".
+ */
+secp.hashes.sha256 = (msg: Uint8Array) => sha256(msg);
+secp.hashes.hmacSha256 = (key: Uint8Array, msg: Uint8Array) => hmac(sha256, key, msg);
 
 const TXC_PUBKEY_VERSION = 0x42;
 const TXC_PATH = "m/44'/696969'/0'/0/0";
@@ -199,7 +208,12 @@ export function buildSignedTx(wallet: AnchorWallet, utxos: Utxo[], outputs: Outp
     const forSigning = inputs.map((inp, i) => ({ ...inp, script: i === index ? wallet.script : new Uint8Array(0) }));
     const preimage = concat(serialize(forSigning, outputs), u32le(1)); // SIGHASH_ALL
     const digest = sha256(sha256(preimage));
-    const compact = secp.sign(digest, wallet.privKey, { lowS: true, format: "compact" });
+    // `digest` is already the double-SHA256 sighash; don't let noble hash it again.
+    const compact = secp.sign(digest, wallet.privKey, {
+      lowS: true,
+      format: "compact",
+      prehash: false,
+    });
     return concat(compactToDer(compact), Uint8Array.from([0x01]));
 
   });
