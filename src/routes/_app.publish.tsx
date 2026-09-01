@@ -12,6 +12,7 @@ import { uploadAndPublish, type PublishOutcome } from "@/lib/bevis/publish";
 import { publishBevisFile } from "@/lib/bevis.functions";
 import { guestPublishBevisFile } from "@/lib/bevisGuest.functions";
 import { useAuth } from "@/hooks/use-auth";
+import { useFuel } from "@/lib/useFuel";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -53,6 +54,7 @@ const KIND_ICON = {
 
 function PublishPage() {
   const { user } = useAuth();
+  const { data: fuel, refetch: refetchFuel } = useFuel();
   const publishFn = useServerFn(publishBevisFile);
   const guestPublishFn = useServerFn(guestPublishBevisFile);
 
@@ -232,9 +234,35 @@ function PublishPage() {
                 </div>
               </section>
 
+              {fuel?.ok && !fuel.funded && (
+                <section className="rounded-xl border border-destructive/50 bg-destructive/5 p-4">
+                  <p className="text-sm font-semibold text-foreground">Your notarisation fuel is empty</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Stamping a record costs {fuel.costPerAnchorTxc.toFixed(5)} TXC. Send TEXITcoin to your own
+                    address below, then come back — the balance is yours and only pays for your records.
+                  </p>
+                  <button
+                    onClick={() => {
+                      void navigator.clipboard.writeText(fuel.address);
+                      toast.success("Your fuel address is copied");
+                    }}
+                    className="mt-3 w-full truncate rounded-md border border-border bg-background px-3 py-2 text-left font-mono text-[11px]"
+                  >
+                    {fuel.address}
+                  </button>
+                  <button
+                    onClick={() => void refetchFuel()}
+                    className="mt-2 text-xs font-medium text-primary hover:underline"
+                  >
+                    I've sent it — check again
+                  </button>
+                </section>
+              )}
+
               <button
                 onClick={() => void publish()}
-                className="w-full rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+                disabled={fuel?.ok === true && !fuel.funded}
+                className="w-full rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Publish to TEXITcoin
               </button>
