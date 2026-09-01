@@ -8,7 +8,7 @@ import { CHAINS, cscId, fmtAmount, fmtUsd } from "@/lib/chains";
 import { ScanLine, Plus, RefreshCw, MoreVertical, Pencil, ArrowDownToLine, KeyRound, Trash2 } from "lucide-react";
 import { useLocalPortfolio, removeLocalCoin, renameLocalCoin, type LocalCoin } from "@/lib/localPortfolio";
 import { cacheCoinHistory, clearCachedHistory, getCachedHistory } from "@/lib/localHistory";
-import logoAsset from "@/assets/bm-logo.png.asset.json";
+import logoAsset from "@/assets/bevis-logo.png.asset.json";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   DropdownMenu,
@@ -99,7 +99,7 @@ function HomePage() {
       <header className="mb-8">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <img src={logoAsset.url} alt="Blockchain Mint" className="h-6 w-auto" />
+            <img src={logoAsset.url} alt="BEVIS" className="h-8 w-auto" />
             <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Portfolio</p>
           </div>
           <div className="flex items-center gap-2">

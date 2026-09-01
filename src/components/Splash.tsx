@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import bmLogo from "@/assets/bm-logo.png.asset.json";
+import bevisLogo from "@/assets/bevis-logo.png.asset.json";
 
 /**
  * Brief mint-stamping splash on first load. Sessionstorage-gated so it
@@ -31,16 +31,16 @@ export function Splash({ minDuration = 900 }: { minDuration?: number }) {
         style={{ animation: "csc-splash-strike 600ms cubic-bezier(.2,.7,.2,1)" }}
       >
         <img
-          src={bmLogo.url}
-          alt="Blockchain Mint"
+          src={bevisLogo.url}
+          alt="BEVIS"
           width={144}
-          height={144}
-          className="size-36 select-none"
+          height={170}
+          className="h-36 w-auto select-none"
           draggable={false}
         />
       </div>
       <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.32em] text-muted-foreground">
-        Cold Storage Coins
+        Blockchain notary
       </p>
       <style>{`
         @keyframes csc-splash-strike {
