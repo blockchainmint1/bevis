@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { TabBar } from "@/components/TabBar";
 import { Splash } from "@/components/Splash";
 import { useAlertsAutoSync } from "@/lib/alertsSync";
+import { useAutoRestore } from "@/lib/autoRestore";
 import { registerForPush } from "@/lib/push";
 import { enablePrivacyScreen } from "@/lib/nativeSecurity";
 
