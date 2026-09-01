@@ -22,8 +22,11 @@ const PREFIX = "BEVIS1";
 /** Standard relay policy caps an OP_RETURN payload at 80 bytes. */
 const MAX_OP_RETURN_BYTES = 80;
 
-/** Value sent to the asset address so it appears in explorers. */
-const DUST_TXC = 0.00001;
+/**
+ * Value sent to the asset address so it appears in explorers. Must clear the
+ * node's dust threshold or the whole transaction is rejected as "dust".
+ */
+const DUST_TXC = 0.001;
 
 type RpcOk<T> = { result: T; error: null };
 type RpcErr = { result: null; error: { code: number; message: string } };
