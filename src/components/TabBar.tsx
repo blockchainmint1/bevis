@@ -1,15 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, ScanLine, Store, Bell, Settings } from "lucide-react";
+import { FileStack, FilePlus2, ScanLine, Settings } from "lucide-react";
 import type { ComponentType } from "react";
 
 type Tab = { to: string; label: string; Icon: ComponentType<{ className?: string }> };
 
 const TABS: Tab[] = [
-  { to: "/home",     label: "Home",   Icon: Home },
-  { to: "/scan",     label: "Scan",   Icon: ScanLine },
-  { to: "/shop",     label: "Shop",   Icon: Store },
-  { to: "/alerts",   label: "Alerts", Icon: Bell },
-  { to: "/settings", label: "Me",     Icon: Settings },
+  { to: "/assets",   label: "Assets",  Icon: FileStack },
+  { to: "/publish",  label: "Notarise", Icon: FilePlus2 },
+  { to: "/lookup",   label: "Scan",    Icon: ScanLine },
+  { to: "/settings", label: "Me",      Icon: Settings },
 ];
 
 export function TabBar() {

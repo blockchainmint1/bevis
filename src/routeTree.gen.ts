@@ -18,6 +18,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
 import { Route as AppSweepRouteImport } from './routes/_app.sweep'
 import { Route as AppShopRouteImport } from './routes/_app.shop'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
@@ -75,6 +76,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyKeyRoute = VerifyKeyRouteImport.update({
+  id: '/verify/$key',
+  path: '/verify/$key',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppSweepRoute = AppSweepRouteImport.update({
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
   '/sweep': typeof AppSweepRoute
+  '/verify/$key': typeof VerifyKeyRoute
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
   '/sweep': typeof AppSweepRoute
+  '/verify/$key': typeof VerifyKeyRoute
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
@@ -217,6 +225,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/shop': typeof AppShopRoute
   '/_app/sweep': typeof AppSweepRoute
+  '/verify/$key': typeof VerifyKeyRoute
   '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shop'
     | '/sweep'
+    | '/verify/$key'
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shop'
     | '/sweep'
+    | '/verify/$key'
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/shop'
     | '/_app/sweep'
+    | '/verify/$key'
     | '/_app/asset/$assetId'
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
@@ -308,6 +320,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RecoverRoute: typeof RecoverRoute
   TermsRoute: typeof TermsRoute
+  VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
 }
 
@@ -374,6 +387,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify/$key': {
+      id: '/verify/$key'
+      path: '/verify/$key'
+      fullPath: '/verify/$key'
+      preLoaderRoute: typeof VerifyKeyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/sweep': {
@@ -521,6 +541,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RecoverRoute: RecoverRoute,
   TermsRoute: TermsRoute,
+  VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
 }
 export const routeTree = rootRouteImport
