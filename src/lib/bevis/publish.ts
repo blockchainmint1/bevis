@@ -6,6 +6,8 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
+import { getDeviceId } from "@/lib/deviceId";
+import { MAX_GUEST_FILE_BYTES } from "@/lib/bevisGuest.functions";
 import { encryptBytes } from "./crypto";
 import type { BevisFileMetadata } from "./metadata";
 
