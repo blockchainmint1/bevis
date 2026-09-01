@@ -140,6 +140,13 @@ function PublishPage() {
         </p>
       </header>
 
+      {!user && (
+        <p className="mb-4 rounded-xl border border-border bg-card p-3 text-xs text-muted-foreground">
+          No account needed — your record still gets stamped onto the chain (files up to 12 MB). Sign in later on this
+          device and it moves into your account automatically.
+        </p>
+      )}
+
       {stage === "pick" && (
         <SourceGrid
           onSelect={kind => {
