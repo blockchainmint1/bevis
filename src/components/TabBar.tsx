@@ -20,7 +20,7 @@ export function TabBar() {
       aria-label="Primary"
     >
       <div className="milled-edge h-[2px] w-full opacity-60" />
-      <ul className="mx-auto flex max-w-md items-stretch justify-between px-2 py-1.5">
+      <ul className="mx-auto flex w-full max-w-md items-stretch sm:max-w-xl lg:max-w-2xl justify-between px-2 py-1.5">
         {TABS.map(({ to, label, Icon }) => {
           const active = pathname === to || pathname.startsWith(to + "/");
           return (

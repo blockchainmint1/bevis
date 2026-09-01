@@ -173,6 +173,15 @@
     text-size-adjust: none;
   }
   html.dark { color-scheme: dark; }
+  /* Large-viewport phones (foldables) and tablets report a wide device width,
+     which makes a phone-sized layout look shrunken. Scale the root type so the
+     whole rem-based UI grows with the screen. */
+  @media (min-width: 600px) {
+    html { font-size: 18px; }
+  }
+  @media (min-width: 900px) {
+    html { font-size: 19px; }
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
