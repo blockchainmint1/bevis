@@ -116,6 +116,33 @@ export function loadAnchorWallet(): AnchorWallet {
   return { address, privKey: node.privateKey, pubKey, script: p2pkhScript(address) };
 }
 
+/** Cost of a single anchor, in satoshis: network fee plus the asset's dust inbox. */
+export const ANCHOR_COST_SATS = FEE_SATS + DUST_SATS;
+export const SATS_PER_TXC = SATS;
+
+/**
+ * Every account (and every signed-out device) gets its own deposit address,
+ * derived deterministically from the same seed at a distinct index. The user
+ * funds that address; their own coins pay for their own anchors. Nothing is
+ * stored — the address is recomputed from the owner key each time.
+ */
+export function deriveOwnerWallet(ownerKey: string): AnchorWallet {
+  const mnemonic = (process.env["SEED"] ?? "").trim().toLowerCase().replace(/\s+/g, " ");
+  if (!mnemonic) throw new Error("SEED is not configured.");
+  if (!validateMnemonic(mnemonic, wordlist)) throw new Error("SEED is not a valid BIP-39 mnemonic.");
+
+  const digest = sha256(new TextEncoder().encode(ownerKey));
+  const index =
+    (((digest[0]! << 23) | (digest[1]! << 15) | (digest[2]! << 7) | (digest[3]! >> 1)) >>> 0) % 0x7fffffff;
+
+  const node = HDKey.fromMasterSeed(mnemonicToSeedSync(mnemonic)).derive(`m/44'/696969'/1'/0/${index}`);
+  if (!node.privateKey || !node.publicKey) throw new Error("Could not derive your fuel key.");
+
+  const pubKey = node.publicKey;
+  const address = b58.encode(concat(Uint8Array.from([TXC_PUBKEY_VERSION]), hash160(pubKey)));
+  return { address, privKey: node.privateKey, pubKey, script: p2pkhScript(address) };
+}
+
 export type Utxo = { txid: string; vout: number; sats: number };
 
 type Rpc = <T>(method: string, params?: unknown[]) => Promise<T>;
