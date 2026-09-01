@@ -52,7 +52,7 @@ const KIND_ICON = {
 } as const;
 
 function PublishPage() {
-  const { user, ready } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const publishFn = useServerFn(publishBevisFile);
   const guestPublishFn = useServerFn(guestPublishBevisFile);
