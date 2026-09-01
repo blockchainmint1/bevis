@@ -45,11 +45,11 @@ export type ChainLedgerEntry = {
   /** Gateway URL for the CID. */
   url: string | null;
   /** For current-format records: the manifest itself, when it could be read. */
-  manifest: Record<string, unknown> | null;
+  manifest: Record<string, any> | null;
   /** Fingerprint of the underlying file, when the manifest declares one. */
   sha256: string | null;
   /** Anything the publisher declared alongside the file. */
-  metadata: Record<string, unknown> | null;
+  metadata: Record<string, any> | null;
 };
 
 export type ChainLedger = {
@@ -209,7 +209,7 @@ async function probe(cid: string): Promise<{ mimeType: string | null; sizeBytes:
   }
 }
 
-async function readManifest(cid: string): Promise<Record<string, unknown> | null> {
+async function readManifest(cid: string): Promise<Record<string, any> | null> {
   return getJson<Record<string, unknown>>(gateway(cid), 12_000);
 }
 
@@ -289,7 +289,7 @@ export async function readChainLedger(address: string, opts?: { limit?: number }
           sizeBytes: typeof file["sizeBytes"] === "number" ? (file["sizeBytes"] as number) : null,
           sha256: typeof file["sha256"] === "string" ? (file["sha256"] as string) : null,
           kind: kindFromMime(mime),
-          metadata: (manifest["metadata"] ?? null) as Record<string, unknown> | null,
+          metadata: (manifest["metadata"] ?? null) as Record<string, any> | null,
           url: fileCid ? gateway(fileCid) : base.url,
         };
       }
