@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { TabBar } from "@/components/TabBar";
 import { Splash } from "@/components/Splash";
 import { useAlertsAutoSync } from "@/lib/alertsSync";
+import { useAutoRestore } from "@/lib/autoRestore";
 import { registerForPush } from "@/lib/push";
 import { enablePrivacyScreen } from "@/lib/nativeSecurity";
 
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_app")({
 
 function AppLayout() {
   useAlertsAutoSync();
+  useAutoRestore();
   useEffect(() => {
     void registerForPush();
     void enablePrivacyScreen();
