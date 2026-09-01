@@ -52,6 +52,29 @@ export async function uploadAndPublish(
     body = await encryptBytes(opts.bytes, opts.passphrase);
   }
 
+  const common = {
+    assetId: opts.assetId ?? undefined,
+    assetName: opts.assetName ?? undefined,
+    fileName: opts.file.name,
+    mimeType: opts.file.type || "application/octet-stream",
+    sizeBytes: opts.file.size,
+    sha256: opts.metadata.sha256,
+    encrypted: opts.encrypt,
+    metadata: opts.metadata as unknown as Record<string, unknown>,
+  };
+
+  // No account: hand the bytes to the server, which stores them against this
+  // device and runs the identical IPFS + chain pipeline.
+  if (!userId && guestPublishFn) {
+    if (body.size > MAX_GUEST_FILE_BYTES) {
+      throw new Error("Files up to 12 MB can be notarised without an account. Sign in for larger files.");
+    }
+    opts.onStep?.("Uploading…");
+    const bodyBase64 = toBase64(await body.arrayBuffer());
+    opts.onStep?.("Pinning to IPFS and stamping the TEXITcoin chain…");
+    return guestPublishFn({ data: { ...common, deviceId: getDeviceId(), bodyBase64 } });
+  }
+
   const safeName = opts.file.name.replace(/[^A-Za-z0-9._-]/g, "_").slice(-120);
   const storagePath = `${userId}/${opts.metadata.sha256.slice(0, 12)}-${Date.now()}-${safeName}${
     opts.encrypt ? ".bevis" : ""
