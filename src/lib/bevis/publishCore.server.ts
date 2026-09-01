@@ -41,9 +41,25 @@ function ownerColumns(owner: PublishOwner) {
     : { user_id: null as string | null, device_id: owner.deviceId ?? null };
 }
 
+/** Stable key for the owner's own fuel address. */
+export function fuelKey(owner: PublishOwner): string {
+  return owner.userId ? `user:${owner.userId}` : `device:${owner.deviceId}`;
+}
+
 export async function publishRecord(owner: PublishOwner, data: PublishInput): Promise<PublishResult> {
   const sb = supabaseAdmin;
   const cols = ownerColumns(owner);
+  const ownerKey = fuelKey(owner);
+
+  // Notarising costs TEXITcoin, and the owner pays it. Refuse up front rather
+  // than storing a file that can never be stamped.
+  const { hasFuel } = await import("@/lib/bevis/txc.server");
+  const fuel = await hasFuel(ownerKey);
+  if (!fuel.funded) {
+    throw new Error(
+      `Your notarisation fuel is empty. Send TXC to ${fuel.address} and try again.`,
+    );
+  }
 
   let assetRow: { id: string; asset_id: string; public_key: string } | null = null;
 
