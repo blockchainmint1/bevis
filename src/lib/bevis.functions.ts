@@ -529,3 +529,21 @@ function mapFile(f: RawFile): BevisFileRecord {
     createdAt: f.created_at,
   };
 }
+
+/**
+ * Anchoring budget health.
+ *
+ * Notarisation quietly stops working when the anchoring wallet runs dry, so
+ * this exposes the address, its balance and roughly how many more stamps it
+ * can pay for. Public on purpose: it reveals nothing but an address anyone
+ * can already see on chain, and it lets anybody notice the tank is low.
+ */
+export const getAnchorWalletStatus = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    const { anchorWalletStatus } = await import("@/lib/bevis/txc.server");
+    const status = await anchorWalletStatus();
+    return { ok: true as const, ...status };
+  } catch (e) {
+    return { ok: false as const, error: (e as Error).message || "Anchoring wallet unavailable." };
+  }
+});
