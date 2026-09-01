@@ -376,7 +376,19 @@ async function lookupLegacyRecord(raw: string, base: string | null) {
         stickerImgUrl: str(coin["stickerImgUrl"]),
         publicKeyUrl: str(coin["publicKeyUrl"]),
       },
-      files: [] as BevisFileRecord[],
+      files: [] as Array<{
+        id: string;
+        fileName: string;
+        mimeType: string | null;
+        sizeBytes: number;
+        sha256: string;
+        encrypted: boolean;
+        metadata: Record<string, Json>;
+        anchorStatus: string;
+        anchorTxid: string | null;
+        anchoredAt: string | null;
+        createdAt: string;
+      }>,
     };
   } catch {
     return null;
