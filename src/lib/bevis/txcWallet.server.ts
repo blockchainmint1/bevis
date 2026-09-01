@@ -147,6 +147,20 @@ function serialize(
   return concat(...parts);
 }
 
+/** DER-encode a 64-byte compact signature; Bitcoin scripts want DER. */
+function compactToDer(compact: Uint8Array): Uint8Array {
+  const trim = (v: Uint8Array) => {
+    let i = 0;
+    while (i < v.length - 1 && v[i] === 0) i++;
+    const body = v.slice(i);
+    return body[0]! & 0x80 ? concat(Uint8Array.from([0]), body) : body;
+  };
+  const r = trim(compact.slice(0, 32));
+  const s = trim(compact.slice(32, 64));
+  const seq = concat(Uint8Array.from([0x02, r.length]), r, Uint8Array.from([0x02, s.length]), s);
+  return concat(Uint8Array.from([0x30, seq.length]), seq);
+}
+
 /**
  * Build, sign and return the raw hex of a legacy P2PKH transaction spending
  * `utxos` from `wallet`, with SIGHASH_ALL on every input.
