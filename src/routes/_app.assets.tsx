@@ -1,10 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { FileStack, Plus, ShieldCheck, Clock, ScanLine } from "lucide-react";
+import { FileStack, Plus, ShieldCheck, Clock, ScanLine, Archive, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 import { listMyBevisAssets } from "@/lib/bevis.functions";
+import { listMyRecords, deleteRecord } from "@/lib/records.functions";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocalPortfolio } from "@/lib/localPortfolio";
+import { CHAINS, cscId } from "@/lib/chains";
+import { CoinLogo } from "@/components/CoinLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Route = createFileRoute("/_app/assets")({
@@ -27,13 +32,40 @@ export const Route = createFileRoute("/_app/assets")({
 function AssetsPage() {
   const { user, ready } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const listFn = useServerFn(listMyBevisAssets);
+  const recordsFn = useServerFn(listMyRecords);
+  const removeFn = useServerFn(deleteRecord);
+  const { coins: localCoins } = useLocalPortfolio();
 
   const { data, isLoading } = useQuery({
     queryKey: ["bevis-assets", user?.id],
     queryFn: () => listFn(),
     enabled: !!user,
   });
+
+  const { data: records, isLoading: recordsLoading } = useQuery({
+    queryKey: ["records", user?.id],
+    queryFn: () => recordsFn(),
+    enabled: !!user,
+  });
+
+  const saved = user
+    ? (records ?? []).map(r => ({ key: r.id, id: r.id, chain: r.chain, address: r.address, label: r.label, remote: true }))
+    : localCoins.map(c => ({ key: c.id, id: c.id, chain: c.chain, address: c.address, label: c.label ?? null, remote: false }));
+
+  const loading = !!user && (isLoading || recordsLoading);
+  const empty = !loading && (data?.length ?? 0) === 0 && saved.length === 0;
+
+  async function removeSaved(id: string) {
+    try {
+      await removeFn({ data: { id } });
+      await queryClient.invalidateQueries({ queryKey: ["records"] });
+      toast.success("Record removed from your account.");
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+  }
 
   return (
     <div className="px-5 pb-10 pt-6">
@@ -45,17 +77,17 @@ function AssetsPage() {
         <ThemeToggle />
       </header>
 
-      {ready && !user && (
+      {ready && !user && saved.length === 0 && (
         <EmptyState
           title="Sign in to see your records"
-          body="Your notarised assets are tied to your account."
+          body="Your notarised assets and saved records travel with your account."
           action={{ label: "Sign in", onClick: () => navigate({ to: "/auth" }) }}
         />
       )}
 
-      {user && isLoading && <p className="py-16 text-center text-sm text-muted-foreground">Loading…</p>}
+      {loading && <p className="py-16 text-center text-sm text-muted-foreground">Loading…</p>}
 
-      {user && !isLoading && (data?.length ?? 0) === 0 && (
+      {user && empty && (
         <EmptyState
           title="Nothing notarised yet"
           body="Choose or capture a file and BEVIS will stamp its fingerprint onto the TEXITcoin chain."
@@ -94,6 +126,47 @@ function AssetsPage() {
           </li>
         ))}
       </ul>
+
+      {saved.length > 0 && (
+        <section className="mt-8">
+          <h2 className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <Archive className="size-3.5" /> Saved records ({saved.length})
+          </h2>
+          <ul className="space-y-2">
+            {saved.map(r => {
+              const chain = CHAINS[r.chain as keyof typeof CHAINS];
+              return (
+                <li key={r.key} className="flex items-center gap-2 rounded-xl border border-border bg-card pr-2">
+                  <Link
+                    to="/verify/$key"
+                    params={{ key: r.address }}
+                    className="flex min-w-0 flex-1 items-center gap-3 p-3"
+                  >
+                    <CoinLogo chain={r.chain} size={36} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium">
+                        {r.label || `${chain?.name ?? r.chain} record`}
+                      </p>
+                      <p className="truncate font-mono text-[11px] text-muted-foreground">
+                        {chain?.ticker ?? r.chain} · #{cscId(r.chain, r.address)}
+                      </p>
+                    </div>
+                  </Link>
+                  {r.remote && (
+                    <button
+                      aria-label="Remove record"
+                      onClick={() => void removeSaved(r.id)}
+                      className="rounded-md p-2 text-muted-foreground hover:bg-secondary hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       {user && (
         <div className="mt-6 grid gap-2">
