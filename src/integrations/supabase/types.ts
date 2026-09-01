@@ -86,31 +86,34 @@ export type Database = {
           asset_id: string
           chain: string
           created_at: string
+          device_id: string | null
           id: string
           name: string | null
           public_key: string
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           asset_id: string
           chain?: string
           created_at?: string
+          device_id?: string | null
           id?: string
           name?: string | null
           public_key: string
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           asset_id?: string
           chain?: string
           created_at?: string
+          device_id?: string | null
           id?: string
           name?: string | null
           public_key?: string
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -123,6 +126,7 @@ export type Database = {
           anchored_at: string | null
           asset_uuid: string
           created_at: string
+          device_id: string | null
           encrypted: boolean
           file_cid: string | null
           file_name: string
@@ -133,7 +137,7 @@ export type Database = {
           sha256: string
           size_bytes: number
           storage_path: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           anchor_address?: string | null
@@ -143,6 +147,7 @@ export type Database = {
           anchored_at?: string | null
           asset_uuid: string
           created_at?: string
+          device_id?: string | null
           encrypted?: boolean
           file_cid?: string | null
           file_name: string
@@ -153,7 +158,7 @@ export type Database = {
           sha256: string
           size_bytes?: number
           storage_path?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           anchor_address?: string | null
@@ -163,6 +168,7 @@ export type Database = {
           anchored_at?: string | null
           asset_uuid?: string
           created_at?: string
+          device_id?: string | null
           encrypted?: boolean
           file_cid?: string | null
           file_name?: string
@@ -173,7 +179,7 @@ export type Database = {
           sha256?: string
           size_bytes?: number
           storage_path?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
