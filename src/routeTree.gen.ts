@@ -18,14 +18,19 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
 import { Route as AppSweepRouteImport } from './routes/_app.sweep'
 import { Route as AppShopRouteImport } from './routes/_app.shop'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppScanRouteImport } from './routes/_app.scan'
+import { Route as AppPublishRouteImport } from './routes/_app.publish'
+import { Route as AppLookupRouteImport } from './routes/_app.lookup'
 import { Route as AppImportRouteImport } from './routes/_app.import'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
+import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
+import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
@@ -73,6 +78,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyKeyRoute = VerifyKeyRouteImport.update({
+  id: '/verify/$key',
+  path: '/verify/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppSweepRoute = AppSweepRouteImport.update({
   id: '/sweep',
   path: '/sweep',
@@ -93,6 +103,16 @@ const AppScanRoute = AppScanRouteImport.update({
   path: '/scan',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPublishRoute = AppPublishRouteImport.update({
+  id: '/publish',
+  path: '/publish',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLookupRoute = AppLookupRouteImport.update({
+  id: '/lookup',
+  path: '/lookup',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppImportRoute = AppImportRouteImport.update({
   id: '/import',
   path: '/import',
@@ -103,6 +123,11 @@ const AppHomeRoute = AppHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAssetsRoute = AppAssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAlertsRoute = AppAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -111,6 +136,11 @@ const AppAlertsRoute = AppAlertsRouteImport.update({
 const AppCoinIdRoute = AppCoinIdRouteImport.update({
   id: '/coin/$id',
   path: '/coin/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
+  id: '/asset/$assetId',
+  path: '/asset/$assetId',
   getParentRoute: () => AppRoute,
 } as any)
 const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
@@ -134,12 +164,17 @@ export interface FileRoutesByFullPath {
   '/recover': typeof RecoverRoute
   '/terms': typeof TermsRoute
   '/alerts': typeof AppAlertsRoute
+  '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
   '/import': typeof AppImportRoute
+  '/lookup': typeof AppLookupRoute
+  '/publish': typeof AppPublishRoute
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
   '/sweep': typeof AppSweepRoute
+  '/verify/$key': typeof VerifyKeyRoute
+  '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
@@ -154,12 +189,17 @@ export interface FileRoutesByTo {
   '/recover': typeof RecoverRoute
   '/terms': typeof TermsRoute
   '/alerts': typeof AppAlertsRoute
+  '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
   '/import': typeof AppImportRoute
+  '/lookup': typeof AppLookupRoute
+  '/publish': typeof AppPublishRoute
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
   '/sweep': typeof AppSweepRoute
+  '/verify/$key': typeof VerifyKeyRoute
+  '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
@@ -176,12 +216,17 @@ export interface FileRoutesById {
   '/recover': typeof RecoverRoute
   '/terms': typeof TermsRoute
   '/_app/alerts': typeof AppAlertsRoute
+  '/_app/assets': typeof AppAssetsRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/import': typeof AppImportRoute
+  '/_app/lookup': typeof AppLookupRoute
+  '/_app/publish': typeof AppPublishRoute
   '/_app/scan': typeof AppScanRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/shop': typeof AppShopRoute
   '/_app/sweep': typeof AppSweepRoute
+  '/verify/$key': typeof VerifyKeyRoute
+  '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
@@ -198,12 +243,17 @@ export interface FileRouteTypes {
     | '/recover'
     | '/terms'
     | '/alerts'
+    | '/assets'
     | '/home'
     | '/import'
+    | '/lookup'
+    | '/publish'
     | '/scan'
     | '/settings'
     | '/shop'
     | '/sweep'
+    | '/verify/$key'
+    | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
@@ -218,12 +268,17 @@ export interface FileRouteTypes {
     | '/recover'
     | '/terms'
     | '/alerts'
+    | '/assets'
     | '/home'
     | '/import'
+    | '/lookup'
+    | '/publish'
     | '/scan'
     | '/settings'
     | '/shop'
     | '/sweep'
+    | '/verify/$key'
+    | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
@@ -239,12 +294,17 @@ export interface FileRouteTypes {
     | '/recover'
     | '/terms'
     | '/_app/alerts'
+    | '/_app/assets'
     | '/_app/home'
     | '/_app/import'
+    | '/_app/lookup'
+    | '/_app/publish'
     | '/_app/scan'
     | '/_app/settings'
     | '/_app/shop'
     | '/_app/sweep'
+    | '/verify/$key'
+    | '/_app/asset/$assetId'
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
@@ -260,6 +320,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RecoverRoute: typeof RecoverRoute
   TermsRoute: typeof TermsRoute
+  VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
 }
 
@@ -328,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verify/$key': {
+      id: '/verify/$key'
+      path: '/verify/$key'
+      fullPath: '/verify/$key'
+      preLoaderRoute: typeof VerifyKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/sweep': {
       id: '/_app/sweep'
       path: '/sweep'
@@ -356,6 +424,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppScanRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/publish': {
+      id: '/_app/publish'
+      path: '/publish'
+      fullPath: '/publish'
+      preLoaderRoute: typeof AppPublishRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/lookup': {
+      id: '/_app/lookup'
+      path: '/lookup'
+      fullPath: '/lookup'
+      preLoaderRoute: typeof AppLookupRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/import': {
       id: '/_app/import'
       path: '/import'
@@ -370,6 +452,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/assets': {
+      id: '/_app/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AppAssetsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/alerts': {
       id: '/_app/alerts'
       path: '/alerts'
@@ -382,6 +471,13 @@ declare module '@tanstack/react-router' {
       path: '/coin/$id'
       fullPath: '/coin/$id'
       preLoaderRoute: typeof AppCoinIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/asset/$assetId': {
+      id: '/_app/asset/$assetId'
+      path: '/asset/$assetId'
+      fullPath: '/asset/$assetId'
+      preLoaderRoute: typeof AppAssetAssetIdRouteImport
       parentRoute: typeof AppRoute
     }
     '/api/public/hooks/watch-tick': {
@@ -403,24 +499,32 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAlertsRoute: typeof AppAlertsRoute
+  AppAssetsRoute: typeof AppAssetsRoute
   AppHomeRoute: typeof AppHomeRoute
   AppImportRoute: typeof AppImportRoute
+  AppLookupRoute: typeof AppLookupRoute
+  AppPublishRoute: typeof AppPublishRoute
   AppScanRoute: typeof AppScanRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppShopRoute: typeof AppShopRoute
   AppSweepRoute: typeof AppSweepRoute
+  AppAssetAssetIdRoute: typeof AppAssetAssetIdRoute
   AppCoinIdRoute: typeof AppCoinIdRoute
   AppVerifyChainAddressRoute: typeof AppVerifyChainAddressRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAlertsRoute: AppAlertsRoute,
+  AppAssetsRoute: AppAssetsRoute,
   AppHomeRoute: AppHomeRoute,
   AppImportRoute: AppImportRoute,
+  AppLookupRoute: AppLookupRoute,
+  AppPublishRoute: AppPublishRoute,
   AppScanRoute: AppScanRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppShopRoute: AppShopRoute,
   AppSweepRoute: AppSweepRoute,
+  AppAssetAssetIdRoute: AppAssetAssetIdRoute,
   AppCoinIdRoute: AppCoinIdRoute,
   AppVerifyChainAddressRoute: AppVerifyChainAddressRoute,
 }
@@ -437,6 +541,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RecoverRoute: RecoverRoute,
   TermsRoute: TermsRoute,
+  VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
 }
 export const routeTree = rootRouteImport

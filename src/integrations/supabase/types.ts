@@ -55,6 +55,127 @@ export type Database = {
           },
         ]
       }
+      bevis_asset_keys: {
+        Row: {
+          asset_uuid: string
+          created_at: string
+          priv_key_hex: string
+        }
+        Insert: {
+          asset_uuid: string
+          created_at?: string
+          priv_key_hex: string
+        }
+        Update: {
+          asset_uuid?: string
+          created_at?: string
+          priv_key_hex?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bevis_asset_keys_asset_uuid_fkey"
+            columns: ["asset_uuid"]
+            isOneToOne: true
+            referencedRelation: "bevis_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bevis_assets: {
+        Row: {
+          asset_id: string
+          chain: string
+          created_at: string
+          id: string
+          name: string | null
+          public_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          asset_id: string
+          chain?: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          public_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          asset_id?: string
+          chain?: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          public_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      bevis_files: {
+        Row: {
+          anchor_error: string | null
+          anchor_status: string
+          anchor_txid: string | null
+          anchored_at: string | null
+          asset_uuid: string
+          created_at: string
+          encrypted: boolean
+          file_name: string
+          id: string
+          metadata: Json
+          mime_type: string | null
+          sha256: string
+          size_bytes: number
+          storage_path: string | null
+          user_id: string
+        }
+        Insert: {
+          anchor_error?: string | null
+          anchor_status?: string
+          anchor_txid?: string | null
+          anchored_at?: string | null
+          asset_uuid: string
+          created_at?: string
+          encrypted?: boolean
+          file_name: string
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          sha256: string
+          size_bytes?: number
+          storage_path?: string | null
+          user_id: string
+        }
+        Update: {
+          anchor_error?: string | null
+          anchor_status?: string
+          anchor_txid?: string | null
+          anchored_at?: string | null
+          asset_uuid?: string
+          created_at?: string
+          encrypted?: boolean
+          file_name?: string
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          sha256?: string
+          size_bytes?: number
+          storage_path?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bevis_files_asset_uuid_fkey"
+            columns: ["asset_uuid"]
+            isOneToOne: false
+            referencedRelation: "bevis_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chain_price_state: {
         Row: {
           chain: string
