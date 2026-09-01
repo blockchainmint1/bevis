@@ -61,7 +61,7 @@ export async function pinJson(name: string, body: unknown): Promise<string | nul
 /** Pin raw bytes. Returns the CID, or null if pinning is unavailable. */
 export async function pinFile(
   name: string,
-  bytes: Uint8Array | ArrayBuffer,
+  bytes: ArrayBuffer,
   contentType: string,
 ): Promise<string | null> {
   const token = jwt();
