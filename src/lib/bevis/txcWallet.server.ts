@@ -227,14 +227,16 @@ export type SeedAnchorInput = {
   address?: string | null;
   /** Dust amount in satoshis. */
   dustSats: number;
+  /** Whose coins pay. Omit to spend the house wallet. */
+  ownerKey?: string | null;
 };
 
 /**
- * Compose the anchor transaction from the seed wallet's coins and hand back
- * the raw hex ready to broadcast.
+ * Compose the anchor transaction and hand back the raw hex ready to
+ * broadcast. Spends the owner's own fuel address when `ownerKey` is given.
  */
 export async function buildSeedAnchorTx(rpc: Rpc, input: SeedAnchorInput): Promise<string> {
-  const wallet = loadAnchorWallet();
+  const wallet = input.ownerKey ? deriveOwnerWallet(input.ownerKey) : loadAnchorWallet();
   const utxos = await fetchUtxos(rpc, wallet.address);
   if (utxos.length === 0) throw new Error(`Anchoring wallet ${wallet.address} has no funds.`);
 
