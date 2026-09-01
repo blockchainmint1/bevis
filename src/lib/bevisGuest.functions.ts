@@ -165,19 +165,21 @@ export const getGuestBevisAsset = createServerFn({ method: "POST" })
  * in. Called after login so nothing made as a guest is stranded.
  */
 export const claimGuestRecords = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => z.object({ deviceId: DeviceId, userId: z.string().uuid() }).parse(d))
-  .handler(async ({ data }) => {
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => z.object({ deviceId: DeviceId }).parse(d))
+  .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { count: assets } = await supabaseAdmin
+    const userId = context.userId;
+    const { data: assets } = await supabaseAdmin
       .from("bevis_assets")
-      .update({ user_id: data.userId, device_id: null }, { count: "exact" })
+      .update({ user_id: userId, device_id: null })
       .eq("device_id", data.deviceId)
       .is("user_id", null)
-      .select("id", { count: "exact", head: true });
+      .select("id");
     await supabaseAdmin
       .from("bevis_files")
-      .update({ user_id: data.userId, device_id: null })
+      .update({ user_id: userId, device_id: null })
       .eq("device_id", data.deviceId)
       .is("user_id", null);
-    return { ok: true, claimed: assets ?? 0 };
+    return { ok: true, claimed: assets?.length ?? 0 };
   });
