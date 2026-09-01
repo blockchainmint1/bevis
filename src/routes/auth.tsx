@@ -18,7 +18,51 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [busy, setBusy] = useState<null | "google" | "apple">(null);
+  const [busy, setBusy] = useState<null | "google" | "apple" | "email">(null);
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function submitEmail(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !password) return;
+    setBusy("email");
+    try {
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim(),
+          password,
+          options: { emailRedirectTo: window.location.origin + "/settings" },
+        });
+        if (error) throw error;
+        if (!data.session) {
+          toast.success("Check your email to confirm your account.");
+          setBusy(null);
+          return;
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (error) throw error;
+      }
+      navigate({ to: "/settings" });
+    } catch (err) {
+      toast.error((err as Error).message);
+      setBusy(null);
+    }
+  }
+
+  async function forgotPassword() {
+    if (!email.trim()) {
+      toast.error("Enter your email address first.");
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: window.location.origin + "/reset-password",
+    });
+    if (error) toast.error(error.message);
+    else toast.success("Password reset link sent.");
+  }
+
 
   async function signInWith(provider: "google" | "apple") {
     setBusy(provider);
