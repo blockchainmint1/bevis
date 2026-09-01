@@ -145,9 +145,10 @@ function AssetDetailPage() {
       <header className="mt-4">
         {editing ? (
           <div className="flex gap-2">
-            <Input value={draftName} onChange={e => setDraftName(e.target.value)} autoFocus />
-            <button onClick={() => void saveName()} className="rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground">
-              Save
+            <Input value={draftName} onChange={e => setDraftName(e.target.value)} autoFocus disabled={busy === "rename"} />
+            <button onClick={() => void saveName()} disabled={busy === "rename"} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground disabled:opacity-50">
+              {busy === "rename" ? <Loader2 className="size-3.5 animate-spin" /> : null}
+              {busy === "rename" ? "Saving…" : "Save"}
             </button>
           </div>
         ) : (
