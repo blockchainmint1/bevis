@@ -572,7 +572,7 @@ export const verifyMintRecord = createServerFn({ method: "POST" })
     z.object({ chain: ChainIdSchema, address: z.string().min(8).max(120) }).parse(input),
   )
   .handler(async ({ data }) => {
-    // 1. Authoritative source: the Blockchain Mint manufacturing registry.
+    // 1. Authoritative source: the BEVIS manufacturing registry.
     const { lookupCoinDetails, assetIdForAddress, cacheAssetId } = await import("./mintRegistry.server");
     const reg = await lookupCoinDetails(data.address);
     if (reg.found) {
@@ -663,7 +663,7 @@ export const lookupAssetId = createServerFn({ method: "POST" })
     };
   });
 
-/** Mark a manufactured coin as activated in the Blockchain Mint registry. */
+/** Mark a manufactured coin as activated in the BEVIS registry. */
 export const activateMintCoin = createServerFn({ method: "POST" })
   .inputValidator((input: { address: string }) =>
     z.object({ address: z.string().min(8).max(120) }).parse(input),

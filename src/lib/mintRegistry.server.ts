@@ -1,5 +1,5 @@
 /**
- * Blockchain Mint registry client.
+ * BEVIS registry client.
  *
  * Reverse-engineered from the legacy React Native app (`src/redux/wallets/saga.ts`,
  * `src/components/ModalActivateCoin.tsx`). Base URL comes from the legacy

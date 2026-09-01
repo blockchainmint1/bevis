@@ -15,7 +15,7 @@ import QRCode from "qrcode";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_app/coin/$id")({
-  head: () => ({ meta: [{ title: "Asset — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Asset — BEVIS" }] }),
   component: CoinPage,
 });
 

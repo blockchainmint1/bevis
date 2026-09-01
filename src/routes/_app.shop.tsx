@@ -8,7 +8,7 @@ import { listShopProducts } from "@/lib/shop.functions";
 export const Route = createFileRoute("/_app/shop")({
   head: () => ({
     meta: [
-      { title: "Shop — Blockchain Mint" },
+      { title: "Shop — BEVIS" },
       { name: "description", content: "Physical Cold Storage Coins, struck in fine copper. Order directly from blockchainmint.com." },
     ],
   }),

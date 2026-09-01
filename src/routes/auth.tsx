@@ -9,7 +9,7 @@ import { ArrowLeft, ShieldCheck } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Back up your coins — Blockchain Mint" },
+      { title: "Back up your coins — BEVIS" },
       { name: "description", content: "Optional sign-in to back up your coin list across devices." },
     ],
   }),

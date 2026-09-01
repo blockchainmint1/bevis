@@ -5,9 +5,9 @@ import { ArrowLeft } from "lucide-react";
 export const Route = createFileRoute("/manifesto")({
   head: () => ({
     meta: [
-      { title: "Manifesto — Blockchain Mint" },
+      { title: "Manifesto — BEVIS" },
       { name: "description", content: "Why we strike honest coins, and what we promise the people who hold them." },
-      { property: "og:title", content: "The Blockchain Mint Manifesto" },
+      { property: "og:title", content: "The BEVIS Manifesto" },
       { property: "og:description", content: "Honest weight. Honest money. Honest custody." },
     ],
   }),

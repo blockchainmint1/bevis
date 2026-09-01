@@ -1,5 +1,5 @@
 /**
- * First-launch handler for legacy Blockchain Mint data.
+ * First-launch handler for legacy BEVIS data.
  *
  * Silently auto-imports the user's coins from the previous install (we never
  * stored private keys, so there's no trust decision to make) and then shows
@@ -79,7 +79,7 @@ export function LegacyImportPrompt() {
     <Dialog open={welcomeOpen} onOpenChange={(v) => { if (!v) dismissWelcome(); }}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Welcome to the new Blockchain Mint</DialogTitle>
+          <DialogTitle>Welcome to the new BEVIS</DialogTitle>
           <DialogDescription>
             {importedCount > 0 ? (
               <>We brought your <strong>{importedCount}</strong> {importedCount === 1 ? "asset" : "assets"} over from the old version. Everything's faster, prettier, and ready to go.</>

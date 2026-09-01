@@ -14,7 +14,7 @@ import { CoinLogo } from "@/components/CoinLogo";
 import QRCode from "qrcode";
 
 export const Route = createFileRoute("/_app/scan")({
-  head: () => ({ meta: [{ title: "Scan — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Scan — BEVIS" }] }),
   component: ScanPage,
 });
 
@@ -113,7 +113,7 @@ function ScanPage() {
     // 2. Fall back to normal coin address / BIP-21 URI parsing.
     const parsed = parseCoinPayload(text);
     if (!parsed) {
-      toast.error("That doesn't look like a asset QR or seed phrase. Try again or enter the address.");
+      toast.error("That doesn't look like an asset QR or seed phrase. Try again or enter the address.");
       return;
     }
     setScanned({ type: "asset", chain: parsed.chain, address: parsed.address });
@@ -156,7 +156,7 @@ function ScanPage() {
   return (
     <div className="px-5 pt-10">
       <header className="mb-6">
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Add a asset</p>
+        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Add an asset</p>
         <h1 className="mt-1 font-serif text-3xl text-foreground">Scan or enter</h1>
       </header>
 
@@ -407,7 +407,7 @@ function ScanPage() {
 }
 
 /**
- * Checks a scanned public key against the Blockchain Mint registry and shows
+ * Checks a scanned public key against the BEVIS registry and shows
  * an "Authentic" badge the moment it comes back.
  */
 function AuthenticityBadge({ chain, address }: { chain: ChainId; address: string }) {
@@ -435,7 +435,7 @@ function AuthenticityBadge({ chain, address }: { chain: ChainId; address: string
       <div className="mt-3 rounded-lg border border-green-500/40 bg-green-500/10 px-3 py-2.5">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="size-5 text-green-500" />
-          <p className="text-sm font-semibold text-green-600">Authentic Blockchain Mint asset</p>
+          <p className="text-sm font-semibold text-green-600">Authentic BEVIS asset</p>
         </div>
         {assetId && (
           <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">

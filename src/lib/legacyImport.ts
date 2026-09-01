@@ -1,5 +1,5 @@
 /**
- * Legacy Blockchain Mint (Expo/React Native v4) data importer.
+ * Legacy BEVIS (Expo/React Native v4) data importer.
  *
  * The old app stored everything in AsyncStorage under five keys:
  *   - wallets:           [{ assetId, publicKey, privateKey?, name?, balance, balanceUpdatedAt }]

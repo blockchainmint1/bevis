@@ -6,15 +6,15 @@ export const Route = createFileRoute("/handoff")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Transfer asset list — Blockchain Mint" },
+      { title: "Transfer asset list — BEVIS" },
       {
         name: "description",
-        content: "Hand your saved asset list from an older Blockchain Mint domain over to the current app.",
+        content: "Hand your saved asset list from an older BEVIS domain over to the current app.",
       },
-      { property: "og:title", content: "Transfer asset list — Blockchain Mint" },
+      { property: "og:title", content: "Transfer asset list — BEVIS" },
       {
         property: "og:description",
-        content: "Move your locally saved asset list from an older Blockchain Mint web address.",
+        content: "Move your locally saved asset list from an older BEVIS web address.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

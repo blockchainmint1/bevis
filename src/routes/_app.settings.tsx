@@ -8,7 +8,7 @@ import { BackendSwitcher } from "@/components/BackendSwitcher";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
 
 export const Route = createFileRoute("/_app/settings")({
-  head: () => ({ meta: [{ title: "Settings — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Settings — BEVIS" }] }),
   component: SettingsPage,
 });
 

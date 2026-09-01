@@ -9,7 +9,7 @@ import { CHAINS } from "@/lib/chains";
 import { CoinLogo } from "@/components/CoinLogo";
 
 export const Route = createFileRoute("/_app/alerts")({
-  head: () => ({ meta: [{ title: "Alerts — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Alerts — BEVIS" }] }),
   component: AlertsPage,
 });
 

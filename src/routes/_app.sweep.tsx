@@ -28,7 +28,7 @@ const sweepSearchSchema = z.object({
 
 export const Route = createFileRoute("/_app/sweep")({
   validateSearch: sweepSearchSchema,
-  head: () => ({ meta: [{ title: "Sweep — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Sweep — BEVIS" }] }),
   component: SweepPage,
 });
 

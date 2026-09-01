@@ -10,16 +10,16 @@ export const Route = createFileRoute("/recover")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Recover your asset list — Blockchain Mint" },
+      { title: "Recover your asset list — BEVIS" },
       {
         name: "description",
         content:
-          "Moved to a new web address? Pull your saved asset list over from the Blockchain Mint domain you used before.",
+          "Moved to a new web address? Pull your saved asset list over from the BEVIS domain you used before.",
       },
-      { property: "og:title", content: "Recover your asset list — Blockchain Mint" },
+      { property: "og:title", content: "Recover your asset list — BEVIS" },
       {
         property: "og:description",
-        content: "Bring your saved asset list across from an older Blockchain Mint web address.",
+        content: "Bring your saved asset list across from an older BEVIS web address.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
