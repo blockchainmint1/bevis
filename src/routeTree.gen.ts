@@ -25,6 +25,7 @@ import { Route as AppScanRouteImport } from './routes/_app.scan'
 import { Route as AppPublishRouteImport } from './routes/_app.publish'
 import { Route as AppImportRouteImport } from './routes/_app.import'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
+import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
@@ -109,6 +110,11 @@ const AppHomeRoute = AppHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAssetsRoute = AppAssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAlertsRoute = AppAlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/recover': typeof RecoverRoute
   '/terms': typeof TermsRoute
   '/alerts': typeof AppAlertsRoute
+  '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
   '/import': typeof AppImportRoute
   '/publish': typeof AppPublishRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/recover': typeof RecoverRoute
   '/terms': typeof TermsRoute
   '/alerts': typeof AppAlertsRoute
+  '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
   '/import': typeof AppImportRoute
   '/publish': typeof AppPublishRoute
@@ -184,6 +192,7 @@ export interface FileRoutesById {
   '/recover': typeof RecoverRoute
   '/terms': typeof TermsRoute
   '/_app/alerts': typeof AppAlertsRoute
+  '/_app/assets': typeof AppAssetsRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/import': typeof AppImportRoute
   '/_app/publish': typeof AppPublishRoute
@@ -207,6 +216,7 @@ export interface FileRouteTypes {
     | '/recover'
     | '/terms'
     | '/alerts'
+    | '/assets'
     | '/home'
     | '/import'
     | '/publish'
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/recover'
     | '/terms'
     | '/alerts'
+    | '/assets'
     | '/home'
     | '/import'
     | '/publish'
@@ -250,6 +261,7 @@ export interface FileRouteTypes {
     | '/recover'
     | '/terms'
     | '/_app/alerts'
+    | '/_app/assets'
     | '/_app/home'
     | '/_app/import'
     | '/_app/publish'
@@ -389,6 +401,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/assets': {
+      id: '/_app/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AppAssetsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/alerts': {
       id: '/_app/alerts'
       path: '/alerts'
@@ -422,6 +441,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAlertsRoute: typeof AppAlertsRoute
+  AppAssetsRoute: typeof AppAssetsRoute
   AppHomeRoute: typeof AppHomeRoute
   AppImportRoute: typeof AppImportRoute
   AppPublishRoute: typeof AppPublishRoute
@@ -435,6 +455,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAlertsRoute: AppAlertsRoute,
+  AppAssetsRoute: AppAssetsRoute,
   AppHomeRoute: AppHomeRoute,
   AppImportRoute: AppImportRoute,
   AppPublishRoute: AppPublishRoute,
