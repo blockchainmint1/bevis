@@ -28,6 +28,7 @@ import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
+import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
@@ -125,6 +126,11 @@ const AppCoinIdRoute = AppCoinIdRouteImport.update({
   path: '/coin/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
+  id: '/asset/$assetId',
+  path: '/asset/$assetId',
+  getParentRoute: () => AppRoute,
+} as any)
 const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
   id: '/api/public/hooks/watch-tick',
   path: '/api/public/hooks/watch-tick',
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
   '/sweep': typeof AppSweepRoute
+  '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
@@ -176,6 +183,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
   '/sweep': typeof AppSweepRoute
+  '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
@@ -200,6 +208,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/shop': typeof AppShopRoute
   '/_app/sweep': typeof AppSweepRoute
+  '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shop'
     | '/sweep'
+    | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/shop'
     | '/sweep'
+    | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/shop'
     | '/_app/sweep'
+    | '/_app/asset/$assetId'
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
@@ -422,6 +434,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCoinIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/asset/$assetId': {
+      id: '/_app/asset/$assetId'
+      path: '/asset/$assetId'
+      fullPath: '/asset/$assetId'
+      preLoaderRoute: typeof AppAssetAssetIdRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/api/public/hooks/watch-tick': {
       id: '/api/public/hooks/watch-tick'
       path: '/api/public/hooks/watch-tick'
@@ -449,6 +468,7 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   AppShopRoute: typeof AppShopRoute
   AppSweepRoute: typeof AppSweepRoute
+  AppAssetAssetIdRoute: typeof AppAssetAssetIdRoute
   AppCoinIdRoute: typeof AppCoinIdRoute
   AppVerifyChainAddressRoute: typeof AppVerifyChainAddressRoute
 }
@@ -463,6 +483,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   AppShopRoute: AppShopRoute,
   AppSweepRoute: AppSweepRoute,
+  AppAssetAssetIdRoute: AppAssetAssetIdRoute,
   AppCoinIdRoute: AppCoinIdRoute,
   AppVerifyChainAddressRoute: AppVerifyChainAddressRoute,
 }
