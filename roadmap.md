@@ -9,4 +9,4 @@
 - [x] Import 6,401 legacy Cold Storage Coins accounts into BEVIS auth (bcrypt hashes carried over; passwords unchanged)
 - [x] Wipe imported password hashes from the staging table after import
 - [x] "Restore my asset list" button on /import calling the legacy list endpoint server-side
-- [ ] Waiting on Admin team: API-key `?email=` variant of `/api/public/app/v1/bevis/legacy-list`; then set `LEGACY_API_KEY` secret
+- [x] Legacy list restore live: `?email=` + `x-api-key` variant wired, LEGACY_API_KEY set
