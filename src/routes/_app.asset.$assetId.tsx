@@ -2,11 +2,12 @@ import { ipfsLink } from "@/lib/bevis/ipfsLink";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import QRCode from "qrcode";
 import { toast } from "sonner";
 import {
   ArrowLeft, ShieldCheck, Clock, Lock, Download, RefreshCw, Trash2, Pencil, ExternalLink, FileText,
+  Loader2,
 } from "lucide-react";
 
 import {
@@ -52,6 +53,26 @@ function AssetDetailPage() {
   const [qr, setQr] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState("");
+  /** Which action/file id is currently in flight, e.g. `anchor:abc`, `download:abc`, `delete`, `rename`. */
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const run = useCallback(
+    async <T,>(key: string, label: string, fn: () => Promise<T>): Promise<T | undefined> => {
+      setBusy(key);
+      const tid = toast.loading(`${label}…`);
+      try {
+        const result = await fn();
+        toast.success(`${label} done`, { id: tid });
+        return result;
+      } catch (e) {
+        toast.error(`${label} failed: ${(e as Error).message}`, { id: tid });
+        return undefined;
+      } finally {
+        setBusy(null);
+      }
+    },
+    [],
+  );
 
   const { data, isLoading } = useQuery({
     queryKey: ["bevis-asset", assetId, user?.id ?? "guest"],
@@ -77,33 +98,42 @@ function AssetDetailPage() {
   }
 
   async function download(fileId: string) {
-    try {
+    const result = await run(`download:${fileId}`, "Signing download link", async () => {
       const { url } = await signUrl({ data: { fileId } });
       window.open(url, "_blank", "noopener");
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
+      return true;
+    });
+    void result;
   }
 
   async function reAnchor(fileId: string) {
-    const r = await retry({ data: { fileId } });
-    if (r.ok) toast.success("Anchored to TEXITcoin.");
-    else toast.error("error" in r ? r.error : "Anchor failed.");
+    const r = await run(`anchor:${fileId}`, "Anchoring to TEXITcoin", () => retry({ data: { fileId } }));
+    if (r && r.ok) {
+      toast.success("Anchored to TEXITcoin.");
+    } else if (r && !r.ok) {
+      toast.error("error" in r ? r.error : "Anchor failed.");
+    }
     void qc.invalidateQueries({ queryKey: ["bevis-asset", assetId] });
   }
 
   async function saveName() {
-    await rename({ data: { assetId, name: draftName.trim() } });
-    setEditing(false);
-    void qc.invalidateQueries({ queryKey: ["bevis-asset", assetId] });
-    void qc.invalidateQueries({ queryKey: ["bevis-assets"] });
+    const ok = await run("rename", "Saving name", () =>
+      rename({ data: { assetId, name: draftName.trim() } }),
+    );
+    if (ok) {
+      setEditing(false);
+      void qc.invalidateQueries({ queryKey: ["bevis-asset", assetId] });
+      void qc.invalidateQueries({ queryKey: ["bevis-assets"] });
+    }
   }
 
   async function destroy() {
     if (!confirm("Delete this asset and all of its records? The chain anchors stay on chain forever.")) return;
-    await remove({ data: { assetId } });
-    void qc.invalidateQueries({ queryKey: ["bevis-assets"] });
-    void navigate({ to: "/assets" });
+    const ok = await run("delete", "Deleting asset", () => remove({ data: { assetId } }));
+    if (ok) {
+      void qc.invalidateQueries({ queryKey: ["bevis-assets"] });
+      void navigate({ to: "/assets" });
+    }
   }
 
   return (
@@ -115,9 +145,10 @@ function AssetDetailPage() {
       <header className="mt-4">
         {editing ? (
           <div className="flex gap-2">
-            <Input value={draftName} onChange={e => setDraftName(e.target.value)} autoFocus />
-            <button onClick={() => void saveName()} className="rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground">
-              Save
+            <Input value={draftName} onChange={e => setDraftName(e.target.value)} autoFocus disabled={busy === "rename"} />
+            <button onClick={() => void saveName()} disabled={busy === "rename"} className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-semibold text-primary-foreground disabled:opacity-50">
+              {busy === "rename" ? <Loader2 className="size-3.5 animate-spin" /> : null}
+              {busy === "rename" ? "Saving…" : "Save"}
             </button>
           </div>
         ) : (
@@ -198,13 +229,23 @@ function AssetDetailPage() {
             </div>
             <div className="mt-3 flex gap-2">
               {user && (
-              <button onClick={() => void download(f.id)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-secondary">
-                <Download className="size-3" /> Download
+              <button
+                onClick={() => void download(f.id)}
+                disabled={busy !== null}
+                className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-secondary disabled:opacity-50"
+              >
+                {busy === `download:${f.id}` ? <Loader2 className="size-3 animate-spin" /> : <Download className="size-3" />}
+                {busy === `download:${f.id}` ? "Downloading…" : "Download"}
               </button>
               )}
               {user && f.anchorStatus !== "anchored" && (
-                <button onClick={() => void reAnchor(f.id)} className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-secondary">
-                  <RefreshCw className="size-3" /> Retry anchor
+                <button
+                  onClick={() => void reAnchor(f.id)}
+                  disabled={busy !== null}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-[11px] font-medium hover:bg-secondary disabled:opacity-50"
+                >
+                  {busy === `anchor:${f.id}` ? <Loader2 className="size-3 animate-spin" /> : <RefreshCw className="size-3" />}
+                  {busy === `anchor:${f.id}` ? "Anchoring…" : "Retry anchor"}
                 </button>
               )}
             </div>
@@ -223,8 +264,13 @@ function AssetDetailPage() {
 
       <div className="mt-8 grid gap-2">
         {user && (
-        <button onClick={() => void destroy()} className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold text-destructive hover:bg-destructive/10">
-          <Trash2 className="size-4" /> Delete asset
+        <button
+          onClick={() => void destroy()}
+          disabled={busy !== null}
+          className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold text-destructive hover:bg-destructive/10 disabled:opacity-50"
+        >
+          {busy === "delete" ? <Loader2 className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+          {busy === "delete" ? "Deleting…" : "Delete asset"}
         </button>
         )}
       </div>
