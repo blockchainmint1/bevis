@@ -10,7 +10,14 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cap:add:android": "cap add android",
+    "cap:add:ios": "cap add ios",
+    "cap:sync": "cap sync",
+    "cap:assets": "capacitor-assets generate --iconBackgroundColor '#0b0b10' --iconBackgroundColorDark '#0b0b10' --splashBackgroundColor '#0b0b10' --splashBackgroundColorDark '#0b0b10'",
+    "android:apk": "cap sync android && cd android && ./gradlew assembleDebug",
+    "android:release": "cap sync android && cd android && ./gradlew bundleRelease",
+    "android:open": "cap open android"
   },
   "dependencies": {
     "@aparajita/capacitor-biometric-auth": "^10.0.0",
