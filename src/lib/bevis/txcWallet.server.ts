@@ -263,9 +263,9 @@ export async function buildSeedAnchorTx(rpc: Rpc, input: SeedAnchorInput): Promi
   return buildSignedTx(wallet, chosen, outputs);
 }
 
-/** Spendable balance of the anchoring wallet, in TXC. */
-export async function anchorWalletBalance(rpc: Rpc) {
-  const wallet = loadAnchorWallet();
+/** Spendable balance of an anchoring wallet, in TXC. */
+export async function anchorWalletBalance(rpc: Rpc, ownerKey?: string | null) {
+  const wallet = ownerKey ? deriveOwnerWallet(ownerKey) : loadAnchorWallet();
   const utxos = await fetchUtxos(rpc, wallet.address);
   const sats = utxos.reduce((n, u) => n + u.sats, 0);
   return {
