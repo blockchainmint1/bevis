@@ -163,6 +163,7 @@ export async function publishRecord(owner: PublishOwner, data: PublishInput): Pr
     sha256Hex: data.sha256,
     manifestCid,
     address: assetRow.public_key,
+    ownerKey,
   });
 
   await sb
