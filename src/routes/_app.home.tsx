@@ -133,7 +133,7 @@ function HomePage() {
       {ready && coins.length === 0 && <EmptyState />}
 
       <ul className="space-y-3">
-        {coins.map((asset, idx) => {
+        {coins.map((coin, idx) => {
           const ch = CHAINS[coin.chain];
           const s = summaries[idx]?.data;
           return (
