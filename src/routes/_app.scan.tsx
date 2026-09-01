@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_app/scan")({
   component: ScanPage,
 });
 
-type CoinScan = { type: "coin"; chain: ChainId; address: string };
+type CoinScan = { type: "asset"; chain: ChainId; address: string };
 type SeedScan = { type: "seed"; result: SeedParseResult };
 type ScannedResult = CoinScan | SeedScan;
 
@@ -69,7 +69,7 @@ function ScanPage() {
   function handleAdd() {
     const detected = detectChain(address.trim()) ?? { chain, address: address.trim() };
     const coin = addLocalCoin({ chain: detected.chain, address: detected.address, label: label.trim() || undefined });
-    toast.success("Coin added to your portfolio.");
+    toast.success("Asset added to your portfolio.");
     navigate({ to: "/coin/$id", params: { id: coin.id } });
   }
 
@@ -82,7 +82,7 @@ function ScanPage() {
         return;
       }
       if (scanned?.type !== "seed") {
-        toast.error("Scan the coin's seed phrase first.");
+        toast.error("Scan the asset's seed phrase first.");
         return;
       }
       // Match against the derived address for whichever chain the sticker is.
@@ -113,10 +113,10 @@ function ScanPage() {
     // 2. Fall back to normal coin address / BIP-21 URI parsing.
     const parsed = parseCoinPayload(text);
     if (!parsed) {
-      toast.error("That doesn't look like a coin QR or seed phrase. Try again or enter the address.");
+      toast.error("That doesn't look like a asset QR or seed phrase. Try again or enter the address.");
       return;
     }
-    setScanned({ type: "coin", chain: parsed.chain, address: parsed.address });
+    setScanned({ type: "asset", chain: parsed.chain, address: parsed.address });
     setChain(parsed.chain);
     setAddress(parsed.address);
   }
@@ -124,7 +124,7 @@ function ScanPage() {
   function confirmScanned() {
     if (!scanned || scanned.type === "seed") return;
     const coin = addLocalCoin({ chain: scanned.chain, address: scanned.address, label: label.trim() || undefined });
-    toast.success("Coin added.");
+    toast.success("Asset added.");
     navigate({ to: "/coin/$id", params: { id: coin.id } });
   }
 
@@ -139,7 +139,7 @@ function ScanPage() {
   function addDerivedTxc() {
     if (scanned?.type !== "seed") return;
     const coin = addLocalCoin({ chain: "txc", address: scanned.result.address, label: label.trim() || undefined });
-    toast.success("TXC coin added.");
+    toast.success("TXC asset added.");
     navigate({ to: "/coin/$id", params: { id: coin.id } });
   }
 
@@ -156,7 +156,7 @@ function ScanPage() {
   return (
     <div className="px-5 pt-10">
       <header className="mb-6">
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Add a coin</p>
+        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Add a asset</p>
         <h1 className="mt-1 font-serif text-3xl text-foreground">Scan or enter</h1>
       </header>
 
@@ -232,7 +232,7 @@ function ScanPage() {
           {stickerMode && !stickerResult && (
             <div className="mt-4 rounded-xl border border-border bg-card p-4 text-center">
               <p className="text-sm font-medium text-foreground">Scan the sticker QR</p>
-              <p className="mt-1 text-xs text-muted-foreground">Point the camera at the sticker to verify it matches this coin.</p>
+              <p className="mt-1 text-xs text-muted-foreground">Point the camera at the sticker to verify it matches this asset.</p>
             </div>
           )}
 
@@ -245,7 +245,7 @@ function ScanPage() {
                   <XCircle className="size-5 text-destructive" />
                 )}
                 <p className={`text-sm font-semibold ${stickerResult.addressOk && stickerResult.assetIdOk ? "text-green-600" : "text-destructive"}`}>
-                  {stickerResult.addressOk && stickerResult.assetIdOk ? "Sticker matches coin" : "MISMATCH — do not apply sticker"}
+                  {stickerResult.addressOk && stickerResult.assetIdOk ? "Sticker matches asset" : "MISMATCH — do not apply sticker"}
                 </p>
               </div>
               <div className="mt-2 space-y-1 text-xs">
@@ -269,7 +269,7 @@ function ScanPage() {
             </div>
           )}
 
-          {scanned?.type === "coin" && (
+          {scanned?.type === "asset" && (
             <div className="mt-4 rounded-xl border border-primary/40 bg-primary/5 p-4">
               <div className="flex items-center gap-3">
                 <CoinLogo chain={scanned.chain} size={40} />
@@ -355,7 +355,7 @@ function ScanPage() {
             <span className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Address</span>
             <input
               type="text" value={address} onChange={e => setAddress(e.target.value)}
-              placeholder="Paste the public address engraved on the coin"
+              placeholder="Paste the public address engraved on the asset"
               className="w-full rounded-md border border-input bg-background px-3 py-2.5 font-mono text-xs focus:border-ring focus:outline-none"
             />
           </label>
@@ -435,7 +435,7 @@ function AuthenticityBadge({ chain, address }: { chain: ChainId; address: string
       <div className="mt-3 rounded-lg border border-green-500/40 bg-green-500/10 px-3 py-2.5">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="size-5 text-green-500" />
-          <p className="text-sm font-semibold text-green-600">Authentic Blockchain Mint coin</p>
+          <p className="text-sm font-semibold text-green-600">Authentic Blockchain Mint asset</p>
         </div>
         {assetId && (
           <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -489,15 +489,15 @@ function AssetIdLookup({
       if (!res.found) {
         toast.error(
           res.reason === "invalid"
-            ? "Coin IDs are 6 characters (letters and numbers)."
+            ? "Asset IDs are 6 characters (letters and numbers)."
             : res.reason === "unavailable"
               ? "Couldn't reach the mint registry — try again in a moment."
-              : "No coin with that ID in the mint registry. Double-check the characters (they're case-sensitive).",
+              : "No asset with that ID in the mint registry. Double-check the characters (they're case-sensitive).",
         );
         return;
       }
       onResolved(res.chain, res.address);
-      toast.success(res.authentic ? "Authentic coin found." : "Coin found.");
+      toast.success(res.authentic ? "Authentic asset found." : "Asset found.");
     },
     onError: e => toast.error((e as Error).message),
   });

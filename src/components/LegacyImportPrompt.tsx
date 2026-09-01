@@ -47,7 +47,7 @@ export function LegacyImportPrompt() {
             if (p.importable.length > 0) {
               const n = applyLegacyImport(p);
               setImportedCount(n);
-              toast.success(`Restored ${n} ${n === 1 ? "coin" : "coins"} from your previous install`);
+              toast.success(`Restored ${n} ${n === 1 ? "asset" : "assets"} from your previous install`);
             }
           }
         } catch {
@@ -82,7 +82,7 @@ export function LegacyImportPrompt() {
           <DialogTitle>Welcome to the new Blockchain Mint</DialogTitle>
           <DialogDescription>
             {importedCount > 0 ? (
-              <>We brought your <strong>{importedCount}</strong> {importedCount === 1 ? "coin" : "coins"} over from the old version. Everything's faster, prettier, and ready to go.</>
+              <>We brought your <strong>{importedCount}</strong> {importedCount === 1 ? "asset" : "assets"} over from the old version. Everything's faster, prettier, and ready to go.</>
             ) : (
               <>A complete rebuild — faster, prettier, and ready for your collection.</>
             )}

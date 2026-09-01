@@ -6,15 +6,15 @@ export const Route = createFileRoute("/handoff")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Transfer coin list — Blockchain Mint" },
+      { title: "Transfer asset list — Blockchain Mint" },
       {
         name: "description",
-        content: "Hand your saved coin list from an older Blockchain Mint domain over to the current app.",
+        content: "Hand your saved asset list from an older Blockchain Mint domain over to the current app.",
       },
-      { property: "og:title", content: "Transfer coin list — Blockchain Mint" },
+      { property: "og:title", content: "Transfer asset list — Blockchain Mint" },
       {
         property: "og:description",
-        content: "Move your locally saved coin list from an older Blockchain Mint web address.",
+        content: "Move your locally saved asset list from an older Blockchain Mint web address.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -65,12 +65,12 @@ function HandoffPage() {
   return (
     <div className="mx-auto max-w-md px-5 py-16 text-center">
       <h1 className="font-serif text-2xl text-foreground">
-        {status === "blocked" ? "Transfer not allowed" : "Sending your coin list…"}
+        {status === "blocked" ? "Transfer not allowed" : "Sending your asset list…"}
       </h1>
       <p className="mt-3 text-sm text-muted-foreground">
         {status === "blocked"
           ? "This transfer link is missing a valid destination. Start the transfer from the app you want to move your list into."
-          : `Handing ${count} saved ${count === 1 ? "coin" : "coins"} back to the app. This page redirects on its own.`}
+          : `Handing ${count} saved ${count === 1 ? "asset" : "assets"} back to the app. This page redirects on its own.`}
       </p>
     </div>
   );

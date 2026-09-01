@@ -121,7 +121,7 @@ function SweepPage() {
 
       <header className="mt-6 mb-6">
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">Sweep / redeem</p>
-        <h1 className="mt-1 font-serif text-3xl text-foreground">Move funds off your coin</h1>
+        <h1 className="mt-1 font-serif text-3xl text-foreground">Move funds off your asset</h1>
       </header>
 
       {/* Security */}
@@ -146,7 +146,7 @@ function SweepPage() {
           </div>
         ) : (
           <div className="mt-2">
-            <p className="text-sm text-foreground">No coin selected.</p>
+            <p className="text-sm text-foreground">No asset selected.</p>
             <button onClick={() => navigate({ to: "/home" })} className="mt-2 text-xs text-primary hover:underline">
               Pick a coin to sweep →
             </button>
@@ -176,7 +176,7 @@ function SweepPage() {
           <ol className="mt-3 space-y-1.5 rounded-md border border-border bg-secondary/40 p-3 text-[11px] text-muted-foreground">
             <li><span className="font-semibold text-foreground">1.</span> Gently peel off the tamper sticker with your fingernail. <span className="text-foreground/80">Don't use anything sharp</span> — it can scratch the engraved key.</li>
             <li><span className="font-semibold text-foreground">2.</span> Tap <span className="font-semibold text-foreground">Scan</span> and point the camera at the QR under the sticker, or type the key in by hand.</li>
-            <li><span className="font-semibold text-foreground">3.</span> We'll verify the key matches this coin before anything is signed.</li>
+            <li><span className="font-semibold text-foreground">3.</span> We'll verify the key matches this asset before anything is signed.</li>
           </ol>
 
 
@@ -223,7 +223,7 @@ function SweepPage() {
                 <div className="flex items-start gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/5 px-3 py-2">
                   <ShieldCheck className="mt-0.5 size-4 shrink-0 text-emerald-500" />
                   <div className="text-[11px] text-emerald-600 dark:text-emerald-400">
-                    <p className="font-medium">Key verified — it controls this coin.</p>
+                    <p className="font-medium">Key verified — it controls this asset.</p>
                   </div>
                 </div>
               ) : (

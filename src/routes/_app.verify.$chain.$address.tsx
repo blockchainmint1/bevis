@@ -50,7 +50,7 @@ function VerifyPage() {
             <p className="mt-2 font-serif text-xl text-foreground">Authentic</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {"registry" in verify && verify.source === "registry"
-                ? "This coin is in the Blockchain Mint manufacturing registry."
+                ? "This asset is in the Blockchain Mint manufacturing registry."
                 : "This address is in the Blockchain Mint registry."}
             </p>
 

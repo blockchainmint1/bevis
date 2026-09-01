@@ -36,12 +36,12 @@ function SettingsPage() {
             {ready && user ? (
               <>
                 <p className="truncate text-sm text-foreground">{user.email ?? "Signed in"}</p>
-                <p className="text-[11px] text-muted-foreground">Coin list saved — {coins.length} {coins.length === 1 ? "coin" : "coins"} on this device.</p>
+                <p className="text-[11px] text-muted-foreground">Coin list saved — {coins.length} {coins.length === 1 ? "asset" : "assets"} on this device.</p>
               </>
             ) : (
               <>
                 <p className="text-sm text-foreground">No saved list yet</p>
-                <p className="text-[11px] text-muted-foreground">{coins.length} {coins.length === 1 ? "coin lives" : "coins live"} only on this device.</p>
+                <p className="text-[11px] text-muted-foreground">{coins.length} {coins.length === 1 ? "asset lives" : "assets live"} only on this device.</p>
               </>
             )}
           </div>

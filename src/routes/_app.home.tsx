@@ -31,8 +31,8 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_app/home")({
   head: () => ({
     meta: [
-      { title: "Your coins — Blockchain Mint" },
-      { name: "description", content: "Your watched physical coins and total holdings." },
+      { title: "Your assets — Blockchain Mint" },
+      { name: "description", content: "Your watched physical assets and total holdings." },
     ],
   }),
   component: HomePage,
@@ -116,12 +116,12 @@ function HomePage() {
         </div>
         <div className="num mt-1 font-serif text-5xl text-foreground">{fmtUsd(totalFiat)}</div>
         <p className="mt-1 text-xs text-muted-foreground">
-          across {coins.length} {coins.length === 1 ? "coin" : "coins"}
+          across {coins.length} {coins.length === 1 ? "asset" : "assets"}
         </p>
       </header>
 
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-serif text-xl text-foreground">Your coins</h2>
+        <h2 className="font-serif text-xl text-foreground">Your assets</h2>
         <button
           onClick={() => navigate({ to: "/scan" })}
           className="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary px-3 py-1.5 text-xs font-medium hover:bg-secondary/80"
@@ -188,14 +188,14 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
     clearCachedHistory(coin.chain, coin.address);
     removeLocalCoin(coin.id);
     setDeleteOpen(false);
-    toast.success("Coin removed.");
+    toast.success("Asset removed.");
   }
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          aria-label="Coin actions"
+          aria-label="Asset actions"
           className="rounded-md p-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
           onClick={(e) => e.stopPropagation()}
         >
@@ -224,8 +224,8 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
       <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Rename coin</DialogTitle>
-            <DialogDescription>Give this coin a nickname. Leave blank to clear.</DialogDescription>
+            <DialogTitle>Rename asset</DialogTitle>
+            <DialogDescription>Give this asset a nickname. Leave blank to clear.</DialogDescription>
           </DialogHeader>
           <Input
             autoFocus
@@ -245,7 +245,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Remove this coin?</DialogTitle>
+            <DialogTitle>Remove this asset?</DialogTitle>
             <DialogDescription>
               The physical coin and its funds are unaffected — this only removes the watch entry from this device.
             </DialogDescription>
@@ -264,8 +264,8 @@ function EmptyState() {
   return (
     <div className="rounded-xl border border-dashed border-border bg-card/50 p-8 text-center">
       <ScanLine className="mx-auto size-8 text-muted-foreground" />
-      <h3 className="mt-3 font-serif text-lg text-foreground">No coins yet</h3>
-      <p className="mt-1 text-sm text-muted-foreground">Scan the QR on the front of a coin to start watching it.</p>
+      <h3 className="mt-3 font-serif text-lg text-foreground">No assets yet</h3>
+      <p className="mt-1 text-sm text-muted-foreground">Scan the QR on the front of a asset to start watching it.</p>
       <Link to="/scan" className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
         Scan a coin
       </Link>
