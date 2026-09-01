@@ -90,7 +90,7 @@ function VerifyPage() {
             <ShieldAlert className="mx-auto size-8 text-accent" />
             <p className="mt-2 font-serif text-xl text-foreground">Not in the mint registry</p>
             <p className="mt-1 text-xs text-muted-foreground">
-              This address isn't a coin we manufactured. It's still a valid blockchain address — you can watch it and check its balance.
+              This address isn't a asset we manufactured. It's still a valid blockchain address — you can watch it and check its balance.
             </p>
           </div>
         )}

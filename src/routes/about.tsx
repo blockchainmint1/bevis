@@ -6,9 +6,9 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — BEVIS" },
-      { name: "description", content: "BEVIS mints physical Cold Storage Coins. The app is the digital twin of the coin in your hand." },
+      { name: "description", content: "BEVIS mints physical Cold Storage Coins. The app is the digital twin of the asset in your hand." },
       { property: "og:title", content: "About BEVIS" },
-      { property: "og:description", content: "The digital twin of the coin in your hand." },
+      { property: "og:description", content: "The digital twin of the asset in your hand." },
     ],
   }),
   component: About,

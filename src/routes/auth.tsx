@@ -9,7 +9,7 @@ import { ArrowLeft, ShieldCheck } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Back up your coins — BEVIS" },
+      { title: "Back up your assets — BEVIS" },
       { name: "description", content: "Optional sign-in to back up your asset list across devices." },
     ],
   }),
@@ -51,7 +51,7 @@ function AuthPage() {
 
         <div className="mb-8 text-center">
           <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Cold Storage Coins</p>
-          <h1 className="mt-2 font-serif text-3xl text-foreground">Back up your coins</h1>
+          <h1 className="mt-2 font-serif text-3xl text-foreground">Back up your assets</h1>
           <p className="mt-3 text-sm text-muted-foreground">
             Your asset list lives on this device. Sign in to back it up and reach it from any phone or browser.
           </p>
