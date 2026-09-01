@@ -248,6 +248,12 @@ export type SeedAnchorInput = {
   dustSats: number;
   /** Whose coins pay. Omit to spend the house wallet. */
   ownerKey?: string | null;
+  /**
+   * BEVIS service fee, in satoshis, paid from the owner's fuel to the house
+   * wallet. Ignored when the house wallet is already paying, or when it would
+   * land below the relay dust threshold.
+   */
+  serviceFeeSats?: number | null;
 };
 
 /**
@@ -260,7 +266,15 @@ export async function buildSeedAnchorTx(rpc: Rpc, input: SeedAnchorInput): Promi
   if (utxos.length === 0) throw new Error(`Anchoring wallet ${wallet.address} has no funds.`);
 
   const dust = input.address ? Math.max(input.dustSats, DUST_SATS) : 0;
-  const target = dust + FEE_SATS;
+
+  // The service fee only makes sense when someone else's coins are paying.
+  const house = input.ownerKey ? loadAnchorWallet() : null;
+  const serviceFee =
+    house && input.serviceFeeSats && input.serviceFeeSats >= DUST_SATS
+      ? Math.round(input.serviceFeeSats)
+      : 0;
+
+  const target = dust + FEE_SATS + serviceFee;
 
   const chosen: Utxo[] = [];
   let total = 0;
@@ -275,6 +289,7 @@ export async function buildSeedAnchorTx(rpc: Rpc, input: SeedAnchorInput): Promi
 
   const outputs: Output[] = [{ script: opReturnScript(input.data), sats: 0 }];
   if (input.address && dust > 0) outputs.push({ script: p2pkhScript(input.address), sats: dust });
+  if (house && serviceFee > 0) outputs.push({ script: house.script, sats: serviceFee });
 
   const change = total - target;
   if (change > DUST_SATS) outputs.push({ script: wallet.script, sats: change });
@@ -283,15 +298,16 @@ export async function buildSeedAnchorTx(rpc: Rpc, input: SeedAnchorInput): Promi
 }
 
 /** Spendable balance of an anchoring wallet, in TXC. */
-export async function anchorWalletBalance(rpc: Rpc, ownerKey?: string | null) {
+export async function anchorWalletBalance(rpc: Rpc, ownerKey?: string | null, costPerAnchorSats?: number) {
   const wallet = ownerKey ? deriveOwnerWallet(ownerKey) : loadAnchorWallet();
   const utxos = await fetchUtxos(rpc, wallet.address);
   const sats = utxos.reduce((n, u) => n + u.sats, 0);
+  const perAnchor = Math.max(costPerAnchorSats ?? FEE_SATS + DUST_SATS, 1);
   return {
     address: wallet.address,
     balanceTxc: sats / SATS,
     utxoCount: utxos.length,
     /** Roughly how many more anchors the current balance can pay for. */
-    anchorsRemaining: Math.max(0, Math.floor(sats / (FEE_SATS + DUST_SATS))),
+    anchorsRemaining: Math.max(0, Math.floor(sats / perAnchor)),
   };
 }
