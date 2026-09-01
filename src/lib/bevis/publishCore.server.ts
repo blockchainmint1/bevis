@@ -41,14 +41,6 @@ function ownerColumns(owner: PublishOwner) {
     : { user_id: null as string | null, device_id: owner.deviceId ?? null };
 }
 
-/** Scope a query to whoever owns the record. */
-function ownerFilter<T extends { eq: (c: string, v: string) => T; is: (c: string, v: null) => T }>(
-  q: T,
-  owner: PublishOwner,
-): T {
-  return owner.userId ? q.eq("user_id", owner.userId) : q.eq("device_id", owner.deviceId as string);
-}
-
 export async function publishRecord(owner: PublishOwner, data: PublishInput): Promise<PublishResult> {
   const sb = supabaseAdmin;
   const cols = ownerColumns(owner);
@@ -56,13 +48,17 @@ export async function publishRecord(owner: PublishOwner, data: PublishInput): Pr
   let assetRow: { id: string; asset_id: string; public_key: string } | null = null;
 
   if (data.assetId) {
-    const { data: found, error } = await ownerFilter(
-      sb.from("bevis_assets").select("id, asset_id, public_key").eq("asset_id", data.assetId.toUpperCase()) as never,
-      owner,
-    ).maybeSingle();
+    const base = sb
+      .from("bevis_assets")
+      .select("id, asset_id, public_key")
+      .eq("asset_id", data.assetId.toUpperCase());
+    const scoped = owner.userId
+      ? base.eq("user_id", owner.userId)
+      : base.eq("device_id", owner.deviceId as string);
+    const { data: found, error } = await scoped.maybeSingle();
     if (error) throw new Error(error.message);
     if (!found) throw new Error("That Asset ID isn't one of yours.");
-    assetRow = found as typeof assetRow;
+    assetRow = found;
   } else {
     const { generateAssetKey } = await import("@/lib/bevis/assetKey.server");
 
