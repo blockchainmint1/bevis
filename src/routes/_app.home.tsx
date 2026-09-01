@@ -208,7 +208,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
           <DropdownMenuItem onSelect={() => navigate({ to: "/verify/$key", params: { key: coin.address } })}>
             <ScrollText className="size-4" /> Record book
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate({ to: "/publish", search: {} })}>
+          <DropdownMenuItem onSelect={() => navigate({ to: "/publish" })}>
             <FilePlus className="size-4" /> File a record
           </DropdownMenuItem>
           <DropdownMenuSeparator />
