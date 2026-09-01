@@ -572,3 +572,27 @@ export const getAnchorWalletStatus = createServerFn({ method: "GET" }).handler(a
     return { ok: false as const, error: (e as Error).message || "Anchoring wallet unavailable." };
   }
 });
+
+/**
+ * The chain ledger for an asset address.
+ *
+ * Public on purpose: the whole point of notarising to a chain is that anyone
+ * can read the record back without asking us. Everything returned here is
+ * already visible in any TEXITcoin block explorer.
+ */
+export const getChainLedger = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z.object({ address: z.string().trim().min(20).max(120) }).parse(d),
+  )
+  .handler(async ({ data }) => {
+    const { readChainLedger, explorerAddressUrl, explorerTxUrl } = await import(
+      "@/lib/bevis/chainLedger.server"
+    );
+    const ledger = await readChainLedger(data.address);
+    return {
+      ...ledger,
+      explorerUrl: explorerAddressUrl(data.address),
+      entries: ledger.entries.map(e => ({ ...e, txUrl: explorerTxUrl(e.txid) })),
+    };
+  });
+

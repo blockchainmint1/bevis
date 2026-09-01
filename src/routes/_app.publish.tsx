@@ -16,6 +16,10 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/_app/publish")({
+  // `?assetId=ABC123` arrives from an asset's record book: file another record
+  // against a record that already exists.
+  validateSearch: (search: Record<string, unknown>): { assetId?: string } =>
+    typeof search["assetId"] === "string" ? { assetId: search["assetId"].toUpperCase() } : {},
   head: () => ({
     meta: [
       { title: "Create a record — BEVIS" },
@@ -56,7 +60,7 @@ function PublishPage() {
   const [bytes, setBytes] = useState<ArrayBuffer | null>(null);
   const [meta, setMeta] = useState<BevisFileMetadata | null>(null);
   const [assetName, setAssetName] = useState("");
-  const [appendTo, setAppendTo] = useState("");
+  const [appendTo, setAppendTo] = useState(Route.useSearch().assetId ?? "");
   const [encrypt, setEncrypt] = useState(false);
   const [passphrase, setPassphrase] = useState("");
   const [step, setStep] = useState("");
