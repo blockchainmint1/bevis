@@ -116,6 +116,7 @@ export type Database = {
       }
       bevis_files: {
         Row: {
+          anchor_address: string | null
           anchor_error: string | null
           anchor_status: string
           anchor_txid: string | null
@@ -123,8 +124,10 @@ export type Database = {
           asset_uuid: string
           created_at: string
           encrypted: boolean
+          file_cid: string | null
           file_name: string
           id: string
+          manifest_cid: string | null
           metadata: Json
           mime_type: string | null
           sha256: string
@@ -133,6 +136,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          anchor_address?: string | null
           anchor_error?: string | null
           anchor_status?: string
           anchor_txid?: string | null
@@ -140,8 +144,10 @@ export type Database = {
           asset_uuid: string
           created_at?: string
           encrypted?: boolean
+          file_cid?: string | null
           file_name: string
           id?: string
+          manifest_cid?: string | null
           metadata?: Json
           mime_type?: string | null
           sha256: string
@@ -150,6 +156,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          anchor_address?: string | null
           anchor_error?: string | null
           anchor_status?: string
           anchor_txid?: string | null
@@ -157,8 +164,10 @@ export type Database = {
           asset_uuid?: string
           created_at?: string
           encrypted?: boolean
+          file_cid?: string | null
           file_name?: string
           id?: string
+          manifest_cid?: string | null
           metadata?: Json
           mime_type?: string | null
           sha256?: string
