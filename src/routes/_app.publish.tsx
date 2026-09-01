@@ -12,6 +12,7 @@ import { uploadAndPublish, type PublishOutcome } from "@/lib/bevis/publish";
 import { publishBevisFile } from "@/lib/bevis.functions";
 import { guestPublishBevisFile } from "@/lib/bevisGuest.functions";
 import { useAuth } from "@/hooks/use-auth";
+import { useFuel } from "@/lib/useFuel";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -53,6 +54,7 @@ const KIND_ICON = {
 
 function PublishPage() {
   const { user } = useAuth();
+  const { data: fuel, refetch: refetchFuel } = useFuel();
   const publishFn = useServerFn(publishBevisFile);
   const guestPublishFn = useServerFn(guestPublishBevisFile);
 
