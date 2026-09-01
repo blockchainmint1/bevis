@@ -13,6 +13,8 @@ import {
   getMyBevisAsset, retryAnchor, getBevisFileUrl, renameBevisAsset, deleteBevisAsset,
 } from "@/lib/bevis.functions";
 import { useAuth } from "@/hooks/use-auth";
+import { getGuestBevisAsset } from "@/lib/bevisGuest.functions";
+import { getDeviceId } from "@/lib/deviceId";
 import { formatBytes } from "@/lib/bevis/metadata";
 import { Input } from "@/components/ui/input";
 import { ChainLedger } from "@/components/ChainLedger";
@@ -41,6 +43,7 @@ function AssetDetailPage() {
   const qc = useQueryClient();
 
   const getAsset = useServerFn(getMyBevisAsset);
+  const getGuestAsset = useServerFn(getGuestBevisAsset);
   const retry = useServerFn(retryAnchor);
   const signUrl = useServerFn(getBevisFileUrl);
   const rename = useServerFn(renameBevisAsset);
@@ -51,9 +54,11 @@ function AssetDetailPage() {
   const [draftName, setDraftName] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["bevis-asset", assetId, user?.id],
-    queryFn: () => getAsset({ data: { assetId } }),
-    enabled: !!user,
+    queryKey: ["bevis-asset", assetId, user?.id ?? "guest"],
+    queryFn: () =>
+      user
+        ? getAsset({ data: { assetId } })
+        : getGuestAsset({ data: { assetId, deviceId: getDeviceId() } }),
   });
 
   useEffect(() => {
@@ -61,9 +66,6 @@ function AssetDetailPage() {
     void QRCode.toDataURL(data.publicKey, { margin: 1, width: 480 }).then(setQr);
   }, [data?.publicKey]);
 
-  if (!user) {
-    return <p className="px-5 py-16 text-center text-sm text-muted-foreground">Sign in to view this record.</p>;
-  }
   if (isLoading) return <p className="px-5 py-16 text-center text-sm text-muted-foreground">Loading…</p>;
   if (!data) {
     return (
