@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverRouteImport } from './routes/recover'
@@ -34,6 +35,11 @@ import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetI
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/welcome': typeof WelcomeRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/welcome': typeof WelcomeRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
@@ -216,6 +224,7 @@ export interface FileRoutesById {
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/welcome': typeof WelcomeRoute
   '/_app/alerts': typeof AppAlertsRoute
   '/_app/assets': typeof AppAssetsRoute
   '/_app/home': typeof AppHomeRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/recover'
     | '/reset-password'
     | '/terms'
+    | '/welcome'
     | '/alerts'
     | '/assets'
     | '/home'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/recover'
     | '/reset-password'
     | '/terms'
+    | '/welcome'
     | '/alerts'
     | '/assets'
     | '/home'
@@ -294,6 +305,7 @@ export interface FileRouteTypes {
     | '/recover'
     | '/reset-password'
     | '/terms'
+    | '/welcome'
     | '/_app/alerts'
     | '/_app/assets'
     | '/_app/home'
@@ -321,12 +333,20 @@ export interface RootRouteChildren {
   RecoverRoute: typeof RecoverRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
+  WelcomeRoute: typeof WelcomeRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -541,6 +561,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecoverRoute: RecoverRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TermsRoute: TermsRoute,
+  WelcomeRoute: WelcomeRoute,
   VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
 }
