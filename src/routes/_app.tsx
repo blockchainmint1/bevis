@@ -20,7 +20,7 @@ function AppLayout() {
   return (
     <div className="min-h-screen bg-background">
       <Splash />
-      <div className="mx-auto max-w-md pb-24">
+      <div className="mx-auto w-full max-w-md pb-28 sm:max-w-xl lg:max-w-2xl">
         <Outlet />
       </div>
       <TabBar />
