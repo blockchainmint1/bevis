@@ -1,5 +1,6 @@
 # Roadmap
 
-- [ ] Mobile view too small / cramped on real phone — investigate and fix layout scaling
-- [ ] Rename action item "Notarise" → "Create" (tab bar + page CTAs/copy)
-- [ ] Replace user-facing "coin(s)" wording with "asset(s)" everywhere (keep code identifiers and legacy API paths)
+- [x] Rename action item "Notarise" → "Create" (tab bar + publish page CTAs)
+- [x] Replace user-facing "coin(s)" wording with "asset(s)" (code identifiers and legacy API paths unchanged)
+- [x] Remove the "Welcome to the new BEVIS" popup (LegacyImportPrompt deleted)
+- [ ] Mobile view reported as "tiny" on a real phone — needs a screenshot / device details to reproduce
