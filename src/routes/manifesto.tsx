@@ -6,9 +6,11 @@ export const Route = createFileRoute("/manifesto")({
   head: () => ({
     meta: [
       { title: "Manifesto — BEVIS" },
-      { name: "description", content: "Why we strike honest assets, and what we promise the people who hold them." },
+      { name: "description", content: "Proof should outlive the paperwork. Why BEVIS records evidence to a permanent public ledger." },
       { property: "og:title", content: "The BEVIS Manifesto" },
-      { property: "og:description", content: "Honest weight. Honest money. Honest custody." },
+      { property: "og:description", content: "Proof should outlive the paperwork." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Manifesto,
@@ -21,25 +23,33 @@ function Manifesto() {
         <ArrowLeft className="size-3.5" /> Home
       </Link>
       <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Manifesto</p>
-      <h1 className="mt-2 font-serif text-5xl text-foreground">Honest weight. Honest money.</h1>
+      <h1 className="mt-2 font-serif text-5xl text-foreground">Proof should outlive the paperwork.</h1>
 
       <div className="prose prose-invert mt-8 space-y-5 text-muted-foreground">
-        <p className="text-lg text-foreground">We believe an asset should be heavy enough to mean something, and private enough to be yours.</p>
+        <p className="text-lg text-foreground">
+          <span className="font-serif italic">bevis</span> /bee-vus/ — Swedish for proof; evidence; that which tends to prove
+          or disprove something. We made it a verb: to record something to the blockchain for permanent, undisputable proof.
+        </p>
 
-        <h2 className="mt-8 font-serif text-2xl text-foreground">We do not hold your keys.</h2>
-        <p>The private key on the asset was generated on an air-gapped machine, loaded onto the asset, sealed under a tamper-evident hologram, and destroyed at the source. We do not have a copy. Neither do our servers, this app, or anyone else. The asset in your hand is the wallet.</p>
+        <h2 className="mt-8 font-serif text-2xl text-foreground">Records belong to the thing, not the company.</h2>
+        <p>A car, a painting, a pallet of parts, a deed — the history should travel with the asset, not live in a vendor's database that can be sold, breached, or shut down. Every BEVIS record is written to a public ledger and pinned to IPFS. If we disappeared tomorrow, your proof would still be there.</p>
 
-        <h2 className="mt-8 font-serif text-2xl text-foreground">We do not surveil your balances.</h2>
-        <p>The app looks up public addresses through public block explorers, the same way anyone with a browser could. We don't sell your watched addresses, your activity, or your portfolio composition to anyone — not advertisers, not analytics vendors, not chain-analysis firms.</p>
+        <h2 className="mt-8 font-serif text-2xl text-foreground">Two buttons — that's all you need.</h2>
+        <p>READ: scan a code and see everything ever filed against that asset. WRITE: add the receipt, the service record, the certificate, the photo. Blockchain should feel like a filing cabinet, not a cryptography exam.</p>
 
-        <h2 className="mt-8 font-serif text-2xl text-foreground">We honor the weight.</h2>
-        <p>Every round is struck from real metal, weighed to its stated denomination, and shipped insured. If an asset arrives short, light, or compromised — we replace it. Honest weight is not a marketing line. It is the contract.</p>
+        <h2 className="mt-8 font-serif text-2xl text-foreground">Append, never rewrite.</h2>
+        <p>A record book is only worth something if nobody can quietly edit the past. Records are added, timestamped, and anchored. Corrections are new entries, visible alongside what they correct. The chain keeps us all honest — including us.</p>
+
+        <h2 className="mt-8 font-serif text-2xl text-foreground">Private by default, public by choice.</h2>
+        <p>Files are encrypted before they leave your device. You decide what is open to anyone with the asset ID and what stays sealed to you. We don't sell your records, your addresses, or your activity — not to advertisers, not to analytics vendors, not to chain-analysis firms.</p>
+
+        <h2 className="mt-8 font-serif text-2xl text-foreground">Transparency beats trust.</h2>
+        <p>Counterfeits, altered odometers, phantom service histories and paper certificates all rely on the same thing: you having to take someone's word for it. Verifiable provenance ends the argument. That's better for buyers, and better for anyone with nothing to hide.</p>
 
         <h2 className="mt-8 font-serif text-2xl text-foreground">We answer to the holder.</h2>
-        <p>Not to a regulator. Not to a payment processor. Not to a blockchain analytics partner. To the person holding the asset. Always.</p>
-
-        <p className="pt-8 text-sm">{"\n"}</p>
+        <p>Not to a regulator. Not to a payment processor. Not to an analytics partner. To the person holding the asset. Always.</p>
       </div>
+
       <Footer />
     </div>
   );
