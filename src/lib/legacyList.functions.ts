@@ -25,7 +25,7 @@ export const fetchLegacyList = createServerFn({ method: "POST" })
     if (!email) return { available: false, reason: "no_email", wallets: [] };
 
     const host = (process.env["LEGACY_API_URL"] ?? "https://admin.coldstoragecoins.com").replace(/\/+$/, "");
-    const url = `${host}/api/public/app/v1/bevis/legacy-list?email=${encodeURIComponent(email)}`;
+    const url = `${host}/api/public/app/v1/bevis/legacy-list?email=${encodeURIComponent(email)}&currency=usd`;
 
     const res = await fetch(url, {
       headers: { "x-api-key": apiKey, Accept: "application/json" },
@@ -35,16 +35,18 @@ export const fetchLegacyList = createServerFn({ method: "POST" })
     }
 
     const json = (await res.json().catch(() => null)) as
-      | { wallets?: unknown; coins?: unknown; assets?: unknown }
+      | { items?: unknown; wallets?: unknown; coins?: unknown; assets?: unknown }
       | null;
-    const raw = (json?.wallets ?? json?.coins ?? json?.assets ?? []) as unknown;
+    const raw = (json?.items ?? json?.wallets ?? json?.coins ?? json?.assets ?? []) as unknown;
     const list = Array.isArray(raw) ? raw : [];
 
     const wallets = list.flatMap((item) => {
       if (!item || typeof item !== "object") return [];
       const r = item as Record<string, unknown>;
       const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : undefined);
-      const publicKey = str(r["publicKey"]) ?? str(r["public_key"]) ?? str(r["address"]);
+      const coinInfo = (r["coinInfo"] ?? {}) as Record<string, unknown>;
+      const publicKey =
+        str(r["publicKey"]) ?? str(r["public_key"]) ?? str(r["address"]) ?? str(coinInfo["coinID"]);
       const assetId = str(r["assetId"]) ?? str(r["asset_id"]) ?? str(r["id"]);
       if (!publicKey && !assetId) return [];
       return [{ publicKey, assetId, name: str(r["name"]) ?? str(r["label"]) ?? null }];
@@ -52,3 +54,4 @@ export const fetchLegacyList = createServerFn({ method: "POST" })
 
     return { available: true, wallets };
   });
+
