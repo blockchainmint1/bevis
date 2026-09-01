@@ -44,12 +44,11 @@ function AuthPage() {
           setBusy(null);
           return;
         }
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-        if (error) throw error;
         navigate({ to: "/welcome" });
         return;
       }
+      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (error) throw error;
       navigate({ to: "/assets" });
     } catch (err) {
       toast.error((err as Error).message);
