@@ -128,16 +128,67 @@ export const publishBevisFile = createServerFn({ method: "POST" })
       .single();
     if (fileError) throw new Error(fileError.message);
 
-    const { anchorSha256 } = await import("@/lib/bevis/txc.server");
-    const anchor = await anchorSha256(data.sha256);
+    // Pin the bytes, then pin a manifest that points at them, then stamp the
+    // manifest's CID onto the chain and pay dust to the asset's own address.
+    const { pinFile, pinJson, gatewayUrl, MAX_IPFS_FILE_BYTES } = await import("@/lib/bevis/ipfs.server");
+    const { supabaseAdmin: admin } = await import("@/integrations/supabase/client.server");
+
+    let fileCid: string | null = null;
+    if (data.sizeBytes <= MAX_IPFS_FILE_BYTES) {
+      const { data: blob } = await admin.storage.from("bevis-files").download(data.storagePath);
+      if (blob) {
+        fileCid = await pinFile(
+          data.fileName,
+          await blob.arrayBuffer(),
+          data.encrypted ? "application/octet-stream" : data.mimeType || "application/octet-stream",
+        );
+      }
+    }
+
+    const manifest = {
+      bevis: "1",
+      service: "Blockchain-enabled Verification & Information Service",
+      chain: "txc",
+      asset: {
+        assetId: assetRow.asset_id,
+        address: assetRow.public_key,
+      },
+      file: {
+        name: data.fileName,
+        mimeType: data.mimeType ?? null,
+        sizeBytes: data.sizeBytes,
+        sha256: data.sha256,
+        encrypted: data.encrypted,
+        cid: fileCid,
+        url: fileCid ? gatewayUrl(fileCid) : null,
+      },
+      metadata: data.metadata,
+      notarisedAt: new Date().toISOString(),
+      verify: `https://app.bevis.sg/verify/${assetRow.asset_id}`,
+    };
+    const manifestCid = await pinJson(`bevis-${assetRow.asset_id}-${data.sha256.slice(0, 12)}.json`, manifest);
+
+    const { anchorBevis } = await import("@/lib/bevis/txc.server");
+    const anchor = await anchorBevis({
+      sha256Hex: data.sha256,
+      manifestCid,
+      address: assetRow.public_key,
+    });
 
     await supabase
       .from("bevis_files")
-      .update(
-        anchor.ok
-          ? { anchor_status: "anchored", anchor_txid: anchor.txid, anchored_at: new Date().toISOString() }
-          : { anchor_status: "pending", anchor_error: anchor.error },
-      )
+      .update({
+        file_cid: fileCid,
+        manifest_cid: manifestCid,
+        ...(anchor.ok
+          ? {
+              anchor_status: "anchored",
+              anchor_txid: anchor.txid,
+              anchor_address: anchor.address,
+              anchored_at: new Date().toISOString(),
+            }
+          : { anchor_status: "pending", anchor_error: anchor.error }),
+      })
       .eq("id", fileRow.id);
 
     return {
@@ -145,11 +196,14 @@ export const publishBevisFile = createServerFn({ method: "POST" })
       assetId: assetRow.asset_id,
       publicKey: assetRow.public_key,
       fileId: fileRow.id,
+      fileCid,
+      manifestCid,
       anchorStatus: anchor.ok ? "anchored" : "pending",
       txid: anchor.ok ? anchor.txid : null,
       anchorError: anchor.ok ? null : anchor.error,
     };
   });
+
 
 export const retryAnchor = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
