@@ -313,11 +313,13 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
 
     return {
       found: true as const,
+      source: "bevis" as const,
       assetId: asset.asset_id,
       publicKey: asset.public_key,
       chain: asset.chain,
       name: asset.name,
       createdAt: asset.created_at,
+      legacy: null,
       files: (files ?? []).map(f => ({
         id: f.id,
         fileName: f.file_name,
@@ -333,6 +335,53 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
       })),
     };
   });
+
+/**
+ * Second place to look: the Cold Storage Coins Admin registry (`app-v1`).
+ * Every coin we ever manufactured is a BEVIS asset, but those records were
+ * minted before this backend existed, so the scanner checks there too.
+ */
+async function lookupLegacyRecord(raw: string, base: string | null) {
+  const host = (base ?? "https://admin.coldstoragecoins.com").replace(/\/+$/, "");
+  const keys = Array.from(new Set([raw, raw.toUpperCase()]));
+
+  try {
+    const res = await fetch(`${host}/api/public/app/v1/coins/lookup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-app-version": "5.0.3" },
+      body: JSON.stringify({ keys }),
+    });
+    if (!res.ok) return null;
+    const json = (await res.json().catch(() => null)) as
+      | { coins?: Array<Record<string, unknown>> }
+      | null;
+    const coin = json?.coins?.[0];
+    if (!coin) return null;
+
+    const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
+    const publicKey = str(coin["publicKey"]) ?? raw;
+
+    return {
+      found: true as const,
+      source: "legacy" as const,
+      assetId: str(coin["assetId"]) ?? raw.toUpperCase(),
+      publicKey,
+      chain: (str(coin["blockchainCode"]) ?? "txc").toLowerCase(),
+      name: str(coin["blockchainName"]),
+      createdAt: str(coin["createdAt"]) ?? new Date(0).toISOString(),
+      legacy: {
+        blockchainName: str(coin["blockchainName"]),
+        cryptoCurrency: str(coin["cryptoCurrency"]),
+        activated: coin["activationStatus"] === true,
+        stickerImgUrl: str(coin["stickerImgUrl"]),
+        publicKeyUrl: str(coin["publicKeyUrl"]),
+      },
+      files: [] as BevisFileRecord[],
+    };
+  } catch {
+    return null;
+  }
+}
 
 /** Short-lived signed URL so the owner can download their own stored file. */
 export const getBevisFileUrl = createServerFn({ method: "POST" })
