@@ -7,6 +7,9 @@ import { Footer } from "@/components/Footer";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    mode: search["mode"] === "signup" ? ("signup" as const) : ("signin" as const),
+  }),
   head: () => ({
     meta: [
       { title: "Back up your assets — BEVIS" },
@@ -19,7 +22,8 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState<null | "google" | "apple" | "email">(null);
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const { mode: initialMode } = Route.useSearch();
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,7 +36,7 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          options: { emailRedirectTo: window.location.origin + "/settings" },
+          options: { emailRedirectTo: window.location.origin + "/welcome" },
         });
         if (error) throw error;
         if (!data.session) {
@@ -43,8 +47,10 @@ function AuthPage() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
         if (error) throw error;
+        navigate({ to: "/welcome" });
+        return;
       }
-      navigate({ to: "/settings" });
+      navigate({ to: "/assets" });
     } catch (err) {
       toast.error((err as Error).message);
       setBusy(null);
@@ -68,7 +74,7 @@ function AuthPage() {
     setBusy(provider);
     try {
       const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: window.location.origin + "/settings",
+        redirect_uri: window.location.origin + "/assets",
       });
       if (result.error) {
         toast.error(result.error.message);
@@ -78,7 +84,7 @@ function AuthPage() {
       if (result.redirected) return;
       // Wait for session before redirecting away.
       const { data } = await supabase.auth.getSession();
-      if (data.session) navigate({ to: "/settings" });
+      if (data.session) navigate({ to: "/assets" });
       else setBusy(null);
     } catch (err) {
       toast.error((err as Error).message);
@@ -89,12 +95,12 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-12">
-        <Link to="/home" className="mb-6 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="size-3.5" /> Back to your coins
+        <Link to="/" className="mb-6 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="size-3.5" /> Back
         </Link>
 
         <div className="mb-8 text-center">
-          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Cold Storage Coins</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">BEVIS</p>
           <h1 className="mt-2 font-serif text-3xl text-foreground">Back up your assets</h1>
           <p className="mt-3 text-sm text-muted-foreground">
             Your asset list lives on this device. Sign in to back it up and reach it from any phone or browser.
