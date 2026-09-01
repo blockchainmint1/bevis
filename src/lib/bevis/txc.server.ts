@@ -76,6 +76,8 @@ export type AnchorInput = {
   manifestCid?: string | null;
   /** The asset's TXC address; receives the dust output so stamps group there. */
   address?: string | null;
+  /** Whose fuel pays for this anchor: `user:<id>` or `device:<id>`. */
+  ownerKey?: string | null;
 };
 
 /**
@@ -100,10 +102,13 @@ export async function anchorBevis(input: AnchorInput): Promise<AnchorResult> {
       data: hexToBytes(data),
       address,
       dustSats: Math.round(DUST_TXC * 100_000_000),
+      ownerKey: input.ownerKey ?? null,
     });
     const txid = await rpc<string>("sendrawtransaction", [hex]);
     return { ok: true, txid, address };
   } catch (seedError) {
+    // The user funds their own anchors: never quietly spend the house wallet.
+    if (input.ownerKey) return { ok: false, error: (seedError as Error).message };
     // Fall through to the node wallet rather than lose the anchor.
     try {
       const outputs: Record<string, unknown> = { data };
@@ -128,10 +133,22 @@ function hexToBytes(hex: string): Uint8Array {
   return out;
 }
 
-/** Health read for the anchoring budget: address, balance and runway. */
-export async function anchorWalletStatus() {
+/** Health read for an anchoring budget: address, balance and runway. */
+export async function anchorWalletStatus(ownerKey?: string | null) {
   const { anchorWalletBalance } = await import("./txcWallet.server");
-  return anchorWalletBalance(rpc);
+  return anchorWalletBalance(rpc, ownerKey ?? null);
+}
+
+/** Cost of one anchor in TXC, for pricing copy and top-up guidance. */
+export async function anchorCostTxc() {
+  const { ANCHOR_COST_SATS, SATS_PER_TXC } = await import("./txcWallet.server");
+  return ANCHOR_COST_SATS / SATS_PER_TXC;
+}
+
+/** True when this owner's own address can pay for at least one more anchor. */
+export async function hasFuel(ownerKey: string) {
+  const status = await anchorWalletStatus(ownerKey);
+  return { ...status, funded: status.anchorsRemaining > 0 };
 }
 
 /** Back-compat helper: anchor a bare fingerprint with no manifest or address. */
