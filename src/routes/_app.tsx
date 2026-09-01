@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_app")({
 
 function AppLayout() {
   useAlertsAutoSync();
+  useAutoRestore();
   useEffect(() => {
     void registerForPush();
     void enablePrivacyScreen();
