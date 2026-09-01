@@ -16,6 +16,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
+export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
+
 export type BevisAssetSummary = {
   id: string;
   assetId: string;
@@ -36,7 +38,7 @@ export type BevisFileRecord = {
   sha256: string;
   encrypted: boolean;
   storagePath: string | null;
-  metadata: Record<string, unknown>;
+  metadata: Record<string, Json>;
   anchorStatus: string;
   anchorTxid: string | null;
   anchorError: string | null;
@@ -308,7 +310,7 @@ export const lookupBevisRecord = createServerFn({ method: "POST" })
         sizeBytes: Number(f.size_bytes ?? 0),
         sha256: f.sha256,
         encrypted: f.encrypted,
-        metadata: (f.metadata ?? {}) as Record<string, unknown>,
+        metadata: (f.metadata ?? {}) as Record<string, Json>,
         anchorStatus: f.anchor_status,
         anchorTxid: f.anchor_txid,
         anchoredAt: f.anchored_at,
@@ -362,7 +364,7 @@ function mapFile(f: RawFile): BevisFileRecord {
     sha256: f.sha256,
     encrypted: f.encrypted,
     storagePath: f.storage_path,
-    metadata: (f.metadata ?? {}) as Record<string, unknown>,
+    metadata: (f.metadata ?? {}) as Record<string, Json>,
     anchorStatus: f.anchor_status,
     anchorTxid: f.anchor_txid,
     anchorError: f.anchor_error,
