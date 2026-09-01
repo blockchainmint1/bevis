@@ -90,17 +90,15 @@ export async function uploadAndPublish(
   if (uploadError) throw new Error(uploadError.message);
 
   opts.onStep?.("Pinning to IPFS and stamping the TEXITcoin chain…");
-  return publishFn({
-    data: {
-      assetId: opts.assetId ?? undefined,
-      assetName: opts.assetName ?? undefined,
-      fileName: opts.file.name,
-      mimeType: opts.file.type || "application/octet-stream",
-      sizeBytes: opts.file.size,
-      sha256: opts.metadata.sha256,
-      encrypted: opts.encrypt,
-      storagePath,
-      metadata: opts.metadata as unknown as Record<string, unknown>,
-    },
-  });
+  return publishFn({ data: { ...common, storagePath } });
+}
+
+function toBase64(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  let bin = "";
+  const CHUNK = 0x8000;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(bin);
 }
