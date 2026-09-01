@@ -1,1 +1,0 @@
-DROP FUNCTION IF EXISTS public.get_cron_webhook_secret();
