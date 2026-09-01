@@ -5,6 +5,8 @@ import { FileStack, Plus, ShieldCheck, Clock, ScanLine, Archive, Trash2 } from "
 import { toast } from "sonner";
 
 import { listMyBevisAssets } from "@/lib/bevis.functions";
+import { listGuestBevisAssets } from "@/lib/bevisGuest.functions";
+import { getDeviceId } from "@/lib/deviceId";
 import { listMyRecords, deleteRecord } from "@/lib/records.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocalPortfolio } from "@/lib/localPortfolio";
@@ -34,14 +36,16 @@ function AssetsPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const listFn = useServerFn(listMyBevisAssets);
+  const guestListFn = useServerFn(listGuestBevisAssets);
   const recordsFn = useServerFn(listMyRecords);
   const removeFn = useServerFn(deleteRecord);
   const { coins: localCoins } = useLocalPortfolio();
 
+  // Guests notarise too — their records hang off the anonymous device id.
   const { data, isLoading } = useQuery({
-    queryKey: ["bevis-assets", user?.id],
-    queryFn: () => listFn(),
-    enabled: !!user,
+    queryKey: ["bevis-assets", user?.id ?? "guest"],
+    queryFn: () => (user ? listFn() : guestListFn({ data: { deviceId: getDeviceId() } })),
+    enabled: ready,
   });
 
   const { data: records, isLoading: recordsLoading } = useQuery({
@@ -54,7 +58,7 @@ function AssetsPage() {
     ? (records ?? []).map(r => ({ key: r.id, id: r.id, chain: r.chain, address: r.address, label: r.label, remote: true }))
     : localCoins.map(c => ({ key: c.id, id: c.id, chain: c.chain, address: c.address, label: c.label ?? null, remote: false }));
 
-  const loading = !!user && (isLoading || recordsLoading);
+  const loading = isLoading || (!!user && recordsLoading);
   const empty = !loading && (data?.length ?? 0) === 0 && saved.length === 0;
 
   async function removeSaved(id: string) {
@@ -77,11 +81,11 @@ function AssetsPage() {
         <ThemeToggle />
       </header>
 
-      {ready && !user && saved.length === 0 && (
+      {ready && !user && empty && (
         <EmptyState
-          title="Sign in to see your records"
-          body="Your notarised assets and saved records travel with your account."
-          action={{ label: "Sign in", onClick: () => navigate({ to: "/auth" }) }}
+          title="No records yet"
+          body="Create a record without an account — it still gets stamped onto the TEXITcoin chain. Sign in to keep it across devices."
+          action={{ label: "Create a record", onClick: () => navigate({ to: "/publish" }) }}
         />
       )}
 
