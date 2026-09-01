@@ -11,9 +11,9 @@ export function CloudBackupCard() {
       <div className="flex items-center gap-3">
         <CloudUpload className="size-5 text-primary" />
         <div className="min-w-0 flex-1">
-          <p className="text-sm text-foreground">Saved coin list</p>
+          <p className="text-sm text-foreground">Saved asset list</p>
           <p className="text-[11px] text-muted-foreground">
-            {message ?? "Your coin list syncs to your account on every launch."}
+            {message ?? "Your asset list syncs to your account on every launch."}
           </p>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { CHAINS, fmtAmount, fmtUsd, type ChainId } from "@/lib/chains";
 import { ArrowLeft, ShieldCheck, ShieldAlert } from "lucide-react";
 
 export const Route = createFileRoute("/_app/verify/$chain/$address")({
-  head: () => ({ meta: [{ title: "Verify — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Verify — BEVIS" }] }),
   component: VerifyPage,
 });
 
@@ -50,8 +50,8 @@ function VerifyPage() {
             <p className="mt-2 font-serif text-xl text-foreground">Authentic</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {"registry" in verify && verify.source === "registry"
-                ? "This coin is in the Blockchain Mint manufacturing registry."
-                : "This address is in the Blockchain Mint registry."}
+                ? "This asset is in the BEVIS manufacturing registry."
+                : "This address is in the BEVIS registry."}
             </p>
 
             {"registry" in verify && verify.registry && (
@@ -82,7 +82,7 @@ function VerifyPage() {
             <ShieldAlert className="mx-auto size-8 text-accent" />
             <p className="mt-2 font-serif text-xl text-foreground">Registry unreachable</p>
             <p className="mt-1 text-xs text-muted-foreground">
-              We couldn't reach the Blockchain Mint registry right now. This doesn't mean the coin is fake — try again shortly.
+              We couldn't reach the BEVIS registry right now. This doesn't mean the coin is fake — try again shortly.
             </p>
           </div>
         ) : (

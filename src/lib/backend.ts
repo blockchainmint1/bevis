@@ -25,7 +25,7 @@ export const BACKENDS: Record<BackendId, { id: BackendId; label: string; descrip
   legacy: {
     id: "legacy",
     label: "Legacy (retired)",
-    description: "Old Blockchain Mint registry path — kept for fallback testing only.",
+    description: "Old BEVIS registry path — kept for fallback testing only.",
     baseUrl: null,
   },
 };

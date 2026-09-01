@@ -8,7 +8,7 @@ import { BackendSwitcher } from "@/components/BackendSwitcher";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
 
 export const Route = createFileRoute("/_app/settings")({
-  head: () => ({ meta: [{ title: "Settings — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Settings — BEVIS" }] }),
   component: SettingsPage,
 });
 
@@ -36,12 +36,12 @@ function SettingsPage() {
             {ready && user ? (
               <>
                 <p className="truncate text-sm text-foreground">{user.email ?? "Signed in"}</p>
-                <p className="text-[11px] text-muted-foreground">Coin list saved — {coins.length} {coins.length === 1 ? "coin" : "coins"} on this device.</p>
+                <p className="text-[11px] text-muted-foreground">Asset list saved — {coins.length} {coins.length === 1 ? "asset" : "assets"} on this device.</p>
               </>
             ) : (
               <>
                 <p className="text-sm text-foreground">No saved list yet</p>
-                <p className="text-[11px] text-muted-foreground">{coins.length} {coins.length === 1 ? "coin lives" : "coins live"} only on this device.</p>
+                <p className="text-[11px] text-muted-foreground">{coins.length} {coins.length === 1 ? "asset lives" : "assets live"} only on this device.</p>
               </>
             )}
           </div>
@@ -51,7 +51,7 @@ function SettingsPage() {
             onClick={() => navigate({ to: "/auth" })}
             className="mt-3 w-full rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            Save my coin list
+            Save my asset list
           </button>
         )}
       </section>

@@ -15,7 +15,7 @@ import QRCode from "qrcode";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_app/coin/$id")({
-  head: () => ({ meta: [{ title: "Coin — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Asset — BEVIS" }] }),
   component: CoinPage,
 });
 
@@ -37,14 +37,14 @@ function CoinPage() {
   const cached = coin ? getCachedHistory(coin.chain, coin.address) : undefined;
 
   const { data: summary } = useQuery({
-    queryKey: ["coin-summary", coin?.chain, coin?.address],
+    queryKey: ["asset-summary", coin?.chain, coin?.address],
     queryFn: () => summaryFn({ data: { chain: coin!.chain, address: coin!.address } }),
     enabled: !!coin,
     initialData: cached?.summary,
   });
 
   const { data: txs } = useQuery({
-    queryKey: ["coin-txs", coin?.chain, coin?.address],
+    queryKey: ["asset-txs", coin?.chain, coin?.address],
     queryFn: () => txFn({ data: { chain: coin!.chain, address: coin!.address } }),
     enabled: !!coin,
     initialData: cached?.txs,
@@ -64,7 +64,7 @@ function CoinPage() {
   if (!coin) {
     return (
       <div className="px-5 pt-10 text-center">
-        <p className="text-sm text-muted-foreground">Coin not found in this device's portfolio.</p>
+        <p className="text-sm text-muted-foreground">Asset not found in this device's portfolio.</p>
         <Link to="/home" className="mt-4 inline-block text-sm text-primary hover:underline">Back to portfolio</Link>
       </div>
     );
@@ -72,10 +72,10 @@ function CoinPage() {
   const ch = CHAINS[coin.chain];
 
   function handleRemove() {
-    if (!confirm("Remove this coin from your portfolio? The coin itself is unaffected — only its watch entry is deleted.")) return;
+    if (!confirm("Remove this asset from your portfolio? The asset itself is unaffected — only its watch entry is deleted.")) return;
     if (coin) clearCachedHistory(coin.chain, coin.address);
     removeLocalCoin(id);
-    toast.success("Coin removed.");
+    toast.success("Asset removed.");
     navigate({ to: "/home" });
   }
 
@@ -239,7 +239,7 @@ function ReceiveBlock({ address, explorerUrl }: { address: string; explorerUrl: 
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle>Receive address</DialogTitle>
-            <DialogDescription>Scan this QR code to send funds to this coin.</DialogDescription>
+            <DialogDescription>Scan this QR code to send funds to this asset.</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center gap-3 py-2">
             {qrDataUrl ? (

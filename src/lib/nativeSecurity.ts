@@ -41,7 +41,7 @@ export async function requireBiometric(reason: string): Promise<boolean> {
         cancelTitle: "Cancel",
         allowDeviceCredential: true,
         iosFallbackTitle: "Use passcode",
-        androidTitle: "Blockchain Mint",
+        androidTitle: "BEVIS",
         androidSubtitle: reason,
         androidConfirmationRequired: false,
       });

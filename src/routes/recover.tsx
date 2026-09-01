@@ -10,16 +10,16 @@ export const Route = createFileRoute("/recover")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Recover your coin list — Blockchain Mint" },
+      { title: "Recover your asset list — BEVIS" },
       {
         name: "description",
         content:
-          "Moved to a new web address? Pull your saved coin list over from the Blockchain Mint domain you used before.",
+          "Moved to a new web address? Pull your saved asset list over from the BEVIS domain you used before.",
       },
-      { property: "og:title", content: "Recover your coin list — Blockchain Mint" },
+      { property: "og:title", content: "Recover your asset list — BEVIS" },
       {
         property: "og:description",
-        content: "Bring your saved coin list across from an older Blockchain Mint web address.",
+        content: "Bring your saved asset list across from an older BEVIS web address.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -81,9 +81,9 @@ function RecoverPage() {
     <div className="mx-auto max-w-md px-5 pt-12">
       <header className="mb-6">
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Recover</p>
-        <h1 className="mt-1 font-serif text-3xl text-foreground">Bring your coin list over</h1>
+        <h1 className="mt-1 font-serif text-3xl text-foreground">Bring your asset list over</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Your coin list is stored in your browser, and browsers keep that storage separate per web
+          Your asset list is stored in your browser, and browsers keep that storage separate per web
           address. If you used the app at an older address, your list is still there — pull it across
           below. Nothing but the public addresses and nicknames moves.
         </p>
@@ -96,7 +96,7 @@ function RecoverPage() {
             <div>
               <p className="text-sm text-foreground">
                 {result.imported > 0
-                  ? `Recovered ${result.imported} ${result.imported === 1 ? "coin" : "coins"}.`
+                  ? `Recovered ${result.imported} ${result.imported === 1 ? "asset" : "assets"}.`
                   : "Nothing new to recover."}
               </p>
               <p className="mt-1 text-[11px] text-muted-foreground">
@@ -109,7 +109,7 @@ function RecoverPage() {
             to="/home"
             className="mt-3 block rounded-md bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
-            View my coins
+            View my assets
           </Link>
         </section>
       )}
@@ -142,7 +142,7 @@ function RecoverPage() {
       </ul>
 
       <p className="mt-4 text-[11px] text-muted-foreground">
-        You currently have {coins.length} {coins.length === 1 ? "coin" : "coins"} on this device. The
+        You currently have {coins.length} {coins.length === 1 ? "asset" : "assets"} on this device. The
         transfer only adds coins — nothing already here is removed or overwritten.
       </p>
 

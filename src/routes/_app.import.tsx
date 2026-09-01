@@ -10,7 +10,7 @@ import {
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/import")({
-  head: () => ({ meta: [{ title: "Import old coins — Blockchain Mint" }] }),
+  head: () => ({ meta: [{ title: "Import old assets — BEVIS" }] }),
   component: ImportPage,
 });
 
@@ -84,7 +84,7 @@ function ImportPage() {
   function doImport() {
     if (!preview) return;
     const n = applyLegacyImport(preview);
-    toast.success(`Imported ${n} ${n === 1 ? "coin" : "coins"}`);
+    toast.success(`Imported ${n} ${n === 1 ? "asset" : "assets"}`);
     navigate({ to: "/home" });
   }
 
@@ -96,9 +96,9 @@ function ImportPage() {
 
       <header className="mb-6">
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Migration</p>
-        <h1 className="mt-1 font-serif text-3xl text-foreground">Import old coins</h1>
+        <h1 className="mt-1 font-serif text-3xl text-foreground">Import old assets</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          On a device that already has the previous Blockchain Mint installed, your coins are imported automatically the first time you open the new app.
+          On a device that already has the previous BEVIS installed, your coins are imported automatically the first time you open the new app.
           To bring them over by hand, paste a JSON export below.
         </p>
       </header>

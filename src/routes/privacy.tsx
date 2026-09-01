@@ -5,8 +5,8 @@ import { ArrowLeft } from "lucide-react";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy — Blockchain Mint" },
-      { name: "description", content: "How Blockchain Mint handles your data. Spoiler: as little as possible." },
+      { title: "Privacy — BEVIS" },
+      { name: "description", content: "How BEVIS handles your data. Spoiler: as little as possible." },
     ],
   }),
   component: Privacy,

@@ -104,7 +104,7 @@ export function BackendSwitcher() {
       )}
 
       <p className="mt-3 text-[11px] text-muted-foreground">
-        Affects balances, transaction history, coin verification and Coin ID lookups. Sweeping always
+        Affects balances, transaction history, asset verification and Asset ID lookups. Sweeping always
         signs locally and broadcasts through the legacy path.
       </p>
     </section>
