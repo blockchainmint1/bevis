@@ -267,7 +267,7 @@ function EmptyState() {
       <h3 className="mt-3 font-serif text-lg text-foreground">No assets yet</h3>
       <p className="mt-1 text-sm text-muted-foreground">Scan the QR on the front of an asset to start watching it.</p>
       <Link to="/scan" className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-        Scan a coin
+        Scan an asset
       </Link>
     </div>
   );

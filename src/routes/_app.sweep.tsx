@@ -148,7 +148,7 @@ function SweepPage() {
           <div className="mt-2">
             <p className="text-sm text-foreground">No asset selected.</p>
             <button onClick={() => navigate({ to: "/home" })} className="mt-2 text-xs text-primary hover:underline">
-              Pick a asset to sweep →
+              Pick an asset to sweep →
             </button>
           </div>
         )}

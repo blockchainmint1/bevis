@@ -464,7 +464,7 @@ function AuthenticityBadge({ chain, address }: { chain: ChainId; address: string
     <div className="mt-3 flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2.5">
       <XCircle className="size-5 text-destructive" />
       <p className="text-xs font-medium text-destructive">
-        Not found in the mint registry — this isn't a asset we manufactured.
+        Not found in the mint registry — this isn't an asset we manufactured.
       </p>
     </div>
   );

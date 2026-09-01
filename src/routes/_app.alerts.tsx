@@ -107,7 +107,7 @@ function AlertsPage() {
       </ul>
 
       <p className="mt-8 text-center text-[11px] text-muted-foreground">
-        Tip: tap a asset on <Link to="/home" className="text-primary hover:underline">Home</Link> to set per-asset thresholds.
+        Tip: tap an asset on <Link to="/home" className="text-primary hover:underline">Home</Link> to set per-asset thresholds.
       </p>
     </div>
   );
