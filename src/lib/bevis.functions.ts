@@ -458,6 +458,8 @@ async function lookupLegacyRecord(raw: string, base: string | null) {
         sizeBytes: number;
         sha256: string;
         encrypted: boolean;
+        fileCid: string | null;
+        manifestCid: string | null;
         metadata: Record<string, Json>;
         anchorStatus: string;
         anchorTxid: string | null;
