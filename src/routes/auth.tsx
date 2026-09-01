@@ -7,8 +7,8 @@ import { Footer } from "@/components/Footer";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    mode: search["mode"] === "signup" ? ("signup" as const) : ("signin" as const),
+  validateSearch: (search: Record<string, unknown>): { mode?: "signin" | "signup" } => ({
+    mode: search["mode"] === "signup" ? "signup" : search["mode"] === "signin" ? "signin" : undefined,
   }),
   head: () => ({
     meta: [
@@ -23,7 +23,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState<null | "google" | "apple" | "email">(null);
   const { mode: initialMode } = Route.useSearch();
-  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode ?? "signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

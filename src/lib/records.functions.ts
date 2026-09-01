@@ -119,9 +119,14 @@ export const restoreLegacyRecords = createServerFn({ method: "POST" })
       .select("address");
     const have = new Set((existingRows ?? []).map(r => r.address.toLowerCase()));
 
-    const rows: Array<{
-      user_id: string; chain: string; address: string; label: string | null; serial: string | null;
-    }> = [];
+    type Row = {
+      user_id: string;
+      chain: (typeof CHAIN_VALUES)[number];
+      address: string;
+      label: string | null;
+      serial: string | null;
+    };
+    const rows: Row[] = [];
     const seen = new Set<string>();
 
     for (const w of res.wallets) {
@@ -134,7 +139,7 @@ export const restoreLegacyRecords = createServerFn({ method: "POST" })
       seen.add(key);
       rows.push({
         user_id: context.userId,
-        chain: parsed.chain,
+        chain: parsed.chain as (typeof CHAIN_VALUES)[number],
         address: parsed.address,
         label: w.name ?? null,
         serial: w.assetId ?? null,
