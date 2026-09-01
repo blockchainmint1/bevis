@@ -19,13 +19,17 @@ export type FuelStatus =
       balanceTxc: number;
       anchorsRemaining: number;
       costPerAnchorTxc: number;
+      serviceFeeTxc: number;
+      serviceFeeUsd: number;
       funded: boolean;
     }
   | { ok: false; error: string };
 
 async function readFuel(ownerKey: string): Promise<FuelStatus> {
   try {
-    const { hasFuel, anchorCostTxc } = await import("@/lib/bevis/txc.server");
+    const { hasFuel, anchorCostTxc, serviceFeeTxc, SERVICE_FEE_USD } = await import(
+      "@/lib/bevis/txc.server"
+    );
     const status = await hasFuel(ownerKey);
     return {
       ok: true as const,
@@ -33,6 +37,8 @@ async function readFuel(ownerKey: string): Promise<FuelStatus> {
       balanceTxc: status.balanceTxc,
       anchorsRemaining: status.anchorsRemaining,
       costPerAnchorTxc: await anchorCostTxc(),
+      serviceFeeTxc: await serviceFeeTxc(),
+      serviceFeeUsd: SERVICE_FEE_USD,
       funded: status.funded,
     };
   } catch (e) {

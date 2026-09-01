@@ -238,8 +238,11 @@ function PublishPage() {
                 <section className="rounded-xl border border-destructive/50 bg-destructive/5 p-4">
                   <p className="text-sm font-semibold text-foreground">Your notarisation fuel is empty</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Stamping a record costs {fuel.costPerAnchorTxc.toFixed(5)} TXC. Send TEXITcoin to your own
-                    address below, then come back — the balance is yours and only pays for your records.
+                    Stamping a record costs {fuel.costPerAnchorTxc.toFixed(5)} TXC — a $
+                    {fuel.serviceFeeUsd.toFixed(2)} BEVIS service fee plus the chain's own costs. Send TEXITcoin
+                    to your own address below, then come back — the balance is yours and only pays for your
+                    records.
+
                   </p>
                   <button
                     onClick={() => {

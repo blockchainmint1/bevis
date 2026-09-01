@@ -28,6 +28,24 @@ const MAX_OP_RETURN_BYTES = 80;
  */
 const DUST_TXC = 0.001;
 
+/** What BEVIS charges per notarisation, in US dollars. */
+export const SERVICE_FEE_USD = 0.10;
+
+/**
+ * The service fee converted to satoshis at the live TXC price. Returns 0 when
+ * no price is available — a pricing hiccup must never block a notarisation.
+ */
+export async function serviceFeeSats(): Promise<number> {
+  try {
+    const { priceUsd } = await import("@/lib/prices.server");
+    const usd = await priceUsd("txc");
+    if (!usd || !isFinite(usd) || usd <= 0) return 0;
+    return Math.round((SERVICE_FEE_USD / usd) * 100_000_000);
+  } catch {
+    return 0;
+  }
+}
+
 type RpcOk<T> = { result: T; error: null };
 type RpcErr = { result: null; error: { code: number; message: string } };
 
@@ -106,6 +124,7 @@ export async function anchorBevis(input: AnchorInput): Promise<AnchorResult> {
       address,
       dustSats: Math.round(DUST_TXC * 100_000_000),
       ownerKey: input.ownerKey ?? null,
+      serviceFeeSats: input.ownerKey ? await serviceFeeSats() : 0,
     });
     const txid = await rpc<string>("sendrawtransaction", [hex]);
     return { ok: true, txid, address };
@@ -138,14 +157,25 @@ function hexToBytes(hex: string): Uint8Array {
 
 /** Health read for an anchoring budget: address, balance and runway. */
 export async function anchorWalletStatus(ownerKey?: string | null) {
-  const { anchorWalletBalance } = await import("./txcWallet.server");
-  return anchorWalletBalance(rpc, ownerKey ?? null);
+  const { anchorWalletBalance, ANCHOR_COST_SATS } = await import("./txcWallet.server");
+  const fee = ownerKey ? await serviceFeeSats() : 0;
+  return anchorWalletBalance(rpc, ownerKey ?? null, ANCHOR_COST_SATS + fee);
 }
 
-/** Cost of one anchor in TXC, for pricing copy and top-up guidance. */
-export async function anchorCostTxc() {
+/**
+ * Total cost of one anchor in TXC: network fee + the asset's dust inbox +
+ * the BEVIS service fee.
+ */
+export async function anchorCostTxc(withServiceFee = true) {
   const { ANCHOR_COST_SATS, SATS_PER_TXC } = await import("./txcWallet.server");
-  return ANCHOR_COST_SATS / SATS_PER_TXC;
+  const fee = withServiceFee ? await serviceFeeSats() : 0;
+  return (ANCHOR_COST_SATS + fee) / SATS_PER_TXC;
+}
+
+/** The service fee expressed in TXC at the current price (0 if unpriced). */
+export async function serviceFeeTxc() {
+  const { SATS_PER_TXC } = await import("./txcWallet.server");
+  return (await serviceFeeSats()) / SATS_PER_TXC;
 }
 
 /** True when this owner's own address can pay for at least one more anchor. */

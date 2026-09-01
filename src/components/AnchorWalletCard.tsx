@@ -43,6 +43,11 @@ export function AnchorWalletCard() {
             {data.anchorsRemaining === 1 ? "" : "s"} · {data.costPerAnchorTxc.toFixed(5)} TXC each
           </p>
           <p className="text-[11px] text-muted-foreground">
+            Each record costs ${data.serviceFeeUsd.toFixed(2)} for the BEVIS service
+            {data.serviceFeeTxc > 0 ? ` (${data.serviceFeeTxc.toFixed(5)} TXC at today's price)` : ""}, plus the
+            chain's own network fee and the asset's inbox payment.
+          </p>
+          <p className="text-[11px] text-muted-foreground">
             Send TXC to this address to top up. It's yours — nothing else spends from it.
           </p>
           <button
