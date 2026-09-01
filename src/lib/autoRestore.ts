@@ -13,12 +13,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { restoreLegacyRecords } from "@/lib/records.functions";
+import { claimGuestRecords } from "@/lib/bevisGuest.functions";
+import { getDeviceId } from "@/lib/deviceId";
 
 const flagKey = (userId: string) => `bevis.autorestore.v2.${userId}`;
 
 export function useAutoRestore() {
   const { user } = useAuth();
   const restore = useServerFn(restoreLegacyRecords);
+  const claim = useServerFn(claimGuestRecords);
   const queryClient = useQueryClient();
   const running = useRef(false);
 
@@ -30,6 +33,17 @@ export function useAutoRestore() {
     running.current = true;
     void (async () => {
       try {
+        // Anything notarised on this device while signed out becomes theirs.
+        try {
+          const claimed = await claim({ data: { deviceId: getDeviceId() } });
+          if (claimed.claimed > 0) {
+            await queryClient.invalidateQueries({ queryKey: ["bevis-assets"] });
+            toast.success(`Added ${claimed.claimed} record${claimed.claimed === 1 ? "" : "s"} you created before signing in`);
+          }
+        } catch {
+          // Non-fatal.
+        }
+
         const res = await restore();
         localStorage.setItem(flagKey(user.id), String(Date.now()));
         if (res.available && res.added > 0) {
@@ -42,5 +56,5 @@ export function useAutoRestore() {
         running.current = false;
       }
     })();
-  }, [user, restore, queryClient]);
+  }, [user, restore, claim, queryClient]);
 }
