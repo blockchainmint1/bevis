@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { inspectFile, requestLocation, fileKind, type BevisFileMetadata } from "@/lib/bevis/metadata";
 import { uploadAndPublish, type PublishOutcome } from "@/lib/bevis/publish";
 import { publishBevisFile } from "@/lib/bevis.functions";
+import { guestPublishBevisFile } from "@/lib/bevisGuest.functions";
 import { useAuth } from "@/hooks/use-auth";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -54,6 +55,7 @@ function PublishPage() {
   const { user, ready } = useAuth();
   const navigate = useNavigate();
   const publishFn = useServerFn(publishBevisFile);
+  const guestPublishFn = useServerFn(guestPublishBevisFile);
 
   const [stage, setStage] = useState<Stage>("pick");
   const [file, setFile] = useState<File | null>(null);
@@ -108,6 +110,7 @@ function PublishPage() {
           assetName: assetName.trim() || file.name,
           onStep: setStep,
         },
+        user ? undefined : (guestPublishFn as unknown as (a: { data: Record<string, unknown> }) => Promise<PublishOutcome>),
       );
       setResult(outcome);
       setStage("done");
@@ -126,23 +129,6 @@ function PublishPage() {
     setEncrypt(false);
     setAppendTo("");
     setStage("pick");
-  }
-
-  if (ready && !user) {
-    return (
-      <div className="px-5 py-16 text-center">
-        <h1 className="text-lg font-semibold">Sign in to create</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Your BEVIS records are tied to your account so only you can manage them.
-        </p>
-        <button
-          onClick={() => navigate({ to: "/auth" })}
-          className="mt-6 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          Sign in
-        </button>
-      </div>
-    );
   }
 
   return (
