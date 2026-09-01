@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, ShieldQuestion, Clock, Lock, ArrowLeft } from "lucide-react";
 
 import { lookupBevisRecord } from "@/lib/bevis.functions";
+import { getAdminBaseUrl } from "@/lib/backend";
 import { formatBytes } from "@/lib/bevis/metadata";
 import { Footer } from "@/components/Footer";
 
@@ -30,7 +31,7 @@ function PublicVerifyPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["bevis-public", key],
-    queryFn: () => lookup({ data: { key } }),
+    queryFn: () => lookup({ data: { key, adminBase: getAdminBaseUrl() } }),
   });
 
   return (
@@ -47,7 +48,8 @@ function PublicVerifyPage() {
           <h1 className="mt-4 text-xl font-semibold">No BEVIS record found</h1>
           <p className="mt-2 break-all font-mono text-xs text-muted-foreground">{data.key}</p>
           <p className="mx-auto mt-3 max-w-sm text-sm text-muted-foreground">
-            Nothing has been notarised to this asset ID or public key.
+            We checked this app's records and the Cold Storage Coins registry — nothing has been notarised to
+            this asset ID or public key.
           </p>
         </div>
       )}
@@ -63,13 +65,31 @@ function PublicVerifyPage() {
               <Row label="Asset ID" value={data.assetId} mono />
               <Row label="Public key" value={data.publicKey} mono />
               <Row label="Chain" value={data.chain.toUpperCase()} />
-              <Row label="First notarised" value={new Date(data.createdAt).toLocaleString()} />
+              {data.source === "bevis" && (
+                <Row label="First notarised" value={new Date(data.createdAt).toLocaleString()} />
+              )}
+              {data.legacy?.cryptoCurrency && <Row label="Currency" value={data.legacy.cryptoCurrency} />}
+              {data.legacy && (
+                <Row label="Activated" value={data.legacy.activated ? "Yes" : "Not yet"} />
+              )}
             </dl>
+            {data.source === "legacy" && (
+              <p className="mt-4 rounded-lg border border-border bg-secondary/50 p-3 text-xs text-muted-foreground">
+                This record comes from the Cold Storage Coins registry — it was minted before this notary service
+                existed. Files notarised from here on appear below.
+              </p>
+            )}
           </header>
 
           <h2 className="mt-7 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Notarised files ({data.files.length})
           </h2>
+
+          {data.files.length === 0 && (
+            <p className="mt-3 rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">
+              No files have been notarised to this asset yet.
+            </p>
+          )}
 
           <ul className="mt-3 space-y-3">
             {data.files.map(f => (
