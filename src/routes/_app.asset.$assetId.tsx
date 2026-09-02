@@ -51,6 +51,7 @@ function AssetDetailPage() {
   const remove = useServerFn(deleteBevisAsset);
 
   const [qr, setQr] = useState<string | null>(null);
+  const [thumbUrl, setThumbUrl] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState("");
   /** Which action/file id is currently in flight, e.g. `anchor:abc`, `download:abc`, `delete`, `rename`. */
