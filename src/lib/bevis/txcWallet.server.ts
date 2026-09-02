@@ -6,9 +6,9 @@
  * module instead builds and signs the anchor transaction locally from the
  * `SEED` mnemonic, so topping up one known address keeps notarisation alive.
  *
- * Only the node's *public* RPC surface is used: `scantxoutset` to find our
- * coins and `sendrawtransaction` to broadcast. The private key never leaves
- * this server.
+ * Public chain indexing is used to find our coins, with the node's
+ * `scantxoutset` retained as a fallback. `sendrawtransaction` broadcasts the
+ * signed transaction. The private key never leaves this server.
  *
  * Chain docs: https://texitcoin.org/build
  */
@@ -42,6 +42,8 @@ const FEE_SATS = 100_000; // 0.001 TXC
  * asset's inbox payment and our own change — at or above 0.001 TXC.
  */
 const DUST_SATS = 100_000; // 0.001 TXC
+const TXC_INDEX_URL = "https://mempool.texitcoin.org/api";
+const INDEX_TIMEOUT_MS = 10_000;
 
 
 const b58 = base58check(sha256);
@@ -175,8 +177,50 @@ const isScanBusy = (e: unknown) =>
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-/** Scan the chain's UTXO set for coins belonging to `address`. */
-export async function fetchUtxos(rpc: Rpc, address: string): Promise<Utxo[]> {
+type Fetcher = typeof fetch;
+
+type IndexedUtxo = {
+  txid?: unknown;
+  vout?: unknown;
+  value?: unknown;
+};
+
+function normalizeIndexedUtxos(value: unknown): Utxo[] {
+  if (!Array.isArray(value)) throw new Error("TEXITcoin index returned an invalid UTXO list.");
+
+  return value.map((entry: IndexedUtxo) => {
+    if (
+      typeof entry?.txid !== "string" ||
+      !/^[0-9a-f]{64}$/i.test(entry.txid) ||
+      !Number.isInteger(entry.vout) ||
+      (entry.vout as number) < 0 ||
+      !Number.isSafeInteger(entry.value) ||
+      (entry.value as number) < 0
+    ) {
+      throw new Error("TEXITcoin index returned a malformed UTXO.");
+    }
+    return { txid: entry.txid, vout: entry.vout as number, sats: entry.value as number };
+  }).sort((a, b) => b.sats - a.sats);
+}
+
+/** Read spendable outputs without taking the node's global scan lock. */
+async function fetchIndexedUtxos(fetcher: Fetcher, address: string): Promise<Utxo[]> {
+  const response = await fetcher(`${TXC_INDEX_URL}/address/${encodeURIComponent(address)}/utxo`, {
+    headers: { accept: "application/json", "user-agent": "BEVIS/1.0" },
+    signal: AbortSignal.timeout(INDEX_TIMEOUT_MS),
+  });
+  if (!response.ok) throw new Error(`TEXITcoin index returned HTTP ${response.status}.`);
+  return normalizeIndexedUtxos(await response.json());
+}
+
+/** Find coins belonging to `address`, falling back to the node when needed. */
+export async function fetchUtxos(rpc: Rpc, address: string, fetcher: Fetcher = fetch): Promise<Utxo[]> {
+  try {
+    return await fetchIndexedUtxos(fetcher, address);
+  } catch (indexError) {
+    console.warn("TEXITcoin index lookup failed; falling back to node scan:", indexError);
+  }
+
   const run = scanQueue.then(() => scanOnce(rpc, address), () => scanOnce(rpc, address));
   // Keep the queue alive even when this scan rejects.
   scanQueue = run.catch(() => undefined);
@@ -188,27 +232,21 @@ async function scanOnce(rpc: Rpc, address: string): Promise<Utxo[]> {
   const params = ["start", [{ desc: `addr(${address})` }]];
 
   let res: ScanResult | null = null;
-  for (let attempt = 0; attempt < 8; attempt++) {
+  const maxAttempts = 20;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
       res = await rpc<ScanResult>("scantxoutset", params);
       break;
     } catch (e) {
       if (!isScanBusy(e)) throw e;
-      // Someone else's scan is running: wait for it, then retry. If it is
-      // still stuck after several tries, abort the orphan and take the slot.
-      if (attempt === 5) {
-        try {
-          await rpc("scantxoutset", ["abort"]);
-        } catch {
-          /* nothing to abort */
-        }
-      }
-      if (attempt === 7) {
+      // This process cannot know who owns the node-global scan. Never abort
+      // it: that caused competing workers to repeatedly cancel one another.
+      if (attempt === maxAttempts - 1) {
         throw new Error(
-          "The TEXITcoin node is busy scanning the chain. Please try again in a moment.",
+          "TEXITcoin balance lookup is temporarily unavailable. Please try again shortly.",
         );
       }
-      await sleep(1_500);
+      await sleep(1_000 + Math.floor(Math.random() * 2_000));
     }
   }
 
