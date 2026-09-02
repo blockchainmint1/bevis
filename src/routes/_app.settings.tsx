@@ -6,6 +6,7 @@ import { LogOut, FileText, Shield, BookOpen, ExternalLink, CloudUpload, UserCirc
 import { useLocalPortfolio } from "@/lib/localPortfolio";
 import { AnchorWalletCard } from "@/components/AnchorWalletCard";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
+import { AdminLink } from "@/components/AdminLink";
 
 export const Route = createFileRoute("/_app/settings")({
   head: () => ({ meta: [{ title: "Settings — BEVIS" }] }),
@@ -55,6 +56,8 @@ function SettingsPage() {
           </button>
         )}
       </section>
+
+      <AdminLink />
 
       <AnchorWalletCard />
 
