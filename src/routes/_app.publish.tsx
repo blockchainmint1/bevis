@@ -242,17 +242,23 @@ function PublishPage() {
                     {fuel.serviceFeeUsd.toFixed(2)} BEVIS service fee plus the chain's own costs. Send TEXITcoin
                     to your own address below, then come back — the balance is yours and only pays for your
                     records.
-
                   </p>
+                  <Link
+                    to="/topup"
+                    className="mt-3 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                  >
+                    <CreditCard className="size-3.5" /> Top up with a card
+                  </Link>
                   <button
                     onClick={() => {
                       void navigator.clipboard.writeText(fuel.address);
                       toast.success("Your fuel address is copied");
                     }}
-                    className="mt-3 w-full truncate rounded-md border border-border bg-background px-3 py-2 text-left font-mono text-[11px]"
+                    className="mt-2 w-full truncate rounded-md border border-border bg-background px-3 py-2 text-left font-mono text-[11px]"
                   >
                     {fuel.address}
                   </button>
+
                   <button
                     onClick={() => void refetchFuel()}
                     className="mt-2 text-xs font-medium text-primary hover:underline"
