@@ -32,6 +32,7 @@ import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
@@ -149,6 +150,12 @@ const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
   path: '/asset/$assetId',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
   id: '/api/public/hooks/watch-tick',
   path: '/api/public/hooks/watch-tick',
@@ -185,6 +192,7 @@ export interface FileRoutesByFullPath {
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -211,6 +219,7 @@ export interface FileRoutesByTo {
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -239,6 +248,7 @@ export interface FileRoutesById {
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -293,6 +304,7 @@ export interface FileRouteTypes {
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -320,6 +332,7 @@ export interface FileRouteTypes {
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -336,6 +349,7 @@ export interface RootRouteChildren {
   WelcomeRoute: typeof WelcomeRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -501,6 +515,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssetAssetIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/watch-tick': {
       id: '/api/public/hooks/watch-tick'
       path: '/api/public/hooks/watch-tick'
@@ -564,6 +585,7 @@ const rootRouteChildren: RootRouteChildren = {
   WelcomeRoute: WelcomeRoute,
   VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
