@@ -51,6 +51,7 @@ function AssetDetailPage() {
   const remove = useServerFn(deleteBevisAsset);
 
   const [qr, setQr] = useState<string | null>(null);
+  const [thumbUrl, setThumbUrl] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState("");
   /** Which action/file id is currently in flight, e.g. `anchor:abc`, `download:abc`, `delete`, `rename`. */
@@ -86,6 +87,21 @@ function AssetDetailPage() {
     if (!data?.publicKey) return;
     void QRCode.toDataURL(data.publicKey, { margin: 1, width: 480 }).then(setQr);
   }, [data?.publicKey]);
+
+  // The headline record: the first file published to this asset. When it's an
+  // unencrypted image we show it; anything else gets a document tile.
+  const primary = data?.files?.[0] ?? null;
+  const previewable =
+    !!primary && !primary.encrypted && !!user && (primary.mimeType?.startsWith("image/") ?? false);
+
+  useEffect(() => {
+    if (!previewable || !primary) { setThumbUrl(null); return; }
+    let live = true;
+    void signUrl({ data: { fileId: primary.id } })
+      .then(r => { if (live) setThumbUrl(r.url); })
+      .catch(() => { if (live) setThumbUrl(null); });
+    return () => { live = false; };
+  }, [previewable, primary?.id, signUrl]);
 
   if (isLoading) return <p className="px-5 py-16 text-center text-sm text-muted-foreground">Loading…</p>;
   if (!data) {
@@ -171,6 +187,25 @@ function AssetDetailPage() {
       </header>
 
       <section className="mt-5 rounded-2xl border border-border bg-card p-5 text-center">
+        {primary && (
+          <div className="mx-auto mb-4 max-w-xs overflow-hidden rounded-xl border border-border bg-secondary">
+            {thumbUrl ? (
+              <img
+                src={thumbUrl}
+                alt={`Preview of ${primary.fileName}`}
+                className="max-h-64 w-full object-contain"
+                loading="lazy"
+              />
+            ) : (
+              <div className="grid h-40 place-items-center text-muted-foreground">
+                {primary.encrypted ? <Lock className="size-10" /> : <FileText className="size-10" />}
+              </div>
+            )}
+            <p className="truncate border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+              {primary.fileName}
+            </p>
+          </div>
+        )}
         {qr && <img src={qr} alt={`QR code for BEVIS public key ${data.publicKey}`} className="mx-auto size-44 rounded-lg bg-white p-2" />}
         <p className="mt-3 break-all font-mono text-[11px] text-muted-foreground">{data.publicKey}</p>
         <p className="mt-2 text-xs text-muted-foreground">
