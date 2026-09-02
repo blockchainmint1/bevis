@@ -190,3 +190,33 @@ export async function anchorSha256(sha256Hex: string): Promise<AnchorResult> {
 }
 
 
+
+export type CreditResult =
+  | { ok: true; address: string; txid: string; txcAmount: number }
+  | { ok: false; error: string; address?: string };
+
+/**
+ * Credit a card top-up: convert US dollars to TEXITcoin at the live price and
+ * send it from the house wallet to this owner's own fuel address.
+ */
+export async function creditFuelFromCard(ownerKey: string, usd: number): Promise<CreditResult> {
+  try {
+    const { deriveOwnerWallet, buildHouseSendTx, SATS_PER_TXC } = await import("./txcWallet.server");
+    const { priceUsd } = await import("@/lib/prices.server");
+
+    const price = await priceUsd("txc");
+    if (!price || !isFinite(price) || price <= 0) {
+      return { ok: false, error: "No TXC price available to convert the payment." };
+    }
+
+    const { address } = deriveOwnerWallet(ownerKey);
+    const txcAmount = usd / price;
+    const sats = Math.round(txcAmount * SATS_PER_TXC);
+
+    const hex = await buildHouseSendTx(rpc, { toAddress: address, sats });
+    const txid = await rpc<string>("sendrawtransaction", [hex]);
+    return { ok: true, address, txid, txcAmount };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message || "Could not credit the top-up." };
+  }
+}
