@@ -23,6 +23,6 @@
 - [ ] Complete go-live so real card payments credit real fuel
 
 ## TEXITcoin wallet reliability (Sep 2026)
-- [ ] Replace routine node-wide UTXO scans with indexed address lookups
-- [ ] Keep a bounded, non-destructive node scan fallback
-- [ ] Verify indexed results, fallback behavior, and malformed-response handling
+- [x] Replace routine node-wide UTXO scans with indexed address lookups
+- [x] Keep a bounded, non-destructive node scan fallback
+- [x] Verify indexed results, fallback behavior, and malformed-response handling
