@@ -48,8 +48,14 @@ export function AnchorWalletCard() {
             chain's own network fee and the asset's inbox payment.
           </p>
           <p className="text-[11px] text-muted-foreground">
-            Send TXC to this address to top up. It's yours — nothing else spends from it.
+            Top up with a card, or send TXC straight to this address. It's yours — nothing else spends from it.
           </p>
+          <Link
+            to="/topup"
+            className="flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            <CreditCard className="size-3.5" /> Top up with a card
+          </Link>
           <button
             onClick={() => {
               void navigator.clipboard.writeText(data.address);
@@ -60,6 +66,7 @@ export function AnchorWalletCard() {
             <span className="min-w-0 flex-1 truncate font-mono text-[11px] text-foreground">{data.address}</span>
             <Copy className="size-3.5 shrink-0 text-muted-foreground" />
           </button>
+
         </div>
       ) : (
         <p className="mt-2 text-xs text-destructive">{data.error}</p>
