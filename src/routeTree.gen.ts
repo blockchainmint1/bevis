@@ -21,6 +21,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
+import { Route as AppTopupRouteImport } from './routes/_app.topup'
 import { Route as AppShopRouteImport } from './routes/_app.shop'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppScanRouteImport } from './routes/_app.scan'
@@ -94,6 +95,11 @@ const VerifyKeyRoute = VerifyKeyRouteImport.update({
   id: '/verify/$key',
   path: '/verify/$key',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppTopupRoute = AppTopupRouteImport.update({
+  id: '/topup',
+  path: '/topup',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppShopRoute = AppShopRouteImport.update({
   id: '/shop',
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
+  '/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
+  '/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
@@ -243,6 +251,7 @@ export interface FileRoutesById {
   '/_app/scan': typeof AppScanRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/shop': typeof AppShopRoute
+  '/_app/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
@@ -272,6 +281,7 @@ export interface FileRouteTypes {
     | '/scan'
     | '/settings'
     | '/shop'
+    | '/topup'
     | '/verify/$key'
     | '/asset/$assetId'
     | '/coin/$id'
@@ -299,6 +309,7 @@ export interface FileRouteTypes {
     | '/scan'
     | '/settings'
     | '/shop'
+    | '/topup'
     | '/verify/$key'
     | '/asset/$assetId'
     | '/coin/$id'
@@ -327,6 +338,7 @@ export interface FileRouteTypes {
     | '/_app/scan'
     | '/_app/settings'
     | '/_app/shop'
+    | '/_app/topup'
     | '/verify/$key'
     | '/_app/asset/$assetId'
     | '/_app/coin/$id'
@@ -437,6 +449,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/verify/$key'
       preLoaderRoute: typeof VerifyKeyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/topup': {
+      id: '/_app/topup'
+      path: '/topup'
+      fullPath: '/topup'
+      preLoaderRoute: typeof AppTopupRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/shop': {
       id: '/_app/shop'
@@ -549,6 +568,7 @@ interface AppRouteChildren {
   AppScanRoute: typeof AppScanRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppShopRoute: typeof AppShopRoute
+  AppTopupRoute: typeof AppTopupRoute
   AppAssetAssetIdRoute: typeof AppAssetAssetIdRoute
   AppCoinIdRoute: typeof AppCoinIdRoute
   AppVerifyChainAddressRoute: typeof AppVerifyChainAddressRoute
@@ -564,6 +584,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppScanRoute: AppScanRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppShopRoute: AppShopRoute,
+  AppTopupRoute: AppTopupRoute,
   AppAssetAssetIdRoute: AppAssetAssetIdRoute,
   AppCoinIdRoute: AppCoinIdRoute,
   AppVerifyChainAddressRoute: AppVerifyChainAddressRoute,
