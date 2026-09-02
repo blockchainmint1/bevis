@@ -85,16 +85,24 @@ function apiBases(): string[] {
   return [mempool && `${mempool}/api`, explorer && `${explorer}/api`].filter(Boolean) as string[];
 }
 
+/**
+ * Public explorer base. We link to the mempool explorer because it renders
+ * OP_RETURN payloads — the classic explorer hides them, which makes a BEVIS
+ * anchor impossible to check by eye.
+ */
+function explorerBase(): string {
+  const clean = (v?: string) => (v ?? "").trim().replace(/\/+$/, "");
+  return clean(process.env["TXC_MEMPOOL"]) || "https://mempool.texitcoin.org";
+}
+
 /** Public block-explorer page for a transaction. */
 export function explorerTxUrl(txid: string): string {
-  const base = (process.env["TXC_EXPLORER"] ?? "https://explorer.texitcoin.org").trim().replace(/\/+$/, "");
-  return `${base}/tx/${txid}`;
+  return `${explorerBase()}/tx/${txid}`;
 }
 
 /** Public block-explorer page for an address. */
 export function explorerAddressUrl(address: string): string {
-  const base = (process.env["TXC_EXPLORER"] ?? "https://explorer.texitcoin.org").trim().replace(/\/+$/, "");
-  return `${base}/address/${address}`;
+  return `${explorerBase()}/address/${address}`;
 }
 
 function gateway(cid: string): string {
