@@ -6,9 +6,11 @@
  * what's in it, and how many more records that buys.
  */
 
-import { Fuel, Copy, RefreshCw } from "lucide-react";
+import { Fuel, Copy, RefreshCw, CreditCard } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useFuel } from "@/lib/useFuel";
+
 
 export function AnchorWalletCard() {
   const { data, isFetching, refetch } = useFuel();
