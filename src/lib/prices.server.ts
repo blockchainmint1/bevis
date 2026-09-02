@@ -19,7 +19,14 @@ const CMC_SYMBOLS: Partial<Record<ChainId, string>> = {
   bnb: "BNB",
   ada: "ADA",
   sol: "SOL",
-  txc: "TXC",
+};
+
+/**
+ * CMC numeric asset ids — preferred over symbols for small caps where the
+ * ticker is ambiguous (TEXITcoin is CMC id 32744).
+ */
+const CMC_IDS: Partial<Record<ChainId, number>> = {
+  txc: 32744,
 };
 
 const CG_IDS: Partial<Record<ChainId, string>> = {
@@ -42,6 +49,7 @@ const TTL_MS = 60_000;
 const MISS_TTL_MS = 5_000;
 
 let cmcInflight: Promise<Map<string, number>> | null = null;
+let cmcIdInflight: Promise<Map<number, number>> | null = null;
 
 async function fetchCmcBatch(symbols: string[]): Promise<Map<string, number>> {
   const out = new Map<string, number>();
@@ -57,6 +65,27 @@ async function fetchCmcBatch(symbols: string[]): Promise<Map<string, number>> {
     for (const [sym, arr] of Object.entries(json.data ?? {})) {
       const p = arr?.[0]?.quote?.USD?.price;
       if (typeof p === "number") out.set(sym.toUpperCase(), p);
+    }
+  } catch {
+    /* fall through to CoinGecko */
+  }
+  return out;
+}
+
+async function fetchCmcByIds(ids: number[]): Promise<Map<number, number>> {
+  const out = new Map<number, number>();
+  const key = process.env.CMC_API;
+  if (!key || ids.length === 0) return out;
+  try {
+    const url = `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${ids.join(",")}&convert=USD`;
+    const res = await fetch(url, { headers: { "X-CMC_PRO_API_KEY": key, accept: "application/json" } });
+    if (!res.ok) return out;
+    const json = (await res.json()) as {
+      data?: Record<string, { quote?: { USD?: { price?: number } } }>;
+    };
+    for (const [id, v] of Object.entries(json.data ?? {})) {
+      const p = v?.quote?.USD?.price;
+      if (typeof p === "number") out.set(Number(id), p);
     }
   } catch {
     /* fall through to CoinGecko */
@@ -114,30 +143,44 @@ export async function priceUsd(chain: ChainId): Promise<number | null> {
 
 
 
+  const trackedChains = Array.from(
+    new Set([...Object.keys(CMC_SYMBOLS), ...Object.keys(CMC_IDS)]),
+  ) as ChainId[];
+
   // Batch all chains we know about in one CMC call to amortize the key spend.
   if (!cmcInflight) {
-    const allChains = Object.keys(CMC_SYMBOLS) as ChainId[];
-    const symbols = allChains.map(c => CMC_SYMBOLS[c]!).filter(Boolean);
+    const symbols = trackedChains.map(c => CMC_SYMBOLS[c]!).filter(Boolean);
     cmcInflight = fetchCmcBatch(symbols);
     // Clear after this microtask batch.
     queueMicrotask(() => { cmcInflight = null; });
   }
-  const cmc = await cmcInflight;
+  if (!cmcIdInflight) {
+    const ids = trackedChains.map(c => CMC_IDS[c]!).filter(Boolean);
+    cmcIdInflight = fetchCmcByIds(ids);
+    queueMicrotask(() => { cmcIdInflight = null; });
+  }
+  const [cmc, cmcById] = await Promise.all([cmcInflight, cmcIdInflight]);
 
   // Anything CMC didn't return → try CoinGecko in one batched call.
   const missing: ChainId[] = [];
-  for (const c of Object.keys(CMC_SYMBOLS) as ChainId[]) {
+  for (const c of trackedChains) {
     const sym = CMC_SYMBOLS[c];
+    const cmcId = CMC_IDS[c];
     if (sym && cmc.has(sym)) continue;
+    if (cmcId && cmcById.has(cmcId)) continue;
     if (CG_IDS[c]) missing.push(c);
   }
   const cg = missing.length ? await fetchCoinGecko(missing.map(c => CG_IDS[c]!)) : new Map();
 
   // Hydrate cache for every chain we tried, so subsequent calls hit cache.
-  for (const c of Object.keys(CMC_SYMBOLS) as ChainId[]) {
+  for (const c of trackedChains) {
     const sym = CMC_SYMBOLS[c];
+    const cmcId = CMC_IDS[c];
     const id = CG_IDS[c];
-    const price = (sym && cmc.get(sym)) ?? (id ? cg.get(id) ?? null : null);
+    const price =
+      (cmcId ? cmcById.get(cmcId) : undefined) ??
+      (sym ? cmc.get(sym) : undefined) ??
+      (id ? cg.get(id) ?? null : null);
     // Never cache a miss for long — a rate-limited lookup must not wedge
     // pricing (and with it, paid top-ups) for a whole minute.
     cache.set(c, { price, expires: now + (price === null ? MISS_TTL_MS : TTL_MS) });
