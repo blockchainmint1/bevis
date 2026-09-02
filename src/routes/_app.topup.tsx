@@ -62,19 +62,24 @@ function TopupPicker() {
   const configured = paymentsConfigured();
 
   const fetchClientSecret = async (): Promise<string> => {
-    const ownerKey = user ? `user:${user.id}` : `device:${getDeviceId()}`;
-    const result = await createFuelCheckout({
-      data: {
-        priceId: priceId!,
-        ownerKey,
-        ...(user?.email ? { customerEmail: user.email } : {}),
-        returnUrl: `${window.location.origin}/topup?session_id={CHECKOUT_SESSION_ID}`,
-        environment: getStripeEnvironment(),
-      },
-    });
-    if ("error" in result) throw new Error(result.error);
-    if (!result.clientSecret) throw new Error("Checkout could not be started.");
-    return result.clientSecret;
+    try {
+      const ownerKey = user ? `user:${user.id}` : `device:${getDeviceId()}`;
+      const result = await createFuelCheckout({
+        data: {
+          priceId: priceId!,
+          ownerKey,
+          ...(user?.email ? { customerEmail: user.email } : {}),
+          returnUrl: `${window.location.origin}/topup?session_id={CHECKOUT_SESSION_ID}`,
+          environment: getStripeEnvironment(),
+        },
+      });
+      if ("error" in result) throw new Error(result.error);
+      if (!result.clientSecret) throw new Error("Checkout could not be started.");
+      return result.clientSecret;
+    } catch (e) {
+      setError((e as Error).message || "Checkout could not be started.");
+      throw e;
+    }
   };
 
   return (

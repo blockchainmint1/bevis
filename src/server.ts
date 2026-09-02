@@ -45,22 +45,24 @@ const SECURITY_HEADERS: Record<string, string> = {
   "x-content-type-options": "nosniff",
   "x-frame-options": "DENY",
   "referrer-policy": "strict-origin-when-cross-origin",
-  "permissions-policy": "camera=(self), microphone=(), geolocation=(), payment=()",
-  "cross-origin-opener-policy": "same-origin",
+  "permissions-policy": "camera=(self), microphone=(), geolocation=(), payment=(self \"https://js.stripe.com\" \"https://checkout.stripe.com\")",
+  "cross-origin-opener-policy": "same-origin-allow-popups",
   "content-security-policy": [
     "default-src 'self'",
     "base-uri 'self'",
     "object-src 'none'",
     "frame-ancestors 'none'",
-    "form-action 'self'",
+    "form-action 'self' https://checkout.stripe.com https://hooks.stripe.com",
     "img-src 'self' data: blob: https:",
     "media-src 'self' blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     // 'unsafe-inline' on script-src is required for the theme bootstrap
     // emitted in __root.tsx. Wasm-unsafe-eval is needed for noble crypto.
-    "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+    // Stripe.js must load from Stripe's own origins for card checkout.
+    "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://js.stripe.com https://*.js.stripe.com",
     "connect-src 'self' https: wss:",
+    "frame-src 'self' https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com https://checkout.stripe.com",
     "worker-src 'self' blob:",
     "manifest-src 'self'",
   ].join("; "),
