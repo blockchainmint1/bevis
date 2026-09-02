@@ -38,6 +38,8 @@ const CG_IDS: Partial<Record<ChainId, string>> = {
 type CacheEntry = { price: number | null; expires: number };
 const cache = new Map<ChainId, CacheEntry>();
 const TTL_MS = 60_000;
+/** A failed lookup is retried quickly; only real prices are cached for long. */
+const MISS_TTL_MS = 5_000;
 
 let cmcInflight: Promise<Map<string, number>> | null = null;
 
