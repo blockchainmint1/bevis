@@ -171,6 +171,25 @@ function AssetDetailPage() {
       </header>
 
       <section className="mt-5 rounded-2xl border border-border bg-card p-5 text-center">
+        {primary && (
+          <div className="mx-auto mb-4 max-w-xs overflow-hidden rounded-xl border border-border bg-secondary">
+            {thumbUrl ? (
+              <img
+                src={thumbUrl}
+                alt={`Preview of ${primary.fileName}`}
+                className="max-h-64 w-full object-contain"
+                loading="lazy"
+              />
+            ) : (
+              <div className="grid h-40 place-items-center text-muted-foreground">
+                {primary.encrypted ? <Lock className="size-10" /> : <FileText className="size-10" />}
+              </div>
+            )}
+            <p className="truncate border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+              {primary.fileName}
+            </p>
+          </div>
+        )}
         {qr && <img src={qr} alt={`QR code for BEVIS public key ${data.publicKey}`} className="mx-auto size-44 rounded-lg bg-white p-2" />}
         <p className="mt-3 break-all font-mono text-[11px] text-muted-foreground">{data.publicKey}</p>
         <p className="mt-2 text-xs text-muted-foreground">
