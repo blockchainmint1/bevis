@@ -41,7 +41,7 @@ export const CHAINS: Record<
   ada:      { id: "ada",      name: "Cardano",     ticker: "ADA", decimals: 6,  color: "#0033ad", explorer: a => `https://cardanoscan.io/address/${a}`,        liveInPhase1: false },
   sol:      { id: "sol",      name: "Solana",      ticker: "SOL", decimals: 9,  color: "#9945ff", explorer: a => `https://solscan.io/account/${a}`,            liveInPhase1: false },
   bnb:      { id: "bnb",      name: "BNB Beacon",  ticker: "BNB", decimals: 8,  color: "#f0b90b", explorer: a => `https://explorer.bnbchain.org/address/${a}`, liveInPhase1: false },
-  txc:      { id: "txc",      name: "TEXITcoin",   ticker: "TXC", decimals: 8,  color: "#bf2e1e", explorer: a => `https://explorer.texitcoin.org/address/${a}`, liveInPhase1: true  },
+  txc:      { id: "txc",      name: "TEXITcoin",   ticker: "TXC", decimals: 8,  color: "#bf2e1e", explorer: a => `https://mempool.texitcoin.org/address/${a}`, liveInPhase1: true  },
   iskander: { id: "iskander", name: "Iskander",    ticker: "ISK", decimals: 8,  color: "#2e8bbf", explorer: a => `https://mempool.iskandercoin.com/address/${a}`, liveInPhase1: true  },
 };
 
