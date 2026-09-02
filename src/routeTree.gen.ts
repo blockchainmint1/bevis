@@ -31,10 +31,12 @@ import { Route as AppImportRouteImport } from './routes/_app.import'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
+import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
+import { Route as ApiPublicCronHouseBalanceRouteImport } from './routes/api/public/cron/house-balance'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
 const WelcomeRoute = WelcomeRouteImport.update({
@@ -146,6 +148,11 @@ const AppAlertsRoute = AppAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCoinIdRoute = AppCoinIdRouteImport.update({
   id: '/coin/$id',
   path: '/coin/$id',
@@ -167,6 +174,12 @@ const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
   path: '/api/public/hooks/watch-tick',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronHouseBalanceRoute =
+  ApiPublicCronHouseBalanceRouteImport.update({
+    id: '/api/public/cron/house-balance',
+    path: '/api/public/cron/house-balance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
   id: '/verify/$chain/$address',
   path: '/verify/$chain/$address',
@@ -184,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin': typeof AppAdminRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
@@ -198,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -212,6 +227,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin': typeof AppAdminRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
@@ -226,6 +242,7 @@ export interface FileRoutesByTo {
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -242,6 +259,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/_app/admin': typeof AppAdminRoute
   '/_app/alerts': typeof AppAlertsRoute
   '/_app/assets': typeof AppAssetsRoute
   '/_app/home': typeof AppHomeRoute
@@ -256,6 +274,7 @@ export interface FileRoutesById {
   '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -272,6 +291,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
+    | '/admin'
     | '/alerts'
     | '/assets'
     | '/home'
@@ -286,6 +306,7 @@ export interface FileRouteTypes {
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
+    | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -300,6 +321,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
+    | '/admin'
     | '/alerts'
     | '/assets'
     | '/home'
@@ -314,6 +336,7 @@ export interface FileRouteTypes {
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
+    | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
   id:
@@ -329,6 +352,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
+    | '/_app/admin'
     | '/_app/alerts'
     | '/_app/assets'
     | '/_app/home'
@@ -343,6 +367,7 @@ export interface FileRouteTypes {
     | '/_app/asset/$assetId'
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
+    | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
@@ -360,6 +385,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   WelcomeRoute: typeof WelcomeRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
+  ApiPublicCronHouseBalanceRoute: typeof ApiPublicCronHouseBalanceRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -520,6 +546,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAlertsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/coin/$id': {
       id: '/_app/coin/$id'
       path: '/coin/$id'
@@ -548,6 +581,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksWatchTickRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/house-balance': {
+      id: '/api/public/cron/house-balance'
+      path: '/api/public/cron/house-balance'
+      fullPath: '/api/public/cron/house-balance'
+      preLoaderRoute: typeof ApiPublicCronHouseBalanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/verify/$chain/$address': {
       id: '/_app/verify/$chain/$address'
       path: '/verify/$chain/$address'
@@ -559,6 +599,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppAlertsRoute: typeof AppAlertsRoute
   AppAssetsRoute: typeof AppAssetsRoute
   AppHomeRoute: typeof AppHomeRoute
@@ -575,6 +616,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppAlertsRoute: AppAlertsRoute,
   AppAssetsRoute: AppAssetsRoute,
   AppHomeRoute: AppHomeRoute,
@@ -605,6 +647,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   WelcomeRoute: WelcomeRoute,
   VerifyKeyRoute: VerifyKeyRoute,
+  ApiPublicCronHouseBalanceRoute: ApiPublicCronHouseBalanceRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }

@@ -63,6 +63,14 @@ async function creditFuelTopup(session: any, env: StripeEnv) {
         : { status: "failed", error: result.error },
     )
     .eq("session_id", session.id);
+
+  // Every payout drains the house wallet — warn the operator when it runs low.
+  try {
+    const { checkHouseWallet } = await import("@/lib/bevis/houseAlert.server");
+    await checkHouseWallet(false);
+  } catch (e) {
+    console.error("house wallet check failed:", e);
+  }
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {

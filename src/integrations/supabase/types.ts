@@ -474,6 +474,27 @@ export type Database = {
         }
         Relationships: []
       }
+      ops_alert_state: {
+        Row: {
+          key: string
+          last_sent_at: string
+          last_value: number | null
+          note: string | null
+        }
+        Insert: {
+          key: string
+          last_sent_at?: string
+          last_value?: number | null
+          note?: string | null
+        }
+        Update: {
+          key?: string
+          last_sent_at?: string
+          last_value?: number | null
+          note?: string | null
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           created_at: string
