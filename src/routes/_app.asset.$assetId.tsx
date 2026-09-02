@@ -87,6 +87,21 @@ function AssetDetailPage() {
     void QRCode.toDataURL(data.publicKey, { margin: 1, width: 480 }).then(setQr);
   }, [data?.publicKey]);
 
+  // The headline record: the first file published to this asset. When it's an
+  // unencrypted image we show it; anything else gets a document tile.
+  const primary = data?.files?.[0] ?? null;
+  const previewable =
+    !!primary && !primary.encrypted && !!user && (primary.mimeType?.startsWith("image/") ?? false);
+
+  useEffect(() => {
+    if (!previewable || !primary) { setThumbUrl(null); return; }
+    let live = true;
+    void signUrl({ data: { fileId: primary.id } })
+      .then(r => { if (live) setThumbUrl(r.url); })
+      .catch(() => { if (live) setThumbUrl(null); });
+    return () => { live = false; };
+  }, [previewable, primary?.id, signUrl]);
+
   if (isLoading) return <p className="px-5 py-16 text-center text-sm text-muted-foreground">Loading…</p>;
   if (!data) {
     return (
