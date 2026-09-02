@@ -8,11 +8,11 @@ const TXID_B = "b".repeat(64);
 describe("fetchUtxos", () => {
   test("uses and sorts indexed UTXOs without scanning the node", async () => {
     let rpcCalls = 0;
-    const rpc = async <T>() => {
+    const rpc = async () => {
       rpcCalls += 1;
-      return {} as T;
+      return {};
     };
-    const fetcher: typeof fetch = async () =>
+    const fetcher = async () =>
       Response.json([
         { txid: TXID_A, vout: 0, value: 100 },
         { txid: TXID_B, vout: 2, value: 500 },
@@ -26,14 +26,12 @@ describe("fetchUtxos", () => {
   });
 
   test("falls back to the node when the index is unavailable", async () => {
-    const calls: Array<{ method: string; params?: unknown[] }> = [];
-    const rpc = async <T>(method: string, params?: unknown[]) => {
+    const calls = [];
+    const rpc = async (method, params) => {
       calls.push({ method, params });
-      return {
-        unspents: [{ txid: TXID_A, vout: 1, amount: 0.25 }],
-      } as T;
+      return { unspents: [{ txid: TXID_A, vout: 1, amount: 0.25 }] };
     };
-    const fetcher: typeof fetch = async () => new Response("down", { status: 503 });
+    const fetcher = async () => new Response("down", { status: 503 });
 
     await expect(fetchUtxos(rpc, ADDRESS, fetcher)).resolves.toEqual([
       { txid: TXID_A, vout: 1, sats: 25_000_000 },
@@ -45,11 +43,11 @@ describe("fetchUtxos", () => {
 
   test("rejects malformed index data and uses the node fallback", async () => {
     let rpcCalls = 0;
-    const rpc = async <T>() => {
+    const rpc = async () => {
       rpcCalls += 1;
-      return { unspents: [] } as T;
+      return { unspents: [] };
     };
-    const fetcher: typeof fetch = async () =>
+    const fetcher = async () =>
       Response.json([{ txid: "not-a-txid", vout: -1, value: "100" }]);
 
     await expect(fetchUtxos(rpc, ADDRESS, fetcher)).resolves.toEqual([]);
