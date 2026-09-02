@@ -161,16 +161,62 @@ export type Utxo = { txid: string; vout: number; sats: number };
 
 type Rpc = <T>(method: string, params?: unknown[]) => Promise<T>;
 
+/**
+ * `scantxoutset` is a node-global, single-slot operation: a second caller gets
+ * "Scan already in progress". Two guards keep that from surfacing as an error:
+ * an in-process queue so our own calls never overlap, and a wait-and-retry
+ * loop for scans started by another worker (or a previous request that died
+ * mid-scan, which we abort as a last resort).
+ */
+let scanQueue: Promise<unknown> = Promise.resolve();
+
+const isScanBusy = (e: unknown) =>
+  /scan already in progress/i.test(e instanceof Error ? e.message : String(e));
+
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
 /** Scan the chain's UTXO set for coins belonging to `address`. */
 export async function fetchUtxos(rpc: Rpc, address: string): Promise<Utxo[]> {
-  const res = await rpc<{ unspents?: Array<{ txid: string; vout: number; amount: number }> }>(
-    "scantxoutset",
-    ["start", [{ desc: `addr(${address})` }]],
-  );
-  return (res.unspents ?? [])
+  const run = scanQueue.then(() => scanOnce(rpc, address), () => scanOnce(rpc, address));
+  // Keep the queue alive even when this scan rejects.
+  scanQueue = run.catch(() => undefined);
+  return run;
+}
+
+async function scanOnce(rpc: Rpc, address: string): Promise<Utxo[]> {
+  type ScanResult = { unspents?: Array<{ txid: string; vout: number; amount: number }> };
+  const params = ["start", [{ desc: `addr(${address})` }]];
+
+  let res: ScanResult | null = null;
+  for (let attempt = 0; attempt < 8; attempt++) {
+    try {
+      res = await rpc<ScanResult>("scantxoutset", params);
+      break;
+    } catch (e) {
+      if (!isScanBusy(e)) throw e;
+      // Someone else's scan is running: wait for it, then retry. If it is
+      // still stuck after several tries, abort the orphan and take the slot.
+      if (attempt === 5) {
+        try {
+          await rpc("scantxoutset", ["abort"]);
+        } catch {
+          /* nothing to abort */
+        }
+      }
+      if (attempt === 7) {
+        throw new Error(
+          "The TEXITcoin node is busy scanning the chain. Please try again in a moment.",
+        );
+      }
+      await sleep(1_500);
+    }
+  }
+
+  return (res?.unspents ?? [])
     .map(u => ({ txid: u.txid, vout: u.vout, sats: Math.round(u.amount * SATS) }))
     .sort((a, b) => b.sats - a.sats);
 }
+
 
 type Output = { script: Uint8Array; sats: number };
 
