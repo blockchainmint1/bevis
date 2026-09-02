@@ -35,6 +35,7 @@ import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
+import { Route as ApiPublicCronHouseBalanceRouteImport } from './routes/api/public/cron/house-balance'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
 const WelcomeRoute = WelcomeRouteImport.update({
@@ -167,6 +168,12 @@ const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
   path: '/api/public/hooks/watch-tick',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronHouseBalanceRoute =
+  ApiPublicCronHouseBalanceRouteImport.update({
+    id: '/api/public/cron/house-balance',
+    path: '/api/public/cron/house-balance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
   id: '/verify/$chain/$address',
   path: '/verify/$chain/$address',
@@ -198,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -226,6 +234,7 @@ export interface FileRoutesByTo {
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -256,6 +265,7 @@ export interface FileRoutesById {
   '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
+    | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -314,6 +325,7 @@ export interface FileRouteTypes {
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
+    | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
   id:
@@ -343,6 +355,7 @@ export interface FileRouteTypes {
     | '/_app/asset/$assetId'
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
+    | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
@@ -360,6 +373,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   WelcomeRoute: typeof WelcomeRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
+  ApiPublicCronHouseBalanceRoute: typeof ApiPublicCronHouseBalanceRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -548,6 +562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksWatchTickRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/house-balance': {
+      id: '/api/public/cron/house-balance'
+      path: '/api/public/cron/house-balance'
+      fullPath: '/api/public/cron/house-balance'
+      preLoaderRoute: typeof ApiPublicCronHouseBalanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/verify/$chain/$address': {
       id: '/_app/verify/$chain/$address'
       path: '/verify/$chain/$address'
@@ -605,6 +626,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   WelcomeRoute: WelcomeRoute,
   VerifyKeyRoute: VerifyKeyRoute,
+  ApiPublicCronHouseBalanceRoute: ApiPublicCronHouseBalanceRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
