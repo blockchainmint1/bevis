@@ -58,6 +58,10 @@ function rpcUrl(): string {
 async function rpc<T>(method: string, params: unknown[] = []): Promise<T> {
   const user = process.env["TXC_RPC_USER"] ?? "";
   const pass = process.env["TXC_RPC_PASSWORD"] ?? "";
+  // A full UTXO-set scan can legitimately take longer than an ordinary RPC.
+  // Let it finish so the node does not keep an orphaned scan lock after our
+  // request has already timed out.
+  const timeoutMs = method === "scantxoutset" ? 120_000 : 20_000;
   const res = await fetch(rpcUrl(), {
     method: "POST",
     headers: {
@@ -65,7 +69,7 @@ async function rpc<T>(method: string, params: unknown[] = []): Promise<T> {
       authorization: `Basic ${btoa(`${user}:${pass}`)}`,
     },
     body: JSON.stringify({ jsonrpc: "1.0", id: "bevis", method, params }),
-    signal: AbortSignal.timeout(20_000),
+    signal: AbortSignal.timeout(timeoutMs),
   });
   const json = (await res.json().catch(() => null)) as RpcOk<T> | RpcErr | null;
   if (!json) throw new Error(`TXC RPC ${method}: HTTP ${res.status}`);
