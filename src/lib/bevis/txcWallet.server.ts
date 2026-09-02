@@ -213,7 +213,7 @@ function normalizeIndexedUtxos(value: unknown): Utxo[] {
 
 /** Read spendable outputs without taking the node's global scan lock. */
 async function fetchIndexedUtxos(fetcher: Fetcher, address: string): Promise<Utxo[]> {
-  const response = await fetcher(`${TXC_INDEX_URL}/address/${encodeURIComponent(address)}/utxo`, {
+  const response = await fetcher(`${indexApiBase()}/address/${encodeURIComponent(address)}/utxo`, {
     headers: { accept: "application/json", "user-agent": "BEVIS/1.0" },
     signal: AbortSignal.timeout(INDEX_TIMEOUT_MS),
   });
