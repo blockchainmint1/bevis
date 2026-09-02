@@ -42,7 +42,15 @@ const FEE_SATS = 100_000; // 0.001 TXC
  * asset's inbox payment and our own change — at or above 0.001 TXC.
  */
 const DUST_SATS = 100_000; // 0.001 TXC
-const TXC_INDEX_URL = "https://mempool.texitcoin.org/api";
+/**
+ * Indexer base. `TXC_MEMPOOL` lets us point at our own mempool/Esplora
+ * instance; it falls back to the public one. Read at call time — env is
+ * injected per request, not at module load.
+ */
+function indexApiBase(): string {
+  const custom = (process.env["TXC_MEMPOOL"] ?? "").trim().replace(/\/+$/, "");
+  return `${custom || "https://mempool.texitcoin.org"}/api`;
+}
 const INDEX_TIMEOUT_MS = 10_000;
 
 
@@ -205,7 +213,7 @@ function normalizeIndexedUtxos(value: unknown): Utxo[] {
 
 /** Read spendable outputs without taking the node's global scan lock. */
 async function fetchIndexedUtxos(fetcher: Fetcher, address: string): Promise<Utxo[]> {
-  const response = await fetcher(`${TXC_INDEX_URL}/address/${encodeURIComponent(address)}/utxo`, {
+  const response = await fetcher(`${indexApiBase()}/address/${encodeURIComponent(address)}/utxo`, {
     headers: { accept: "application/json", "user-agent": "BEVIS/1.0" },
     signal: AbortSignal.timeout(INDEX_TIMEOUT_MS),
   });
