@@ -3,8 +3,9 @@ import { useCallback, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import {
   FileUp, Camera, Video, Mic, ShieldCheck, ShieldOff, Loader2, CheckCircle2,
-  AlertTriangle, FileText, Image as ImageIcon, FileAudio, FileVideo, MapPin, ArrowLeft,
+  AlertTriangle, FileText, Image as ImageIcon, FileAudio, FileVideo, MapPin, ArrowLeft, CreditCard,
 } from "lucide-react";
+
 import { toast } from "sonner";
 
 import { inspectFile, requestLocation, fileKind, type BevisFileMetadata } from "@/lib/bevis/metadata";
