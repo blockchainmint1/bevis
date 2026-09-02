@@ -311,3 +311,38 @@ export async function anchorWalletBalance(rpc: Rpc, ownerKey?: string | null, co
     anchorsRemaining: Math.max(0, Math.floor(sats / perAnchor)),
   };
 }
+
+/**
+ * Send `sats` from the house wallet to `toAddress` and return the raw hex.
+ *
+ * Used to credit a card top-up: the buyer pays in dollars, we move the
+ * equivalent TEXITcoin into their own fuel address.
+ */
+export async function buildHouseSendTx(
+  rpc: Rpc,
+  input: { toAddress: string; sats: number },
+): Promise<string> {
+  const wallet = loadAnchorWallet();
+  const send = Math.round(input.sats);
+  if (send < DUST_SATS) throw new Error("Top-up amount is below the chain's dust threshold.");
+
+  const utxos = await fetchUtxos(rpc, wallet.address);
+  const target = send + FEE_SATS;
+
+  const chosen: Utxo[] = [];
+  let total = 0;
+  for (const u of utxos) {
+    chosen.push(u);
+    total += u.sats;
+    if (total >= target) break;
+  }
+  if (total < target) {
+    throw new Error(`House wallet ${wallet.address} is short of funds (needs ${(target / SATS).toFixed(8)} TXC).`);
+  }
+
+  const outputs: Output[] = [{ script: p2pkhScript(input.toAddress), sats: send }];
+  const change = total - target;
+  if (change > DUST_SATS) outputs.push({ script: wallet.script, sats: change });
+
+  return buildSignedTx(wallet, chosen, outputs);
+}

@@ -423,6 +423,57 @@ export type Database = {
         }
         Relationships: []
       }
+      fuel_topups: {
+        Row: {
+          address: string | null
+          amount_cents: number
+          created_at: string
+          currency: string
+          environment: string
+          error: string | null
+          id: string
+          owner_key: string
+          session_id: string
+          status: string
+          txc_amount: number | null
+          txid: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          environment?: string
+          error?: string | null
+          id?: string
+          owner_key: string
+          session_id: string
+          status?: string
+          txc_amount?: number | null
+          txid?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          environment?: string
+          error?: string | null
+          id?: string
+          owner_key?: string
+          session_id?: string
+          status?: string
+          txc_amount?: number | null
+          txid?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           created_at: string

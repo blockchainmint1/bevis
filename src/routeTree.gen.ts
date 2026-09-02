@@ -21,6 +21,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
+import { Route as AppTopupRouteImport } from './routes/_app.topup'
 import { Route as AppShopRouteImport } from './routes/_app.shop'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppScanRouteImport } from './routes/_app.scan'
@@ -32,6 +33,7 @@ import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
@@ -94,6 +96,11 @@ const VerifyKeyRoute = VerifyKeyRouteImport.update({
   path: '/verify/$key',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTopupRoute = AppTopupRouteImport.update({
+  id: '/topup',
+  path: '/topup',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppShopRoute = AppShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -149,6 +156,12 @@ const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
   path: '/asset/$assetId',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
   id: '/api/public/hooks/watch-tick',
   path: '/api/public/hooks/watch-tick',
@@ -180,11 +193,13 @@ export interface FileRoutesByFullPath {
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
+  '/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -206,11 +221,13 @@ export interface FileRoutesByTo {
   '/scan': typeof AppScanRoute
   '/settings': typeof AppSettingsRoute
   '/shop': typeof AppShopRoute
+  '/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/asset/$assetId': typeof AppAssetAssetIdRoute
   '/coin/$id': typeof AppCoinIdRoute
   '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -234,11 +251,13 @@ export interface FileRoutesById {
   '/_app/scan': typeof AppScanRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/shop': typeof AppShopRoute
+  '/_app/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/_app/coin/$id': typeof AppCoinIdRoute
   '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -262,11 +281,13 @@ export interface FileRouteTypes {
     | '/scan'
     | '/settings'
     | '/shop'
+    | '/topup'
     | '/verify/$key'
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -288,11 +309,13 @@ export interface FileRouteTypes {
     | '/scan'
     | '/settings'
     | '/shop'
+    | '/topup'
     | '/verify/$key'
     | '/asset/$assetId'
     | '/coin/$id'
     | '/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -315,11 +338,13 @@ export interface FileRouteTypes {
     | '/_app/scan'
     | '/_app/settings'
     | '/_app/shop'
+    | '/_app/topup'
     | '/verify/$key'
     | '/_app/asset/$assetId'
     | '/_app/coin/$id'
     | '/_app/verify/$chain/$address'
     | '/api/public/hooks/watch-tick'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -336,6 +361,7 @@ export interface RootRouteChildren {
   WelcomeRoute: typeof WelcomeRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -424,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyKeyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/topup': {
+      id: '/_app/topup'
+      path: '/topup'
+      fullPath: '/topup'
+      preLoaderRoute: typeof AppTopupRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/shop': {
       id: '/_app/shop'
       path: '/shop'
@@ -501,6 +534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssetAssetIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/watch-tick': {
       id: '/api/public/hooks/watch-tick'
       path: '/api/public/hooks/watch-tick'
@@ -528,6 +568,7 @@ interface AppRouteChildren {
   AppScanRoute: typeof AppScanRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppShopRoute: typeof AppShopRoute
+  AppTopupRoute: typeof AppTopupRoute
   AppAssetAssetIdRoute: typeof AppAssetAssetIdRoute
   AppCoinIdRoute: typeof AppCoinIdRoute
   AppVerifyChainAddressRoute: typeof AppVerifyChainAddressRoute
@@ -543,6 +584,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppScanRoute: AppScanRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppShopRoute: AppShopRoute,
+  AppTopupRoute: AppTopupRoute,
   AppAssetAssetIdRoute: AppAssetAssetIdRoute,
   AppCoinIdRoute: AppCoinIdRoute,
   AppVerifyChainAddressRoute: AppVerifyChainAddressRoute,
@@ -564,6 +606,7 @@ const rootRouteChildren: RootRouteChildren = {
   WelcomeRoute: WelcomeRoute,
   VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -14,3 +14,10 @@
 - [x] Point all chain-verification links at mempool.texitcoin.org (shows OP_RETURN data)
 - [x] Remove TXC_EXPLORER secret usage
 - [x] Wrap long SHA-256 values in the record ledger
+
+## Card payments (Sep 2026)
+- [x] Built-in payments enabled (test environment)
+- [x] "Notarisation fuel" product with $5 / $10 / $25 top-ups
+- [x] /topup embedded checkout, works signed in or as a device
+- [x] Webhook credits the buyer's own fuel address with TXC from the house wallet (live only)
+- [ ] Complete go-live so real card payments credit real fuel
