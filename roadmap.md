@@ -20,7 +20,7 @@
 - [x] "Notarisation fuel" product with $5 / $10 / $25 top-ups
 - [x] /topup embedded checkout, works signed in or as a device
 - [x] Webhook credits the buyer's own fuel address with TXC from the house wallet (live only)
-- [ ] Complete go-live so real card payments credit real fuel
+- [x] Complete go-live so real card payments credit real fuel
 
 ## TEXITcoin wallet reliability (Sep 2026)
 - [x] Replace routine node-wide UTXO scans with indexed address lookups
