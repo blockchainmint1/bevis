@@ -24,7 +24,8 @@ async function creditFuelTopup(session: any, env: StripeEnv) {
     return;
   }
 
-  const supabase = getSupabase();
+  // Untyped service client: fuel_topups isn't in the generated schema types.
+  const supabase = getSupabase() as any;
   const amountCents: number = session.amount_total ?? 0;
 
   // Unique session_id makes this idempotent across Stripe retries.
