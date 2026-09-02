@@ -80,9 +80,8 @@ const LABEL: Record<LedgerEntryKind, string> = {
 
 function apiBases(): string[] {
   const clean = (v?: string) => (v ?? "").trim().replace(/\/+$/, "");
-  const mempool = clean(process.env["TXC_MEMPOOL"]);
-  const explorer = clean(process.env["TXC_EXPLORER"]);
-  return [mempool && `${mempool}/api`, explorer && `${explorer}/api`].filter(Boolean) as string[];
+  const mempool = clean(process.env["TXC_MEMPOOL"]) || "https://mempool.texitcoin.org";
+  return [`${mempool}/api`];
 }
 
 /**
