@@ -136,7 +136,25 @@ export async function priceUsd(chain: ChainId): Promise<number | null> {
     const sym = CMC_SYMBOLS[c];
     const id = CG_IDS[c];
     const price = (sym && cmc.get(sym)) ?? (id ? cg.get(id) ?? null : null);
-    cache.set(c, { price, expires: now + TTL_MS });
+    // Never cache a miss for long — a rate-limited lookup must not wedge
+    // pricing (and with it, paid top-ups) for a whole minute.
+    cache.set(c, { price, expires: now + (price === null ? MISS_TTL_MS : TTL_MS) });
   }
-  return cache.get(chain)?.price ?? null;
+
+  const batched = cache.get(chain)?.price ?? null;
+  if (batched !== null) return batched;
+
+  // Last resort: ask CoinGecko for this one coin on its own, with a retry.
+  const id = CG_IDS[chain];
+  if (!id) return null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const single = await fetchCoinGecko([id]);
+    const price = single.get(id) ?? null;
+    if (price !== null) {
+      cache.set(chain, { price, expires: Date.now() + TTL_MS });
+      return price;
+    }
+    if (attempt === 0) await new Promise(r => setTimeout(r, 400));
+  }
+  return null;
 }
