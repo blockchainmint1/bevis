@@ -190,7 +190,7 @@ export function ChainLedger({ address, assetId }: { address: string; assetId?: s
                           {Object.entries(e.metadata).map(([k, v]) => (
                             <div key={k} className="flex gap-2">
                               <dt className="w-28 shrink-0 capitalize text-muted-foreground">{k}</dt>
-                              <dd className="min-w-0 flex-1 break-words">{String(v)}</dd>
+                              <dd className="min-w-0 flex-1 break-all">{String(v)}</dd>
                             </div>
                           ))}
                         </dl>

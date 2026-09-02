@@ -10,3 +10,7 @@
 - [x] Wipe imported password hashes from the staging table after import
 - [x] "Restore my asset list" button on /import calling the legacy list endpoint server-side
 - [x] Legacy list restore live: `?email=` + `x-api-key` variant wired, LEGACY_API_KEY set
+
+- [x] Point all chain-verification links at mempool.texitcoin.org (shows OP_RETURN data)
+- [x] Remove TXC_EXPLORER secret usage
+- [x] Wrap long SHA-256 values in the record ledger
