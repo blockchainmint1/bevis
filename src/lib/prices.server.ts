@@ -1,6 +1,6 @@
 /**
  * Unified USD price service.
- * Primary: CoinMarketCap (CMC_API).  Fallback: CoinGecko (no key).
+ * Primary: CoinMarketCap (CMC_API_KEY).  Fallback: CoinGecko (no key).
  * In-memory 60s cache so a portfolio render only fans out once.
  *
  * Server-only — imported from server function handlers via dynamic import.
@@ -48,12 +48,17 @@ const TTL_MS = 60_000;
 /** A failed lookup is retried quickly; only real prices are cached for long. */
 const MISS_TTL_MS = 5_000;
 
+/** The key has been stored under both names over time; accept either. */
+function cmcKey(): string | undefined {
+  return process.env.CMC_API_KEY || process.env.CMC_API || undefined;
+}
+
 let cmcInflight: Promise<Map<string, number>> | null = null;
 let cmcIdInflight: Promise<Map<number, number>> | null = null;
 
 async function fetchCmcBatch(symbols: string[]): Promise<Map<string, number>> {
   const out = new Map<string, number>();
-  const key = process.env.CMC_API;
+  const key = cmcKey();
   if (!key || symbols.length === 0) return out;
   try {
     const url = `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=${symbols.join(",")}&convert=USD`;
@@ -74,7 +79,7 @@ async function fetchCmcBatch(symbols: string[]): Promise<Map<string, number>> {
 
 async function fetchCmcByIds(ids: number[]): Promise<Map<number, number>> {
   const out = new Map<number, number>();
-  const key = process.env.CMC_API;
+  const key = cmcKey();
   if (!key || ids.length === 0) return out;
   try {
     const url = `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${ids.join(",")}&convert=USD`;
