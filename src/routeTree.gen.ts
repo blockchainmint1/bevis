@@ -31,6 +31,7 @@ import { Route as AppImportRouteImport } from './routes/_app.import'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppAssetsRouteImport } from './routes/_app.assets'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
+import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
@@ -147,6 +148,11 @@ const AppAlertsRoute = AppAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCoinIdRoute = AppCoinIdRouteImport.update({
   id: '/coin/$id',
   path: '/coin/$id',
@@ -191,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin': typeof AppAdminRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
@@ -220,6 +227,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin': typeof AppAdminRoute
   '/alerts': typeof AppAlertsRoute
   '/assets': typeof AppAssetsRoute
   '/home': typeof AppHomeRoute
@@ -251,6 +259,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/_app/admin': typeof AppAdminRoute
   '/_app/alerts': typeof AppAlertsRoute
   '/_app/assets': typeof AppAssetsRoute
   '/_app/home': typeof AppHomeRoute
@@ -282,6 +291,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
+    | '/admin'
     | '/alerts'
     | '/assets'
     | '/home'
@@ -311,6 +321,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
+    | '/admin'
     | '/alerts'
     | '/assets'
     | '/home'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
+    | '/_app/admin'
     | '/_app/alerts'
     | '/_app/assets'
     | '/_app/home'
@@ -534,6 +546,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAlertsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/coin/$id': {
       id: '/_app/coin/$id'
       path: '/coin/$id'
@@ -580,6 +599,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppAlertsRoute: typeof AppAlertsRoute
   AppAssetsRoute: typeof AppAssetsRoute
   AppHomeRoute: typeof AppHomeRoute
@@ -596,6 +616,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppAlertsRoute: AppAlertsRoute,
   AppAssetsRoute: AppAssetsRoute,
   AppHomeRoute: AppHomeRoute,
