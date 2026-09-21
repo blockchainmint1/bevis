@@ -28,7 +28,7 @@ export function SiteFooter() {
         <div>
           <h2 className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">About us</h2>
           <address className="mt-4 text-sm not-italic text-muted-foreground">
-            Bevis Singapore Pte Ltd<br />
+            Rearden Metals Pte Ltd<br />
             25B Loyang Crescent #03-15<br />
             Singapore 506817<br />
             <a href="mailto:service@bevis.sg" className="mt-2 inline-block hover:text-foreground">
@@ -52,7 +52,7 @@ export function SiteFooter() {
 
       <div className="border-t border-border/60">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-5 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Bevis Singapore Pte Ltd.</p>
+          <p>&copy; {new Date().getFullYear()} Rearden Metals Pte Ltd.</p>
           <ul className="flex items-center gap-4">
             <li><Link to="/manifesto" className="hover:text-foreground">Manifesto</Link></li>
             <li><Link to="/terms" className="hover:text-foreground">Terms of use</Link></li>

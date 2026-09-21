@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_site/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "Bevis Singapore Pte Ltd",
+          name: "Rearden Metals Pte Ltd",
           url: "https://app.bevis.sg/",
           email: "service@bevis.sg",
           address: {
