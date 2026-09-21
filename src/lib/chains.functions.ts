@@ -588,13 +588,11 @@ export const verifyMintRecord = createServerFn({ method: "POST" })
     }
 
     // 2. Fallback: locally curated verification_records table.
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-    );
-    const { data: rec, error } = await supabase
+    // Read server-side with the service client: the table is NOT publicly
+    // readable, so the whole mint registry cannot be enumerated by anyone.
+    // This lookup is always a single exact chain+address match.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rec, error } = await supabaseAdmin
       .from("verification_records")
       .select("chain,address,asset_id,serial,mint_year,denomination,metal,product_slug,notes")
       .eq("chain", data.chain)
