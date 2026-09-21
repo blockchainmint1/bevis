@@ -20,6 +20,8 @@ export function Footer() {
         ecosystem.
       </p>
       <ul className="mt-2 flex items-center justify-center gap-4">
+        <li><Link to="/android" className="hover:text-foreground">Android app</Link></li>
+        <li aria-hidden>·</li>
         <li><Link to="/manifesto" className="hover:text-foreground">Manifesto</Link></li>
         <li aria-hidden>·</li>
         <li><Link to="/terms" className="hover:text-foreground">Terms</Link></li>
