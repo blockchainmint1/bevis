@@ -54,9 +54,12 @@ import { Route as SiteAboutRouteImport } from './routes/_site.about'
 import { Route as SiteVerifyIndexRouteImport } from './routes/_site.verify.index'
 import { Route as AppCoinIdRouteImport } from './routes/app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/app.asset.$assetId'
+import { Route as ApiPublicLatestReleaseRouteImport } from './routes/api/public/latest-release'
+import { Route as ApiPublicApkRouteImport } from './routes/api/public/apk'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/app.verify.$chain.$address'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
+import { Route as ApiPublicHooksPublishReleaseRouteImport } from './routes/api/public/hooks/publish-release'
 import { Route as ApiPublicCronHouseBalanceRouteImport } from './routes/api/public/cron/house-balance'
 
 const WelcomeRoute = WelcomeRouteImport.update({
@@ -283,6 +286,16 @@ const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
   path: '/asset/$assetId',
   getParentRoute: () => AppRoute,
 } as any)
+const ApiPublicLatestReleaseRoute = ApiPublicLatestReleaseRouteImport.update({
+  id: '/api/public/latest-release',
+  path: '/api/public/latest-release',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicApkRoute = ApiPublicApkRouteImport.update({
+  id: '/api/public/apk',
+  path: '/api/public/apk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
   id: '/verify/$chain/$address',
   path: '/verify/$chain/$address',
@@ -299,6 +312,12 @@ const ApiPublicHooksWatchTickRoute = ApiPublicHooksWatchTickRouteImport.update({
   path: '/api/public/hooks/watch-tick',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksPublishReleaseRoute =
+  ApiPublicHooksPublishReleaseRouteImport.update({
+    id: '/api/public/hooks/publish-release',
+    path: '/api/public/hooks/publish-release',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronHouseBalanceRoute =
   ApiPublicCronHouseBalanceRouteImport.update({
     id: '/api/public/cron/house-balance',
@@ -348,10 +367,13 @@ export interface FileRoutesByFullPath {
   '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/app/': typeof AppIndexRoute
+  '/api/public/apk': typeof ApiPublicApkRoute
+  '/api/public/latest-release': typeof ApiPublicLatestReleaseRoute
   '/app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/app/coin/$id': typeof AppCoinIdRoute
   '/verify/': typeof SiteVerifyIndexRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
+  '/api/public/hooks/publish-release': typeof ApiPublicHooksPublishReleaseRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
@@ -397,10 +419,13 @@ export interface FileRoutesByTo {
   '/verify/$key': typeof VerifyKeyRoute
   '/': typeof SiteIndexRoute
   '/app': typeof AppIndexRoute
+  '/api/public/apk': typeof ApiPublicApkRoute
+  '/api/public/latest-release': typeof ApiPublicLatestReleaseRoute
   '/app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/app/coin/$id': typeof AppCoinIdRoute
   '/verify': typeof SiteVerifyIndexRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
+  '/api/public/hooks/publish-release': typeof ApiPublicHooksPublishReleaseRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
@@ -449,10 +474,13 @@ export interface FileRoutesById {
   '/verify/$key': typeof VerifyKeyRoute
   '/_site/': typeof SiteIndexRoute
   '/app/': typeof AppIndexRoute
+  '/api/public/apk': typeof ApiPublicApkRoute
+  '/api/public/latest-release': typeof ApiPublicLatestReleaseRoute
   '/app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/app/coin/$id': typeof AppCoinIdRoute
   '/_site/verify/': typeof SiteVerifyIndexRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
+  '/api/public/hooks/publish-release': typeof ApiPublicHooksPublishReleaseRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
@@ -501,10 +529,13 @@ export interface FileRouteTypes {
     | '/coin/$id'
     | '/verify/$key'
     | '/app/'
+    | '/api/public/apk'
+    | '/api/public/latest-release'
     | '/app/asset/$assetId'
     | '/app/coin/$id'
     | '/verify/'
     | '/api/public/cron/house-balance'
+    | '/api/public/hooks/publish-release'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
     | '/app/verify/$chain/$address'
@@ -550,10 +581,13 @@ export interface FileRouteTypes {
     | '/verify/$key'
     | '/'
     | '/app'
+    | '/api/public/apk'
+    | '/api/public/latest-release'
     | '/app/asset/$assetId'
     | '/app/coin/$id'
     | '/verify'
     | '/api/public/cron/house-balance'
+    | '/api/public/hooks/publish-release'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
     | '/app/verify/$chain/$address'
@@ -601,10 +635,13 @@ export interface FileRouteTypes {
     | '/verify/$key'
     | '/_site/'
     | '/app/'
+    | '/api/public/apk'
+    | '/api/public/latest-release'
     | '/app/asset/$assetId'
     | '/app/coin/$id'
     | '/_site/verify/'
     | '/api/public/cron/house-balance'
+    | '/api/public/hooks/publish-release'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
     | '/app/verify/$chain/$address'
@@ -632,7 +669,10 @@ export interface RootRouteChildren {
   AssetAssetIdRoute: typeof AssetAssetIdRoute
   CoinIdRoute: typeof CoinIdRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
+  ApiPublicApkRoute: typeof ApiPublicApkRoute
+  ApiPublicLatestReleaseRoute: typeof ApiPublicLatestReleaseRoute
   ApiPublicCronHouseBalanceRoute: typeof ApiPublicCronHouseBalanceRoute
+  ApiPublicHooksPublishReleaseRoute: typeof ApiPublicHooksPublishReleaseRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -954,6 +994,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssetAssetIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/api/public/latest-release': {
+      id: '/api/public/latest-release'
+      path: '/api/public/latest-release'
+      fullPath: '/api/public/latest-release'
+      preLoaderRoute: typeof ApiPublicLatestReleaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/apk': {
+      id: '/api/public/apk'
+      path: '/api/public/apk'
+      fullPath: '/api/public/apk'
+      preLoaderRoute: typeof ApiPublicApkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/verify/$chain/$address': {
       id: '/app/verify/$chain/$address'
       path: '/verify/$chain/$address'
@@ -973,6 +1027,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/hooks/watch-tick'
       fullPath: '/api/public/hooks/watch-tick'
       preLoaderRoute: typeof ApiPublicHooksWatchTickRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/hooks/publish-release': {
+      id: '/api/public/hooks/publish-release'
+      path: '/api/public/hooks/publish-release'
+      fullPath: '/api/public/hooks/publish-release'
+      preLoaderRoute: typeof ApiPublicHooksPublishReleaseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/cron/house-balance': {
@@ -1073,7 +1134,10 @@ const rootRouteChildren: RootRouteChildren = {
   AssetAssetIdRoute: AssetAssetIdRoute,
   CoinIdRoute: CoinIdRoute,
   VerifyKeyRoute: VerifyKeyRoute,
+  ApiPublicApkRoute: ApiPublicApkRoute,
+  ApiPublicLatestReleaseRoute: ApiPublicLatestReleaseRoute,
   ApiPublicCronHouseBalanceRoute: ApiPublicCronHouseBalanceRoute,
+  ApiPublicHooksPublishReleaseRoute: ApiPublicHooksPublishReleaseRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
