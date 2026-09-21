@@ -50,6 +50,7 @@ import { Route as SiteManifestoRouteImport } from './routes/_site.manifesto'
 import { Route as SiteLearnMoreRouteImport } from './routes/_site.learn-more'
 import { Route as SiteHelpRouteImport } from './routes/_site.help'
 import { Route as SiteBusinessRouteImport } from './routes/_site.business'
+import { Route as SiteAndroidRouteImport } from './routes/_site.android'
 import { Route as SiteAboutRouteImport } from './routes/_site.about'
 import { Route as SiteVerifyIndexRouteImport } from './routes/_site.verify.index'
 import { Route as AppCoinIdRouteImport } from './routes/app.coin.$id'
@@ -266,6 +267,11 @@ const SiteBusinessRoute = SiteBusinessRouteImport.update({
   path: '/business',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteAndroidRoute = SiteAndroidRouteImport.update({
+  id: '/android',
+  path: '/android',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SiteAboutRoute = SiteAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -345,6 +351,7 @@ export interface FileRoutesByFullPath {
   '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
   '/about': typeof SiteAboutRoute
+  '/android': typeof SiteAndroidRoute
   '/business': typeof SiteBusinessRoute
   '/help': typeof SiteHelpRoute
   '/learn-more': typeof SiteLearnMoreRoute
@@ -396,6 +403,7 @@ export interface FileRoutesByTo {
   '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
   '/about': typeof SiteAboutRoute
+  '/android': typeof SiteAndroidRoute
   '/business': typeof SiteBusinessRoute
   '/help': typeof SiteHelpRoute
   '/learn-more': typeof SiteLearnMoreRoute
@@ -451,6 +459,7 @@ export interface FileRoutesById {
   '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
   '/_site/about': typeof SiteAboutRoute
+  '/_site/android': typeof SiteAndroidRoute
   '/_site/business': typeof SiteBusinessRoute
   '/_site/help': typeof SiteHelpRoute
   '/_site/learn-more': typeof SiteLearnMoreRoute
@@ -507,6 +516,7 @@ export interface FileRouteTypes {
     | '/topup'
     | '/welcome'
     | '/about'
+    | '/android'
     | '/business'
     | '/help'
     | '/learn-more'
@@ -558,6 +568,7 @@ export interface FileRouteTypes {
     | '/topup'
     | '/welcome'
     | '/about'
+    | '/android'
     | '/business'
     | '/help'
     | '/learn-more'
@@ -612,6 +623,7 @@ export interface FileRouteTypes {
     | '/topup'
     | '/welcome'
     | '/_site/about'
+    | '/_site/android'
     | '/_site/business'
     | '/_site/help'
     | '/_site/learn-more'
@@ -966,6 +978,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteBusinessRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/android': {
+      id: '/_site/android'
+      path: '/android'
+      fullPath: '/android'
+      preLoaderRoute: typeof SiteAndroidRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/about': {
       id: '/_site/about'
       path: '/about'
@@ -1048,6 +1067,7 @@ declare module '@tanstack/react-router' {
 
 interface SiteRouteChildren {
   SiteAboutRoute: typeof SiteAboutRoute
+  SiteAndroidRoute: typeof SiteAndroidRoute
   SiteBusinessRoute: typeof SiteBusinessRoute
   SiteHelpRoute: typeof SiteHelpRoute
   SiteLearnMoreRoute: typeof SiteLearnMoreRoute
@@ -1061,6 +1081,7 @@ interface SiteRouteChildren {
 
 const SiteRouteChildren: SiteRouteChildren = {
   SiteAboutRoute: SiteAboutRoute,
+  SiteAndroidRoute: SiteAndroidRoute,
   SiteBusinessRoute: SiteBusinessRoute,
   SiteHelpRoute: SiteHelpRoute,
   SiteLearnMoreRoute: SiteLearnMoreRoute,
