@@ -69,47 +69,14 @@ jobs:
           KEY_ALIAS: ${{ secrets.BEVIS_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.BEVIS_KEY_PASSWORD }}
         run: |
-          cat > android/keystore.properties <<EOF
-          storeFile=$GITHUB_WORKSPACE/android/keystore/bevis.jks
-          storePassword=$KEYSTORE_PASSWORD
-          keyAlias=$KEY_ALIAS
-          keyPassword=$KEY_PASSWORD
-          EOF
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path("android/app/build.gradle")
-          s = p.read_text()
-          if "bevisSigning" not in s:
-              header = (
-                  "def bevisSigning = new Properties()\n"
-                  "def bevisSigningFile = rootProject.file('keystore.properties')\n"
-                  "if (bevisSigningFile.exists()) "
-                  "{ bevisSigningFile.withInputStream { bevisSigning.load(it) } }\n\n"
-              )
-              s = header + s
-              block = """
-    signingConfigs {
-        release {
-            if (bevisSigning['storeFile']) {
-                storeFile file(bevisSigning['storeFile'])
-                storePassword bevisSigning['storePassword']
-                keyAlias bevisSigning['keyAlias']
-                keyPassword bevisSigning['keyPassword']
-            }
-        }
-    }
-"""
-              marker = "android {"
-              i = s.index(marker) + len(marker)
-              s = s[:i] + block + s[i:]
-              s = s.replace(
-                  "buildTypes {\n        release {",
-                  "buildTypes {\n        release {\n            "
-                  "signingConfig signingConfigs.release",
-                  1,
-              )
-          p.write_text(s)
-          PY
+          {
+            echo "storeFile=$GITHUB_WORKSPACE/android/keystore/bevis.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > android/keystore.properties
+          python3 scripts/configure-android-signing.py
+
 
       - name: Build signed release APK
         if: steps.signing.outputs.enabled == 'true'
