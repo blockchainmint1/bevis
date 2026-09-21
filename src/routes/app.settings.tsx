@@ -74,6 +74,7 @@ function SettingsPage() {
             <span className="text-[11px] text-muted-foreground">visit</span>
           </a>
         </li>
+        <SettingLink to="/android" icon={<Smartphone className="size-4" />} title="Android app" />
         <SettingLink to="/about" icon={<BookOpen className="size-4" />} title="About" />
         <SettingLink to="/manifesto" icon={<FileText className="size-4" />} title="Manifesto" />
         <SettingLink to="/terms" icon={<FileText className="size-4" />} title="Terms" />
