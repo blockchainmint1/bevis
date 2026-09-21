@@ -106,7 +106,7 @@ function RecoverPage() {
             </div>
           </div>
           <Link
-            to="/home"
+            to="/app/home"
             className="mt-3 block rounded-md bg-primary px-4 py-2 text-center text-sm font-semibold text-primary-foreground hover:bg-primary/90"
           >
             View my assets

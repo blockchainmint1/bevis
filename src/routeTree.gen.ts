@@ -10,43 +10,78 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
-import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TopupRouteImport } from './routes/topup'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ScanRouteImport } from './routes/scan'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverRouteImport } from './routes/recover'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ManifestoRouteImport } from './routes/manifesto'
+import { Route as PublishRouteImport } from './routes/publish'
+import { Route as LookupRouteImport } from './routes/lookup'
+import { Route as ImportRouteImport } from './routes/import'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as HandoffRouteImport } from './routes/handoff'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AppRouteImport } from './routes/_app'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AssetsRouteImport } from './routes/assets'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as SiteRouteImport } from './routes/_site'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
-import { Route as AppTopupRouteImport } from './routes/_app.topup'
-import { Route as AppShopRouteImport } from './routes/_app.shop'
-import { Route as AppSettingsRouteImport } from './routes/_app.settings'
-import { Route as AppScanRouteImport } from './routes/_app.scan'
-import { Route as AppPublishRouteImport } from './routes/_app.publish'
-import { Route as AppLookupRouteImport } from './routes/_app.lookup'
-import { Route as AppImportRouteImport } from './routes/_app.import'
-import { Route as AppHomeRouteImport } from './routes/_app.home'
-import { Route as AppAssetsRouteImport } from './routes/_app.assets'
-import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
-import { Route as AppAdminRouteImport } from './routes/_app.admin'
-import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
-import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
+import { Route as CoinIdRouteImport } from './routes/coin.$id'
+import { Route as AssetAssetIdRouteImport } from './routes/asset.$assetId'
+import { Route as AppTopupRouteImport } from './routes/app.topup'
+import { Route as AppShopRouteImport } from './routes/app.shop'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppScanRouteImport } from './routes/app.scan'
+import { Route as AppPublishRouteImport } from './routes/app.publish'
+import { Route as AppLookupRouteImport } from './routes/app.lookup'
+import { Route as AppImportRouteImport } from './routes/app.import'
+import { Route as AppHomeRouteImport } from './routes/app.home'
+import { Route as AppAssetsRouteImport } from './routes/app.assets'
+import { Route as AppAlertsRouteImport } from './routes/app.alerts'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as SiteTermsRouteImport } from './routes/_site.terms'
+import { Route as SitePrivacyRouteImport } from './routes/_site.privacy'
+import { Route as SitePersonalRouteImport } from './routes/_site.personal'
+import { Route as SiteManifestoRouteImport } from './routes/_site.manifesto'
+import { Route as SiteLearnMoreRouteImport } from './routes/_site.learn-more'
+import { Route as SiteHelpRouteImport } from './routes/_site.help'
+import { Route as SiteBusinessRouteImport } from './routes/_site.business'
+import { Route as SiteAboutRouteImport } from './routes/_site.about'
+import { Route as SiteVerifyIndexRouteImport } from './routes/_site.verify.index'
+import { Route as AppCoinIdRouteImport } from './routes/app.coin.$id'
+import { Route as AppAssetAssetIdRouteImport } from './routes/app.asset.$assetId'
+import { Route as AppVerifyChainAddressRouteImport } from './routes/app.verify.$chain.$address'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as ApiPublicCronHouseBalanceRouteImport } from './routes/api/public/cron/house-balance'
-import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+const TopupRoute = TopupRouteImport.update({
+  id: '/topup',
+  path: '/topup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -59,14 +94,24 @@ const RecoverRoute = RecoverRouteImport.update({
   path: '/recover',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
+const PublishRoute = PublishRouteImport.update({
+  id: '/publish',
+  path: '/publish',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ManifestoRoute = ManifestoRouteImport.update({
-  id: '/manifesto',
-  path: '/manifesto',
+const LookupRoute = LookupRouteImport.update({
+  id: '/lookup',
+  path: '/lookup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportRoute = ImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HandoffRoute = HandoffRouteImport.update({
@@ -79,23 +124,53 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const AssetsRoute = AssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
-  id: '/_app',
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AlertsRoute = AlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRoute,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteRoute,
 } as any)
 const VerifyKeyRoute = VerifyKeyRouteImport.update({
   id: '/verify/$key',
   path: '/verify/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoinIdRoute = CoinIdRouteImport.update({
+  id: '/coin/$id',
+  path: '/coin/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssetAssetIdRoute = AssetAssetIdRouteImport.update({
+  id: '/asset/$assetId',
+  path: '/asset/$assetId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppTopupRoute = AppTopupRouteImport.update({
@@ -153,6 +228,51 @@ const AppAdminRoute = AppAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
+const SiteTermsRoute = SiteTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePrivacyRoute = SitePrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePersonalRoute = SitePersonalRouteImport.update({
+  id: '/personal',
+  path: '/personal',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteManifestoRoute = SiteManifestoRouteImport.update({
+  id: '/manifesto',
+  path: '/manifesto',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteLearnMoreRoute = SiteLearnMoreRouteImport.update({
+  id: '/learn-more',
+  path: '/learn-more',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteHelpRoute = SiteHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteBusinessRoute = SiteBusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteAboutRoute = SiteAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteVerifyIndexRoute = SiteVerifyIndexRouteImport.update({
+  id: '/verify/',
+  path: '/verify/',
+  getParentRoute: () => SiteRoute,
+} as any)
 const AppCoinIdRoute = AppCoinIdRouteImport.update({
   id: '/coin/$id',
   path: '/coin/$id',
@@ -161,6 +281,11 @@ const AppCoinIdRoute = AppCoinIdRouteImport.update({
 const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
   id: '/asset/$assetId',
   path: '/asset/$assetId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
+  id: '/verify/$chain/$address',
+  path: '/verify/$chain/$address',
   getParentRoute: () => AppRoute,
 } as any)
 const ApiPublicPaymentsWebhookRoute =
@@ -180,210 +305,332 @@ const ApiPublicCronHouseBalanceRoute =
     path: '/api/public/cron/house-balance',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
-  id: '/verify/$chain/$address',
-  path: '/verify/$chain/$address',
-  getParentRoute: () => AppRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/': typeof SiteIndexRoute
+  '/admin': typeof AdminRoute
+  '/alerts': typeof AlertsRoute
+  '/app': typeof AppRouteWithChildren
+  '/assets': typeof AssetsRoute
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
-  '/manifesto': typeof ManifestoRoute
-  '/privacy': typeof PrivacyRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/lookup': typeof LookupRoute
+  '/publish': typeof PublishRoute
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/terms': typeof TermsRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
-  '/admin': typeof AppAdminRoute
-  '/alerts': typeof AppAlertsRoute
-  '/assets': typeof AppAssetsRoute
-  '/home': typeof AppHomeRoute
-  '/import': typeof AppImportRoute
-  '/lookup': typeof AppLookupRoute
-  '/publish': typeof AppPublishRoute
-  '/scan': typeof AppScanRoute
-  '/settings': typeof AppSettingsRoute
-  '/shop': typeof AppShopRoute
-  '/topup': typeof AppTopupRoute
+  '/about': typeof SiteAboutRoute
+  '/business': typeof SiteBusinessRoute
+  '/help': typeof SiteHelpRoute
+  '/learn-more': typeof SiteLearnMoreRoute
+  '/manifesto': typeof SiteManifestoRoute
+  '/personal': typeof SitePersonalRoute
+  '/privacy': typeof SitePrivacyRoute
+  '/terms': typeof SiteTermsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/home': typeof AppHomeRoute
+  '/app/import': typeof AppImportRoute
+  '/app/lookup': typeof AppLookupRoute
+  '/app/publish': typeof AppPublishRoute
+  '/app/scan': typeof AppScanRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/shop': typeof AppShopRoute
+  '/app/topup': typeof AppTopupRoute
+  '/asset/$assetId': typeof AssetAssetIdRoute
+  '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
-  '/asset/$assetId': typeof AppAssetAssetIdRoute
-  '/coin/$id': typeof AppCoinIdRoute
-  '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/app/': typeof AppIndexRoute
+  '/app/asset/$assetId': typeof AppAssetAssetIdRoute
+  '/app/coin/$id': typeof AppCoinIdRoute
+  '/verify/': typeof SiteVerifyIndexRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/alerts': typeof AlertsRoute
+  '/assets': typeof AssetsRoute
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
-  '/manifesto': typeof ManifestoRoute
-  '/privacy': typeof PrivacyRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/lookup': typeof LookupRoute
+  '/publish': typeof PublishRoute
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/terms': typeof TermsRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
-  '/admin': typeof AppAdminRoute
-  '/alerts': typeof AppAlertsRoute
-  '/assets': typeof AppAssetsRoute
-  '/home': typeof AppHomeRoute
-  '/import': typeof AppImportRoute
-  '/lookup': typeof AppLookupRoute
-  '/publish': typeof AppPublishRoute
-  '/scan': typeof AppScanRoute
-  '/settings': typeof AppSettingsRoute
-  '/shop': typeof AppShopRoute
-  '/topup': typeof AppTopupRoute
+  '/about': typeof SiteAboutRoute
+  '/business': typeof SiteBusinessRoute
+  '/help': typeof SiteHelpRoute
+  '/learn-more': typeof SiteLearnMoreRoute
+  '/manifesto': typeof SiteManifestoRoute
+  '/personal': typeof SitePersonalRoute
+  '/privacy': typeof SitePrivacyRoute
+  '/terms': typeof SiteTermsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/home': typeof AppHomeRoute
+  '/app/import': typeof AppImportRoute
+  '/app/lookup': typeof AppLookupRoute
+  '/app/publish': typeof AppPublishRoute
+  '/app/scan': typeof AppScanRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/shop': typeof AppShopRoute
+  '/app/topup': typeof AppTopupRoute
+  '/asset/$assetId': typeof AssetAssetIdRoute
+  '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
-  '/asset/$assetId': typeof AppAssetAssetIdRoute
-  '/coin/$id': typeof AppCoinIdRoute
-  '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/': typeof SiteIndexRoute
+  '/app': typeof AppIndexRoute
+  '/app/asset/$assetId': typeof AppAssetAssetIdRoute
+  '/app/coin/$id': typeof AppCoinIdRoute
+  '/verify': typeof SiteVerifyIndexRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_app': typeof AppRouteWithChildren
-  '/about': typeof AboutRoute
+  '/_site': typeof SiteRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/alerts': typeof AlertsRoute
+  '/app': typeof AppRouteWithChildren
+  '/assets': typeof AssetsRoute
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
-  '/manifesto': typeof ManifestoRoute
-  '/privacy': typeof PrivacyRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/lookup': typeof LookupRoute
+  '/publish': typeof PublishRoute
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/terms': typeof TermsRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
-  '/_app/admin': typeof AppAdminRoute
-  '/_app/alerts': typeof AppAlertsRoute
-  '/_app/assets': typeof AppAssetsRoute
-  '/_app/home': typeof AppHomeRoute
-  '/_app/import': typeof AppImportRoute
-  '/_app/lookup': typeof AppLookupRoute
-  '/_app/publish': typeof AppPublishRoute
-  '/_app/scan': typeof AppScanRoute
-  '/_app/settings': typeof AppSettingsRoute
-  '/_app/shop': typeof AppShopRoute
-  '/_app/topup': typeof AppTopupRoute
+  '/_site/about': typeof SiteAboutRoute
+  '/_site/business': typeof SiteBusinessRoute
+  '/_site/help': typeof SiteHelpRoute
+  '/_site/learn-more': typeof SiteLearnMoreRoute
+  '/_site/manifesto': typeof SiteManifestoRoute
+  '/_site/personal': typeof SitePersonalRoute
+  '/_site/privacy': typeof SitePrivacyRoute
+  '/_site/terms': typeof SiteTermsRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/home': typeof AppHomeRoute
+  '/app/import': typeof AppImportRoute
+  '/app/lookup': typeof AppLookupRoute
+  '/app/publish': typeof AppPublishRoute
+  '/app/scan': typeof AppScanRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/shop': typeof AppShopRoute
+  '/app/topup': typeof AppTopupRoute
+  '/asset/$assetId': typeof AssetAssetIdRoute
+  '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
-  '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
-  '/_app/coin/$id': typeof AppCoinIdRoute
-  '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/_site/': typeof SiteIndexRoute
+  '/app/': typeof AppIndexRoute
+  '/app/asset/$assetId': typeof AppAssetAssetIdRoute
+  '/app/coin/$id': typeof AppCoinIdRoute
+  '/_site/verify/': typeof SiteVerifyIndexRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
-    | '/auth'
-    | '/handoff'
-    | '/manifesto'
-    | '/privacy'
-    | '/recover'
-    | '/reset-password'
-    | '/terms'
-    | '/welcome'
     | '/admin'
     | '/alerts'
+    | '/app'
     | '/assets'
+    | '/auth'
+    | '/handoff'
     | '/home'
     | '/import'
     | '/lookup'
     | '/publish'
+    | '/recover'
+    | '/reset-password'
     | '/scan'
     | '/settings'
     | '/shop'
     | '/topup'
-    | '/verify/$key'
+    | '/welcome'
+    | '/about'
+    | '/business'
+    | '/help'
+    | '/learn-more'
+    | '/manifesto'
+    | '/personal'
+    | '/privacy'
+    | '/terms'
+    | '/app/admin'
+    | '/app/alerts'
+    | '/app/assets'
+    | '/app/home'
+    | '/app/import'
+    | '/app/lookup'
+    | '/app/publish'
+    | '/app/scan'
+    | '/app/settings'
+    | '/app/shop'
+    | '/app/topup'
     | '/asset/$assetId'
     | '/coin/$id'
-    | '/verify/$chain/$address'
+    | '/verify/$key'
+    | '/app/'
+    | '/app/asset/$assetId'
+    | '/app/coin/$id'
+    | '/verify/'
     | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
+    | '/app/verify/$chain/$address'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/about'
-    | '/auth'
-    | '/handoff'
-    | '/manifesto'
-    | '/privacy'
-    | '/recover'
-    | '/reset-password'
-    | '/terms'
-    | '/welcome'
     | '/admin'
     | '/alerts'
     | '/assets'
+    | '/auth'
+    | '/handoff'
     | '/home'
     | '/import'
     | '/lookup'
     | '/publish'
+    | '/recover'
+    | '/reset-password'
     | '/scan'
     | '/settings'
     | '/shop'
     | '/topup'
-    | '/verify/$key'
+    | '/welcome'
+    | '/about'
+    | '/business'
+    | '/help'
+    | '/learn-more'
+    | '/manifesto'
+    | '/personal'
+    | '/privacy'
+    | '/terms'
+    | '/app/admin'
+    | '/app/alerts'
+    | '/app/assets'
+    | '/app/home'
+    | '/app/import'
+    | '/app/lookup'
+    | '/app/publish'
+    | '/app/scan'
+    | '/app/settings'
+    | '/app/shop'
+    | '/app/topup'
     | '/asset/$assetId'
     | '/coin/$id'
-    | '/verify/$chain/$address'
+    | '/verify/$key'
+    | '/'
+    | '/app'
+    | '/app/asset/$assetId'
+    | '/app/coin/$id'
+    | '/verify'
     | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
+    | '/app/verify/$chain/$address'
   id:
     | '__root__'
-    | '/'
-    | '/_app'
-    | '/about'
+    | '/_site'
+    | '/admin'
+    | '/alerts'
+    | '/app'
+    | '/assets'
     | '/auth'
     | '/handoff'
-    | '/manifesto'
-    | '/privacy'
+    | '/home'
+    | '/import'
+    | '/lookup'
+    | '/publish'
     | '/recover'
     | '/reset-password'
-    | '/terms'
+    | '/scan'
+    | '/settings'
+    | '/shop'
+    | '/topup'
     | '/welcome'
-    | '/_app/admin'
-    | '/_app/alerts'
-    | '/_app/assets'
-    | '/_app/home'
-    | '/_app/import'
-    | '/_app/lookup'
-    | '/_app/publish'
-    | '/_app/scan'
-    | '/_app/settings'
-    | '/_app/shop'
-    | '/_app/topup'
+    | '/_site/about'
+    | '/_site/business'
+    | '/_site/help'
+    | '/_site/learn-more'
+    | '/_site/manifesto'
+    | '/_site/personal'
+    | '/_site/privacy'
+    | '/_site/terms'
+    | '/app/admin'
+    | '/app/alerts'
+    | '/app/assets'
+    | '/app/home'
+    | '/app/import'
+    | '/app/lookup'
+    | '/app/publish'
+    | '/app/scan'
+    | '/app/settings'
+    | '/app/shop'
+    | '/app/topup'
+    | '/asset/$assetId'
+    | '/coin/$id'
     | '/verify/$key'
-    | '/_app/asset/$assetId'
-    | '/_app/coin/$id'
-    | '/_app/verify/$chain/$address'
+    | '/_site/'
+    | '/app/'
+    | '/app/asset/$assetId'
+    | '/app/coin/$id'
+    | '/_site/verify/'
     | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
+    | '/app/verify/$chain/$address'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  SiteRoute: typeof SiteRouteWithChildren
+  AdminRoute: typeof AdminRoute
+  AlertsRoute: typeof AlertsRoute
   AppRoute: typeof AppRouteWithChildren
-  AboutRoute: typeof AboutRoute
+  AssetsRoute: typeof AssetsRoute
   AuthRoute: typeof AuthRoute
   HandoffRoute: typeof HandoffRoute
-  ManifestoRoute: typeof ManifestoRoute
-  PrivacyRoute: typeof PrivacyRoute
+  HomeRoute: typeof HomeRoute
+  ImportRoute: typeof ImportRoute
+  LookupRoute: typeof LookupRoute
+  PublishRoute: typeof PublishRoute
   RecoverRoute: typeof RecoverRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  TermsRoute: typeof TermsRoute
+  ScanRoute: typeof ScanRoute
+  SettingsRoute: typeof SettingsRoute
+  ShopRoute: typeof ShopRoute
+  TopupRoute: typeof TopupRoute
   WelcomeRoute: typeof WelcomeRoute
+  AssetAssetIdRoute: typeof AssetAssetIdRoute
+  CoinIdRoute: typeof CoinIdRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicCronHouseBalanceRoute: typeof ApiPublicCronHouseBalanceRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
@@ -399,11 +646,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
+    '/topup': {
+      id: '/topup'
+      path: '/topup'
+      fullPath: '/topup'
+      preLoaderRoute: typeof TopupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -420,18 +688,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecoverRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
+    '/publish': {
+      id: '/publish'
+      path: '/publish'
+      fullPath: '/publish'
+      preLoaderRoute: typeof PublishRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/manifesto': {
-      id: '/manifesto'
-      path: '/manifesto'
-      fullPath: '/manifesto'
-      preLoaderRoute: typeof ManifestoRouteImport
+    '/lookup': {
+      id: '/lookup'
+      path: '/lookup'
+      fullPath: '/lookup'
+      preLoaderRoute: typeof LookupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import': {
+      id: '/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof ImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/handoff': {
@@ -448,26 +730,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/assets': {
+      id: '/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: '/'
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_site/': {
+      id: '/_site/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
     }
     '/verify/$key': {
       id: '/verify/$key'
@@ -476,95 +786,179 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyKeyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/topup': {
-      id: '/_app/topup'
+    '/coin/$id': {
+      id: '/coin/$id'
+      path: '/coin/$id'
+      fullPath: '/coin/$id'
+      preLoaderRoute: typeof CoinIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asset/$assetId': {
+      id: '/asset/$assetId'
+      path: '/asset/$assetId'
+      fullPath: '/asset/$assetId'
+      preLoaderRoute: typeof AssetAssetIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/topup': {
+      id: '/app/topup'
       path: '/topup'
-      fullPath: '/topup'
+      fullPath: '/app/topup'
       preLoaderRoute: typeof AppTopupRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/shop': {
-      id: '/_app/shop'
+    '/app/shop': {
+      id: '/app/shop'
       path: '/shop'
-      fullPath: '/shop'
+      fullPath: '/app/shop'
       preLoaderRoute: typeof AppShopRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/settings': {
-      id: '/_app/settings'
+    '/app/settings': {
+      id: '/app/settings'
       path: '/settings'
-      fullPath: '/settings'
+      fullPath: '/app/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/scan': {
-      id: '/_app/scan'
+    '/app/scan': {
+      id: '/app/scan'
       path: '/scan'
-      fullPath: '/scan'
+      fullPath: '/app/scan'
       preLoaderRoute: typeof AppScanRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/publish': {
-      id: '/_app/publish'
+    '/app/publish': {
+      id: '/app/publish'
       path: '/publish'
-      fullPath: '/publish'
+      fullPath: '/app/publish'
       preLoaderRoute: typeof AppPublishRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/lookup': {
-      id: '/_app/lookup'
+    '/app/lookup': {
+      id: '/app/lookup'
       path: '/lookup'
-      fullPath: '/lookup'
+      fullPath: '/app/lookup'
       preLoaderRoute: typeof AppLookupRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/import': {
-      id: '/_app/import'
+    '/app/import': {
+      id: '/app/import'
       path: '/import'
-      fullPath: '/import'
+      fullPath: '/app/import'
       preLoaderRoute: typeof AppImportRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/home': {
-      id: '/_app/home'
+    '/app/home': {
+      id: '/app/home'
       path: '/home'
-      fullPath: '/home'
+      fullPath: '/app/home'
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/assets': {
-      id: '/_app/assets'
+    '/app/assets': {
+      id: '/app/assets'
       path: '/assets'
-      fullPath: '/assets'
+      fullPath: '/app/assets'
       preLoaderRoute: typeof AppAssetsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/alerts': {
-      id: '/_app/alerts'
+    '/app/alerts': {
+      id: '/app/alerts'
       path: '/alerts'
-      fullPath: '/alerts'
+      fullPath: '/app/alerts'
       preLoaderRoute: typeof AppAlertsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/admin': {
-      id: '/_app/admin'
+    '/app/admin': {
+      id: '/app/admin'
       path: '/admin'
-      fullPath: '/admin'
+      fullPath: '/app/admin'
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/coin/$id': {
-      id: '/_app/coin/$id'
+    '/_site/terms': {
+      id: '/_site/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof SiteTermsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/privacy': {
+      id: '/_site/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof SitePrivacyRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/personal': {
+      id: '/_site/personal'
+      path: '/personal'
+      fullPath: '/personal'
+      preLoaderRoute: typeof SitePersonalRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/manifesto': {
+      id: '/_site/manifesto'
+      path: '/manifesto'
+      fullPath: '/manifesto'
+      preLoaderRoute: typeof SiteManifestoRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/learn-more': {
+      id: '/_site/learn-more'
+      path: '/learn-more'
+      fullPath: '/learn-more'
+      preLoaderRoute: typeof SiteLearnMoreRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/help': {
+      id: '/_site/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof SiteHelpRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/business': {
+      id: '/_site/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof SiteBusinessRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/about': {
+      id: '/_site/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof SiteAboutRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/verify/': {
+      id: '/_site/verify/'
+      path: '/verify'
+      fullPath: '/verify/'
+      preLoaderRoute: typeof SiteVerifyIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/app/coin/$id': {
+      id: '/app/coin/$id'
       path: '/coin/$id'
-      fullPath: '/coin/$id'
+      fullPath: '/app/coin/$id'
       preLoaderRoute: typeof AppCoinIdRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/asset/$assetId': {
-      id: '/_app/asset/$assetId'
+    '/app/asset/$assetId': {
+      id: '/app/asset/$assetId'
       path: '/asset/$assetId'
-      fullPath: '/asset/$assetId'
+      fullPath: '/app/asset/$assetId'
       preLoaderRoute: typeof AppAssetAssetIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/verify/$chain/$address': {
+      id: '/app/verify/$chain/$address'
+      path: '/verify/$chain/$address'
+      fullPath: '/app/verify/$chain/$address'
+      preLoaderRoute: typeof AppVerifyChainAddressRouteImport
       parentRoute: typeof AppRoute
     }
     '/api/public/payments/webhook': {
@@ -588,15 +982,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCronHouseBalanceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/verify/$chain/$address': {
-      id: '/_app/verify/$chain/$address'
-      path: '/verify/$chain/$address'
-      fullPath: '/verify/$chain/$address'
-      preLoaderRoute: typeof AppVerifyChainAddressRouteImport
-      parentRoute: typeof AppRoute
-    }
   }
 }
+
+interface SiteRouteChildren {
+  SiteAboutRoute: typeof SiteAboutRoute
+  SiteBusinessRoute: typeof SiteBusinessRoute
+  SiteHelpRoute: typeof SiteHelpRoute
+  SiteLearnMoreRoute: typeof SiteLearnMoreRoute
+  SiteManifestoRoute: typeof SiteManifestoRoute
+  SitePersonalRoute: typeof SitePersonalRoute
+  SitePrivacyRoute: typeof SitePrivacyRoute
+  SiteTermsRoute: typeof SiteTermsRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+  SiteVerifyIndexRoute: typeof SiteVerifyIndexRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteAboutRoute: SiteAboutRoute,
+  SiteBusinessRoute: SiteBusinessRoute,
+  SiteHelpRoute: SiteHelpRoute,
+  SiteLearnMoreRoute: SiteLearnMoreRoute,
+  SiteManifestoRoute: SiteManifestoRoute,
+  SitePersonalRoute: SitePersonalRoute,
+  SitePrivacyRoute: SitePrivacyRoute,
+  SiteTermsRoute: SiteTermsRoute,
+  SiteIndexRoute: SiteIndexRoute,
+  SiteVerifyIndexRoute: SiteVerifyIndexRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
@@ -610,6 +1025,7 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   AppShopRoute: typeof AppShopRoute
   AppTopupRoute: typeof AppTopupRoute
+  AppIndexRoute: typeof AppIndexRoute
   AppAssetAssetIdRoute: typeof AppAssetAssetIdRoute
   AppCoinIdRoute: typeof AppCoinIdRoute
   AppVerifyChainAddressRoute: typeof AppVerifyChainAddressRoute
@@ -627,6 +1043,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   AppShopRoute: AppShopRoute,
   AppTopupRoute: AppTopupRoute,
+  AppIndexRoute: AppIndexRoute,
   AppAssetAssetIdRoute: AppAssetAssetIdRoute,
   AppCoinIdRoute: AppCoinIdRoute,
   AppVerifyChainAddressRoute: AppVerifyChainAddressRoute,
@@ -635,17 +1052,26 @@ const AppRouteChildren: AppRouteChildren = {
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  SiteRoute: SiteRouteWithChildren,
+  AdminRoute: AdminRoute,
+  AlertsRoute: AlertsRoute,
   AppRoute: AppRouteWithChildren,
-  AboutRoute: AboutRoute,
+  AssetsRoute: AssetsRoute,
   AuthRoute: AuthRoute,
   HandoffRoute: HandoffRoute,
-  ManifestoRoute: ManifestoRoute,
-  PrivacyRoute: PrivacyRoute,
+  HomeRoute: HomeRoute,
+  ImportRoute: ImportRoute,
+  LookupRoute: LookupRoute,
+  PublishRoute: PublishRoute,
   RecoverRoute: RecoverRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  TermsRoute: TermsRoute,
+  ScanRoute: ScanRoute,
+  SettingsRoute: SettingsRoute,
+  ShopRoute: ShopRoute,
+  TopupRoute: TopupRoute,
   WelcomeRoute: WelcomeRoute,
+  AssetAssetIdRoute: AssetAssetIdRoute,
+  CoinIdRoute: CoinIdRoute,
   VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicCronHouseBalanceRoute: ApiPublicCronHouseBalanceRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,

@@ -238,7 +238,7 @@ export function ChainLedger({ address, assetId }: { address: string; assetId?: s
 
           {assetId && (
             <Link
-              to="/publish"
+              to="/app/publish"
               search={{ assetId }}
               className="mt-4 flex items-center justify-center gap-2 rounded-md border border-dashed border-border px-4 py-3 text-sm font-semibold hover:bg-secondary"
             >

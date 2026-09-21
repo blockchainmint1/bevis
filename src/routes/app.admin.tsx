@@ -13,7 +13,7 @@ import { ArrowLeft, Bell, Loader2, RefreshCw, ShieldAlert } from "lucide-react";
 import { getAdminOverview, retryTopup, testHouseAlert } from "@/lib/admin.functions";
 import { useAuth } from "@/hooks/use-auth";
 
-export const Route = createFileRoute("/_app/admin")({
+export const Route = createFileRoute("/app/admin")({
   head: () => ({
     meta: [
       { title: "Operator panel — BEVIS" },
@@ -98,7 +98,7 @@ function AdminPage() {
   return (
     <div className="px-5 pt-10">
       <header className="mb-6 flex items-center gap-3">
-        <Link to="/settings" className="text-muted-foreground hover:text-foreground">
+        <Link to="/app/settings" className="text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-5" />
         </Link>
         <div>

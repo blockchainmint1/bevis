@@ -13,7 +13,7 @@ import { addLocalCoin } from "@/lib/localPortfolio";
 import { CoinLogo } from "@/components/CoinLogo";
 import QRCode from "qrcode";
 
-export const Route = createFileRoute("/_app/scan")({
+export const Route = createFileRoute("/app/scan")({
   head: () => ({ meta: [{ title: "Scan — BEVIS" }] }),
   component: ScanPage,
 });
@@ -51,7 +51,7 @@ function ScanPage() {
   const verify = useMutation({
     mutationFn: () => verifyFn({ data: { chain: effectiveChain, address: effectiveAddress } }),
     onSuccess: () => {
-      navigate({ to: "/verify/$chain/$address", params: { chain: effectiveChain, address: effectiveAddress } });
+      navigate({ to: "/app/verify/$chain/$address", params: { chain: effectiveChain, address: effectiveAddress } });
     },
     onError: e => toast.error((e as Error).message),
   });
@@ -70,7 +70,7 @@ function ScanPage() {
     const detected = detectChain(address.trim()) ?? { chain, address: address.trim() };
     const coin = addLocalCoin({ chain: detected.chain, address: detected.address, label: label.trim() || undefined });
     toast.success("Asset added to your portfolio.");
-    navigate({ to: "/coin/$id", params: { id: coin.id } });
+    navigate({ to: "/app/coin/$id", params: { id: coin.id } });
   }
 
   function handleScanned(text: string) {
@@ -125,7 +125,7 @@ function ScanPage() {
     if (!scanned || scanned.type === "seed") return;
     const coin = addLocalCoin({ chain: scanned.chain, address: scanned.address, label: label.trim() || undefined });
     toast.success("Asset added.");
-    navigate({ to: "/coin/$id", params: { id: coin.id } });
+    navigate({ to: "/app/coin/$id", params: { id: coin.id } });
   }
 
   function verifyScanned() {
@@ -133,14 +133,14 @@ function ScanPage() {
     const { chain: verifyChain, address: verifyAddress } = scanned.type === "seed"
       ? { chain: "txc" as ChainId, address: scanned.result.address }
       : { chain: scanned.chain, address: scanned.address };
-    navigate({ to: "/verify/$chain/$address", params: { chain: verifyChain, address: verifyAddress } });
+    navigate({ to: "/app/verify/$chain/$address", params: { chain: verifyChain, address: verifyAddress } });
   }
 
   function addDerivedTxc() {
     if (scanned?.type !== "seed") return;
     const coin = addLocalCoin({ chain: "txc", address: scanned.result.address, label: label.trim() || undefined });
     toast.success("TXC asset added.");
-    navigate({ to: "/coin/$id", params: { id: coin.id } });
+    navigate({ to: "/app/coin/$id", params: { id: coin.id } });
   }
 
   useEffect(() => {

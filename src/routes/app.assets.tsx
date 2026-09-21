@@ -14,7 +14,7 @@ import { CHAINS, cscId } from "@/lib/chains";
 import { CoinLogo } from "@/components/CoinLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-export const Route = createFileRoute("/_app/assets")({
+export const Route = createFileRoute("/app/assets")({
   head: () => ({
     meta: [
       { title: "Your notarised assets — BEVIS" },
@@ -85,7 +85,7 @@ function AssetsPage() {
         <EmptyState
           title="No records yet"
           body="Create a record without an account — it still gets stamped onto the TEXITcoin chain. Sign in to keep it across devices."
-          action={{ label: "Create a record", onClick: () => navigate({ to: "/publish" }) }}
+          action={{ label: "Create a record", onClick: () => navigate({ to: "/app/publish" }) }}
         />
       )}
 
@@ -95,7 +95,7 @@ function AssetsPage() {
         <EmptyState
           title="Nothing notarised yet"
           body="Choose or capture a file and BEVIS will stamp its fingerprint onto the TEXITcoin chain."
-          action={{ label: "Notarise a file", onClick: () => navigate({ to: "/publish" }) }}
+          action={{ label: "Notarise a file", onClick: () => navigate({ to: "/app/publish" }) }}
         />
       )}
 
@@ -103,7 +103,7 @@ function AssetsPage() {
         {(data ?? []).map(a => (
           <li key={a.id}>
             <Link
-              to="/asset/$assetId"
+              to="/app/asset/$assetId"
               params={{ assetId: a.assetId }}
               className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/60"
             >
@@ -175,13 +175,13 @@ function AssetsPage() {
       {user && (
         <div className="mt-6 grid gap-2">
           <Link
-            to="/publish"
+            to="/app/publish"
             className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground"
           >
             <Plus className="size-4" /> Notarise a file
           </Link>
           <Link
-            to="/lookup"
+            to="/app/lookup"
             className="inline-flex items-center justify-center gap-2 rounded-md border border-border px-4 py-3 text-sm font-semibold"
           >
             <ScanLine className="size-4" /> Scan a BEVIS code

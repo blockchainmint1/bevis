@@ -38,7 +38,7 @@ function PublicVerifyPage() {
 
   return (
     <div className="mx-auto min-h-screen max-w-2xl px-5 pb-16 pt-8">
-      <Link to="/lookup" className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
+      <Link to="/app/lookup" className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-3.5" /> Scan another
       </Link>
 

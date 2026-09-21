@@ -5,10 +5,10 @@ import type { ComponentType } from "react";
 type Tab = { to: string; label: string; Icon: ComponentType<{ className?: string }> };
 
 const TABS: Tab[] = [
-  { to: "/assets",   label: "Assets",  Icon: FileStack },
-  { to: "/publish",  label: "Create", Icon: FilePlus2 },
-  { to: "/lookup",   label: "Scan",    Icon: ScanLine },
-  { to: "/settings", label: "Me",      Icon: Settings },
+  { to: "/app/assets",   label: "Assets",  Icon: FileStack },
+  { to: "/app/publish",  label: "Create", Icon: FilePlus2 },
+  { to: "/app/lookup",   label: "Scan",    Icon: ScanLine },
+  { to: "/app/settings", label: "Me",      Icon: Settings },
 ];
 
 export function TabBar() {

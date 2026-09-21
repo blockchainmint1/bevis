@@ -18,7 +18,7 @@ import { useFuel } from "@/lib/useFuel";
 import { getDeviceId } from "@/lib/deviceId";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
-export const Route = createFileRoute("/_app/topup")({
+export const Route = createFileRoute("/app/topup")({
   validateSearch: (search: Record<string, unknown>): { session_id?: string } =>
     typeof search["session_id"] === "string" ? { session_id: search["session_id"] } : {},
   head: () => ({
@@ -188,10 +188,10 @@ function TopupReturn({ sessionId }: { sessionId: string }) {
         </>
       )}
       <div className="mt-6 grid gap-2">
-        <Link to="/publish" className="rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
+        <Link to="/app/publish" className="rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
           Create a record
         </Link>
-        <Link to="/settings" className="rounded-md border border-border px-4 py-3 text-sm font-semibold">
+        <Link to="/app/settings" className="rounded-md border border-border px-4 py-3 text-sm font-semibold">
           Back to settings
         </Link>
       </div>

@@ -14,13 +14,13 @@ import { cacheCoinHistory, clearCachedHistory, getCachedHistory } from "@/lib/lo
 import QRCode from "qrcode";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/_app/coin/$id")({
+export const Route = createFileRoute("/app/coin/$id")({
   head: () => ({ meta: [{ title: "Asset — BEVIS" }] }),
   component: CoinPage,
 });
 
 function CoinPage() {
-  const { id } = useParams({ from: "/_app/coin/$id" });
+  const { id } = useParams({ from: "/app/coin/$id" });
   const navigate = useNavigate();
   const [coin, setCoin] = useState<LocalCoin | undefined>(undefined);
   const [loaded, setLoaded] = useState(false);
@@ -65,7 +65,7 @@ function CoinPage() {
     return (
       <div className="px-5 pt-10 text-center">
         <p className="text-sm text-muted-foreground">Asset not found in this device's portfolio.</p>
-        <Link to="/home" className="mt-4 inline-block text-sm text-primary hover:underline">Back to portfolio</Link>
+        <Link to="/app/home" className="mt-4 inline-block text-sm text-primary hover:underline">Back to portfolio</Link>
       </div>
     );
   }
@@ -76,12 +76,12 @@ function CoinPage() {
     if (coin) clearCachedHistory(coin.chain, coin.address);
     removeLocalCoin(id);
     toast.success("Asset removed.");
-    navigate({ to: "/home" });
+    navigate({ to: "/app/home" });
   }
 
   return (
     <div className="px-5 pt-6">
-      <Link to="/home" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+      <Link to="/app/home" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-3.5" /> Portfolio
       </Link>
 
@@ -105,7 +105,7 @@ function CoinPage() {
 
       <div className="mt-4 grid grid-cols-2 gap-2">
         <Link
-          to="/verify/$chain/$address" params={{ chain: coin.chain, address: coin.address }}
+          to="/app/verify/$chain/$address" params={{ chain: coin.chain, address: coin.address }}
           className="flex items-center justify-center gap-2 rounded-md border border-border bg-secondary px-4 py-2.5 text-sm font-medium hover:bg-secondary/80"
         >
           <ShieldCheck className="size-4" /> Verify

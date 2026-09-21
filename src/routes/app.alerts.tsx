@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { CHAINS } from "@/lib/chains";
 import { CoinLogo } from "@/components/CoinLogo";
 
-export const Route = createFileRoute("/_app/alerts")({
+export const Route = createFileRoute("/app/alerts")({
   head: () => ({ meta: [{ title: "Alerts — BEVIS" }] }),
   component: AlertsPage,
 });
@@ -107,7 +107,7 @@ function AlertsPage() {
       </ul>
 
       <p className="mt-8 text-center text-[11px] text-muted-foreground">
-        Tip: tap an asset on <Link to="/home" className="text-primary hover:underline">Home</Link> to set per-asset thresholds.
+        Tip: tap an asset on <Link to="/app/home" className="text-primary hover:underline">Home</Link> to set per-asset thresholds.
       </p>
     </div>
   );

@@ -5,7 +5,7 @@ import { ScanLine } from "lucide-react";
 import { QrScanner } from "@/components/QrScanner";
 import { Input } from "@/components/ui/input";
 
-export const Route = createFileRoute("/_app/lookup")({
+export const Route = createFileRoute("/app/lookup")({
   head: () => ({
     meta: [
       { title: "Scan a BEVIS code — verify a record" },
