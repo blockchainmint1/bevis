@@ -46,6 +46,7 @@ export function SiteFooter() {
             <li><Link to="/learn-more" className="hover:text-foreground">Learn more</Link></li>
             <li><Link to="/help" className="hover:text-foreground">Help &amp; FAQ</Link></li>
             <li><Link to="/app/assets" className="hover:text-foreground">Open the app</Link></li>
+            <li><Link to="/android" className="hover:text-foreground">Android app</Link></li>
           </ul>
         </div>
       </div>
