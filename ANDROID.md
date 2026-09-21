@@ -1,7 +1,7 @@
 # BEVIS — Android (APK / AAB) build guide
 
 The Android app is a thin Capacitor shell around the live web app at
-`https://app.bevis.sg`. Web changes ship instantly; you only rebuild the
+`https://app.bevis.sg/app`. Web changes ship instantly; you only rebuild the
 binary when the bundle id, icons, splash, permissions, plugins, or the URL
 in `capacitor.config.ts` change.
 
@@ -9,7 +9,7 @@ in `capacitor.config.ts` change.
 | ----------- | -------------- |
 | App id      | `sg.bevis.app` |
 | App name    | `BEVIS`        |
-| Loads       | `https://app.bevis.sg` |
+| Loads       | `https://app.bevis.sg/app` |
 | Min SDK     | Capacitor 8 default (Android 6+) |
 
 ## 1. One-time local setup
