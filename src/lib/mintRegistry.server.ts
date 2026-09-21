@@ -164,15 +164,17 @@ export async function cacheAssetId(chain: string, address: string, assetId: stri
   }
 }
 
-/** Resolve a six-digit Asset ID to a known coin address. */
+/**
+ * Resolve a six-digit Asset ID to a known coin address.
+ *
+ * Server-only, and the table is not publicly readable, so the registry cannot
+ * be enumerated from the browser. This is a single exact Asset ID match.
+ */
 export async function addressForAssetId(
   assetId: string,
 ): Promise<{ chain: string; address: string } | null> {
-  const { createClient } = await import("@supabase/supabase-js");
-  const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, {
-    auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
-  });
-  const { data } = await supabase
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin
     .from("verification_records")
     .select("chain,address")
     .ilike("asset_id", assetId)
