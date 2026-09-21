@@ -22,6 +22,10 @@
 - [x] Webhook credits the buyer's own fuel address with TXC from the house wallet (live only)
 - [x] Complete go-live so real card payments credit real fuel
 
+## Android app (Sep 2026)
+- [ ] Produce the first BEVIS APK (Capacitor shell → `https://app.bevis.sg/app`) — needs a machine with JDK 21 + Android SDK, or a GitHub Actions runner
+- [ ] Create the signing keystore and add the four CI secrets before a release build
+
 ## TEXITcoin wallet reliability (Sep 2026)
 - [x] Replace routine node-wide UTXO scans with indexed address lookups
 - [x] Keep a bounded, non-destructive node scan fallback
