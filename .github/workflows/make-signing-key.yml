@@ -1,0 +1,64 @@
+name: Make signing key
+
+# Run this ONCE, by hand, to create the Android signing key.
+# Actions -> Make signing key -> Run workflow.
+#
+# It produces a downloadable artifact "bevis-signing-key" containing:
+#   bevis.jks              the key file itself - BACK THIS UP FOREVER
+#   bevis-base64.txt       the key as text, for the GitHub secret
+#   SECRETS.txt            the exact four secret names and values to paste
+#
+# Nothing is stored in the repo and nothing is committed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      alias:
+        description: "Key alias (leave as bevis unless you know better)"
+        default: "bevis"
+      dname:
+        description: "Certificate name"
+        default: "CN=Rearden Metals Pte Ltd, O=Rearden Metals Pte Ltd, L=Singapore, C=SG"
+
+jobs:
+  keygen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Generate keystore
+        env:
+          ALIAS: ${{ inputs.alias }}
+          DNAME: ${{ inputs.dname }}
+        run: |
+          mkdir -p out
+          PASS="$(openssl rand -base64 30 | tr -d '/+=' | cut -c1-32)"
+          keytool -genkeypair -v \
+            -keystore out/bevis.jks \
+            -alias "$ALIAS" \
+            -keyalg RSA -keysize 4096 -validity 10000 \
+            -storepass "$PASS" -keypass "$PASS" \
+            -dname "$DNAME"
+          base64 -w0 out/bevis.jks > out/bevis-base64.txt
+          {
+            echo "Add these four repository secrets:"
+            echo "Settings -> Secrets and variables -> Actions -> New repository secret"
+            echo
+            echo "BEVIS_KEYSTORE_BASE64  = the entire contents of bevis-base64.txt"
+            echo "BEVIS_KEYSTORE_PASSWORD = $PASS"
+            echo "BEVIS_KEY_ALIAS         = $ALIAS"
+            echo "BEVIS_KEY_PASSWORD      = $PASS"
+            echo
+            echo "Keep bevis.jks and this password backed up forever."
+            echo "Losing them means phones can never update the app in place."
+          } > out/SECRETS.txt
+
+      - name: Upload key bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: bevis-signing-key
+          path: out/
+          retention-days: 1
