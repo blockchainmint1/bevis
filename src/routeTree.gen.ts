@@ -10,14 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as TopupRouteImport } from './routes/topup'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ScanRouteImport } from './routes/scan'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverRouteImport } from './routes/recover'
+import { Route as PublishRouteImport } from './routes/publish'
+import { Route as LookupRouteImport } from './routes/lookup'
+import { Route as ImportRouteImport } from './routes/import'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as HandoffRouteImport } from './routes/handoff'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AssetsRouteImport } from './routes/assets'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SiteRouteImport } from './routes/_site'
+import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
 import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
+import { Route as CoinIdRouteImport } from './routes/coin.$id'
+import { Route as AssetAssetIdRouteImport } from './routes/asset.$assetId'
 import { Route as AppTopupRouteImport } from './routes/app.topup'
 import { Route as AppShopRouteImport } from './routes/app.shop'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
@@ -50,6 +64,26 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TopupRoute = TopupRouteImport.update({
+  id: '/topup',
+  path: '/topup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -58,6 +92,26 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const RecoverRoute = RecoverRouteImport.update({
   id: '/recover',
   path: '/recover',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublishRoute = PublishRouteImport.update({
+  id: '/publish',
+  path: '/publish',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LookupRoute = LookupRouteImport.update({
+  id: '/lookup',
+  path: '/lookup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportRoute = ImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HandoffRoute = HandoffRouteImport.update({
@@ -70,14 +124,34 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssetsRoute = AssetsRouteImport.update({
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertsRoute = AlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
@@ -87,6 +161,16 @@ const SiteIndexRoute = SiteIndexRouteImport.update({
 const VerifyKeyRoute = VerifyKeyRouteImport.update({
   id: '/verify/$key',
   path: '/verify/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoinIdRoute = CoinIdRouteImport.update({
+  id: '/coin/$id',
+  path: '/coin/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssetAssetIdRoute = AssetAssetIdRouteImport.update({
+  id: '/asset/$assetId',
+  path: '/asset/$assetId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppTopupRoute = AppTopupRouteImport.update({
@@ -224,11 +308,22 @@ const ApiPublicCronHouseBalanceRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
+  '/admin': typeof AdminRoute
+  '/alerts': typeof AlertsRoute
   '/app': typeof AppRouteWithChildren
+  '/assets': typeof AssetsRoute
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/lookup': typeof LookupRoute
+  '/publish': typeof PublishRoute
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
   '/about': typeof SiteAboutRoute
   '/business': typeof SiteBusinessRoute
@@ -249,7 +344,10 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRoute
   '/app/shop': typeof AppShopRoute
   '/app/topup': typeof AppTopupRoute
+  '/asset/$assetId': typeof AssetAssetIdRoute
+  '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
+  '/app/': typeof AppIndexRoute
   '/app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/app/coin/$id': typeof AppCoinIdRoute
   '/verify/': typeof SiteVerifyIndexRoute
@@ -259,11 +357,21 @@ export interface FileRoutesByFullPath {
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRoutesByTo {
-  '/app': typeof AppRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/alerts': typeof AlertsRoute
+  '/assets': typeof AssetsRoute
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/lookup': typeof LookupRoute
+  '/publish': typeof PublishRoute
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
   '/about': typeof SiteAboutRoute
   '/business': typeof SiteBusinessRoute
@@ -284,8 +392,11 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AppSettingsRoute
   '/app/shop': typeof AppShopRoute
   '/app/topup': typeof AppTopupRoute
+  '/asset/$assetId': typeof AssetAssetIdRoute
+  '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/': typeof SiteIndexRoute
+  '/app': typeof AppIndexRoute
   '/app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/app/coin/$id': typeof AppCoinIdRoute
   '/verify': typeof SiteVerifyIndexRoute
@@ -297,11 +408,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/alerts': typeof AlertsRoute
   '/app': typeof AppRouteWithChildren
+  '/assets': typeof AssetsRoute
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
+  '/home': typeof HomeRoute
+  '/import': typeof ImportRoute
+  '/lookup': typeof LookupRoute
+  '/publish': typeof PublishRoute
   '/recover': typeof RecoverRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/scan': typeof ScanRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/topup': typeof TopupRoute
   '/welcome': typeof WelcomeRoute
   '/_site/about': typeof SiteAboutRoute
   '/_site/business': typeof SiteBusinessRoute
@@ -322,8 +444,11 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRoute
   '/app/shop': typeof AppShopRoute
   '/app/topup': typeof AppTopupRoute
+  '/asset/$assetId': typeof AssetAssetIdRoute
+  '/coin/$id': typeof CoinIdRoute
   '/verify/$key': typeof VerifyKeyRoute
   '/_site/': typeof SiteIndexRoute
+  '/app/': typeof AppIndexRoute
   '/app/asset/$assetId': typeof AppAssetAssetIdRoute
   '/app/coin/$id': typeof AppCoinIdRoute
   '/_site/verify/': typeof SiteVerifyIndexRoute
@@ -336,11 +461,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/alerts'
     | '/app'
+    | '/assets'
     | '/auth'
     | '/handoff'
+    | '/home'
+    | '/import'
+    | '/lookup'
+    | '/publish'
     | '/recover'
     | '/reset-password'
+    | '/scan'
+    | '/settings'
+    | '/shop'
+    | '/topup'
     | '/welcome'
     | '/about'
     | '/business'
@@ -361,7 +497,10 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/shop'
     | '/app/topup'
+    | '/asset/$assetId'
+    | '/coin/$id'
     | '/verify/$key'
+    | '/app/'
     | '/app/asset/$assetId'
     | '/app/coin/$id'
     | '/verify/'
@@ -371,11 +510,21 @@ export interface FileRouteTypes {
     | '/app/verify/$chain/$address'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/app'
+    | '/admin'
+    | '/alerts'
+    | '/assets'
     | '/auth'
     | '/handoff'
+    | '/home'
+    | '/import'
+    | '/lookup'
+    | '/publish'
     | '/recover'
     | '/reset-password'
+    | '/scan'
+    | '/settings'
+    | '/shop'
+    | '/topup'
     | '/welcome'
     | '/about'
     | '/business'
@@ -396,8 +545,11 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/shop'
     | '/app/topup'
+    | '/asset/$assetId'
+    | '/coin/$id'
     | '/verify/$key'
     | '/'
+    | '/app'
     | '/app/asset/$assetId'
     | '/app/coin/$id'
     | '/verify'
@@ -408,11 +560,22 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_site'
+    | '/admin'
+    | '/alerts'
     | '/app'
+    | '/assets'
     | '/auth'
     | '/handoff'
+    | '/home'
+    | '/import'
+    | '/lookup'
+    | '/publish'
     | '/recover'
     | '/reset-password'
+    | '/scan'
+    | '/settings'
+    | '/shop'
+    | '/topup'
     | '/welcome'
     | '/_site/about'
     | '/_site/business'
@@ -433,8 +596,11 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/shop'
     | '/app/topup'
+    | '/asset/$assetId'
+    | '/coin/$id'
     | '/verify/$key'
     | '/_site/'
+    | '/app/'
     | '/app/asset/$assetId'
     | '/app/coin/$id'
     | '/_site/verify/'
@@ -446,12 +612,25 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   SiteRoute: typeof SiteRouteWithChildren
+  AdminRoute: typeof AdminRoute
+  AlertsRoute: typeof AlertsRoute
   AppRoute: typeof AppRouteWithChildren
+  AssetsRoute: typeof AssetsRoute
   AuthRoute: typeof AuthRoute
   HandoffRoute: typeof HandoffRoute
+  HomeRoute: typeof HomeRoute
+  ImportRoute: typeof ImportRoute
+  LookupRoute: typeof LookupRoute
+  PublishRoute: typeof PublishRoute
   RecoverRoute: typeof RecoverRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ScanRoute: typeof ScanRoute
+  SettingsRoute: typeof SettingsRoute
+  ShopRoute: typeof ShopRoute
+  TopupRoute: typeof TopupRoute
   WelcomeRoute: typeof WelcomeRoute
+  AssetAssetIdRoute: typeof AssetAssetIdRoute
+  CoinIdRoute: typeof CoinIdRoute
   VerifyKeyRoute: typeof VerifyKeyRoute
   ApiPublicCronHouseBalanceRoute: typeof ApiPublicCronHouseBalanceRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
@@ -465,6 +644,34 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topup': {
+      id: '/topup'
+      path: '/topup'
+      fullPath: '/topup'
+      preLoaderRoute: typeof TopupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -481,6 +688,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecoverRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/publish': {
+      id: '/publish'
+      path: '/publish'
+      fullPath: '/publish'
+      preLoaderRoute: typeof PublishRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lookup': {
+      id: '/lookup'
+      path: '/lookup'
+      fullPath: '/lookup'
+      preLoaderRoute: typeof LookupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import': {
+      id: '/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof ImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/handoff': {
       id: '/handoff'
       path: '/handoff'
@@ -495,11 +730,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assets': {
+      id: '/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app': {
       id: '/app'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_site': {
@@ -508,6 +764,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof SiteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_site/': {
       id: '/_site/'
@@ -521,6 +784,20 @@ declare module '@tanstack/react-router' {
       path: '/verify/$key'
       fullPath: '/verify/$key'
       preLoaderRoute: typeof VerifyKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/coin/$id': {
+      id: '/coin/$id'
+      path: '/coin/$id'
+      fullPath: '/coin/$id'
+      preLoaderRoute: typeof CoinIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asset/$assetId': {
+      id: '/asset/$assetId'
+      path: '/asset/$assetId'
+      fullPath: '/asset/$assetId'
+      preLoaderRoute: typeof AssetAssetIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/topup': {
@@ -748,6 +1025,7 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   AppShopRoute: typeof AppShopRoute
   AppTopupRoute: typeof AppTopupRoute
+  AppIndexRoute: typeof AppIndexRoute
   AppAssetAssetIdRoute: typeof AppAssetAssetIdRoute
   AppCoinIdRoute: typeof AppCoinIdRoute
   AppVerifyChainAddressRoute: typeof AppVerifyChainAddressRoute
@@ -765,6 +1043,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   AppShopRoute: AppShopRoute,
   AppTopupRoute: AppTopupRoute,
+  AppIndexRoute: AppIndexRoute,
   AppAssetAssetIdRoute: AppAssetAssetIdRoute,
   AppCoinIdRoute: AppCoinIdRoute,
   AppVerifyChainAddressRoute: AppVerifyChainAddressRoute,
@@ -774,12 +1053,25 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   SiteRoute: SiteRouteWithChildren,
+  AdminRoute: AdminRoute,
+  AlertsRoute: AlertsRoute,
   AppRoute: AppRouteWithChildren,
+  AssetsRoute: AssetsRoute,
   AuthRoute: AuthRoute,
   HandoffRoute: HandoffRoute,
+  HomeRoute: HomeRoute,
+  ImportRoute: ImportRoute,
+  LookupRoute: LookupRoute,
+  PublishRoute: PublishRoute,
   RecoverRoute: RecoverRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ScanRoute: ScanRoute,
+  SettingsRoute: SettingsRoute,
+  ShopRoute: ShopRoute,
+  TopupRoute: TopupRoute,
   WelcomeRoute: WelcomeRoute,
+  AssetAssetIdRoute: AssetAssetIdRoute,
+  CoinIdRoute: CoinIdRoute,
   VerifyKeyRoute: VerifyKeyRoute,
   ApiPublicCronHouseBalanceRoute: ApiPublicCronHouseBalanceRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
