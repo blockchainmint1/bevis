@@ -107,7 +107,7 @@ Bump `versionName`/`versionCode` in `android/app/build.gradle` before tagging
 ## 6. Testing against preview instead of production
 
 Edit `capacitor.config.ts` → `server.url` to
-`https://id-preview--a663349c-4f40-4b3a-8730-df21f057abce.lovable.app`,
+`https://id-preview--a663349c-4f40-4b3a-8730-df21f057abce.lovable.app/app`,
 then `bun run cap:sync && bun run android:apk`. Revert before releasing.
 
 ## 7. Permissions
