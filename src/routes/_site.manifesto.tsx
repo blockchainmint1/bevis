@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Footer } from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
 
-export const Route = createFileRoute("/manifesto")({
+export const Route = createFileRoute("/_site/manifesto")({
   head: () => ({
     meta: [
       { title: "Manifesto — BEVIS" },
@@ -50,7 +49,6 @@ function Manifesto() {
         <p>Not to a regulator. Not to a payment processor. Not to an analytics partner. To the person holding the asset. Always.</p>
       </div>
 
-      <Footer />
     </div>
   );
 }

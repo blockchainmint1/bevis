@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Footer } from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
 
-export const Route = createFileRoute("/about")({
+export const Route = createFileRoute("/_site/about")({
   head: () => ({
     meta: [
       { title: "About — BEVIS" },
@@ -30,7 +29,6 @@ function About() {
         </p>
         <p>{"\n"}</p>
       </div>
-      <Footer />
     </div>
   );
 }

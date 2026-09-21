@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Footer } from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
 
-export const Route = createFileRoute("/privacy")({
+export const Route = createFileRoute("/_site/privacy")({
   head: () => ({
     meta: [
       { title: "Privacy — BEVIS" },
@@ -46,7 +45,6 @@ function Privacy() {
         <h2 className="font-serif text-xl text-foreground">Contact</h2>
         <p>mint@blockchainmint.com</p>
       </div>
-      <Footer />
     </div>
   );
 }
