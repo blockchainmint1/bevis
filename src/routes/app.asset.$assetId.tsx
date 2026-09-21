@@ -20,7 +20,7 @@ import { formatBytes } from "@/lib/bevis/metadata";
 import { Input } from "@/components/ui/input";
 import { ChainLedger } from "@/components/ChainLedger";
 
-export const Route = createFileRoute("/_app/asset/$assetId")({
+export const Route = createFileRoute("/app/asset/$assetId")({
   head: ({ params }) => ({
     meta: [
       { title: `Asset ${params.assetId} — BEVIS certificate` },
@@ -108,7 +108,7 @@ function AssetDetailPage() {
     return (
       <div className="px-5 py-16 text-center">
         <p className="text-sm text-muted-foreground">No asset {assetId} on this account.</p>
-        <Link to="/assets" className="mt-4 inline-block text-sm font-semibold text-primary">Back to assets</Link>
+        <Link to="/app/assets" className="mt-4 inline-block text-sm font-semibold text-primary">Back to assets</Link>
       </div>
     );
   }
@@ -148,13 +148,13 @@ function AssetDetailPage() {
     const ok = await run("delete", "Deleting asset", () => remove({ data: { assetId } }));
     if (ok) {
       void qc.invalidateQueries({ queryKey: ["bevis-assets"] });
-      void navigate({ to: "/assets" });
+      void navigate({ to: "/app/assets" });
     }
   }
 
   return (
     <div className="px-5 pb-10 pt-6">
-      <Link to="/assets" className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
+      <Link to="/app/assets" className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-3.5" /> Assets
       </Link>
 

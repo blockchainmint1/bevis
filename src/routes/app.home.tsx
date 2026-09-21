@@ -28,7 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_app/home")({
+export const Route = createFileRoute("/app/home")({
   head: () => ({
     meta: [
       { title: "Your assets — BEVIS" },
@@ -123,7 +123,7 @@ function HomePage() {
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-serif text-xl text-foreground">Your assets</h2>
         <button
-          onClick={() => navigate({ to: "/scan" })}
+          onClick={() => navigate({ to: "/app/scan" })}
           className="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary px-3 py-1.5 text-xs font-medium hover:bg-secondary/80"
         >
           <Plus className="size-3.5" /> Add
@@ -140,7 +140,7 @@ function HomePage() {
             <li key={coin.id}>
               <div className="group flex items-center gap-2 rounded-xl border border-border bg-card pr-2 transition hover:border-primary/40">
                 <Link
-                  to="/coin/$id"
+                  to="/app/coin/$id"
                   params={{ id: coin.id }}
                   className="flex min-w-0 flex-1 items-center gap-4 p-4"
                 >
@@ -208,7 +208,7 @@ function CoinRowMenu({ coin }: { coin: LocalCoin }) {
           <DropdownMenuItem onSelect={() => navigate({ to: "/verify/$key", params: { key: coin.address } })}>
             <ScrollText className="size-4" /> Record book
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => navigate({ to: "/publish" })}>
+          <DropdownMenuItem onSelect={() => navigate({ to: "/app/publish" })}>
             <FilePlus className="size-4" /> File a record
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -266,7 +266,7 @@ function EmptyState() {
       <ScanLine className="mx-auto size-8 text-muted-foreground" />
       <h3 className="mt-3 font-serif text-lg text-foreground">No assets yet</h3>
       <p className="mt-1 text-sm text-muted-foreground">Scan the QR on the front of an asset to start watching it.</p>
-      <Link to="/scan" className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+      <Link to="/app/scan" className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
         Scan an asset
       </Link>
     </div>

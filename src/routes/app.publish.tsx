@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/_app/publish")({
+export const Route = createFileRoute("/app/publish")({
   // `?assetId=ABC123` arrives from an asset's record book: file another record
   // against a record that already exists.
   validateSearch: (search: Record<string, unknown>): { assetId?: string } =>
@@ -245,7 +245,7 @@ function PublishPage() {
                     records.
                   </p>
                   <Link
-                    to="/topup"
+                    to="/app/topup"
                     className="mt-3 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
                   >
                     <CreditCard className="size-3.5" /> Top up with a card
@@ -407,7 +407,7 @@ function Receipt({ result, onAnother }: { result: PublishOutcome; onAnother: () 
 
       <div className="grid gap-2">
         <Link
-          to="/asset/$assetId"
+          to="/app/asset/$assetId"
           params={{ assetId: result.assetId }}
           className="rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground"
         >

@@ -6,7 +6,7 @@ import { CoinMedallion } from "@/components/CoinMedallion";
 import { CHAINS, fmtAmount, fmtUsd, type ChainId } from "@/lib/chains";
 import { ArrowLeft, ShieldCheck, ShieldAlert } from "lucide-react";
 
-export const Route = createFileRoute("/_app/verify/$chain/$address")({
+export const Route = createFileRoute("/app/verify/$chain/$address")({
   head: () => ({ meta: [{ title: "Verify — BEVIS" }] }),
   component: VerifyPage,
 });
@@ -31,7 +31,7 @@ function VerifyPage() {
 
   return (
     <div className="px-5 pt-6">
-      <Link to="/scan" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+      <Link to="/app/scan" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-3.5" /> Scan
       </Link>
 

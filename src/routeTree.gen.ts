@@ -17,27 +17,27 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ManifestoRouteImport } from './routes/manifesto'
 import { Route as HandoffRouteImport } from './routes/handoff'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyKeyRouteImport } from './routes/verify.$key'
-import { Route as AppTopupRouteImport } from './routes/_app.topup'
-import { Route as AppShopRouteImport } from './routes/_app.shop'
-import { Route as AppSettingsRouteImport } from './routes/_app.settings'
-import { Route as AppScanRouteImport } from './routes/_app.scan'
-import { Route as AppPublishRouteImport } from './routes/_app.publish'
-import { Route as AppLookupRouteImport } from './routes/_app.lookup'
-import { Route as AppImportRouteImport } from './routes/_app.import'
-import { Route as AppHomeRouteImport } from './routes/_app.home'
-import { Route as AppAssetsRouteImport } from './routes/_app.assets'
-import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
-import { Route as AppAdminRouteImport } from './routes/_app.admin'
-import { Route as AppCoinIdRouteImport } from './routes/_app.coin.$id'
-import { Route as AppAssetAssetIdRouteImport } from './routes/_app.asset.$assetId'
+import { Route as AppTopupRouteImport } from './routes/app.topup'
+import { Route as AppShopRouteImport } from './routes/app.shop'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppScanRouteImport } from './routes/app.scan'
+import { Route as AppPublishRouteImport } from './routes/app.publish'
+import { Route as AppLookupRouteImport } from './routes/app.lookup'
+import { Route as AppImportRouteImport } from './routes/app.import'
+import { Route as AppHomeRouteImport } from './routes/app.home'
+import { Route as AppAssetsRouteImport } from './routes/app.assets'
+import { Route as AppAlertsRouteImport } from './routes/app.alerts'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppCoinIdRouteImport } from './routes/app.coin.$id'
+import { Route as AppAssetAssetIdRouteImport } from './routes/app.asset.$assetId'
+import { Route as AppVerifyChainAddressRouteImport } from './routes/app.verify.$chain.$address'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
 import { Route as ApiPublicCronHouseBalanceRouteImport } from './routes/api/public/cron/house-balance'
-import { Route as AppVerifyChainAddressRouteImport } from './routes/_app.verify.$chain.$address'
 
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
@@ -79,13 +79,14 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -163,6 +164,11 @@ const AppAssetAssetIdRoute = AppAssetAssetIdRouteImport.update({
   path: '/asset/$assetId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
+  id: '/verify/$chain/$address',
+  path: '/verify/$chain/$address',
+  getParentRoute: () => AppRoute,
+} as any)
 const ApiPublicPaymentsWebhookRoute =
   ApiPublicPaymentsWebhookRouteImport.update({
     id: '/api/public/payments/webhook',
@@ -180,15 +186,11 @@ const ApiPublicCronHouseBalanceRoute =
     path: '/api/public/cron/house-balance',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
-  id: '/verify/$chain/$address',
-  path: '/verify/$chain/$address',
-  getParentRoute: () => AppRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
   '/manifesto': typeof ManifestoRoute
@@ -197,28 +199,29 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
-  '/admin': typeof AppAdminRoute
-  '/alerts': typeof AppAlertsRoute
-  '/assets': typeof AppAssetsRoute
-  '/home': typeof AppHomeRoute
-  '/import': typeof AppImportRoute
-  '/lookup': typeof AppLookupRoute
-  '/publish': typeof AppPublishRoute
-  '/scan': typeof AppScanRoute
-  '/settings': typeof AppSettingsRoute
-  '/shop': typeof AppShopRoute
-  '/topup': typeof AppTopupRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/home': typeof AppHomeRoute
+  '/app/import': typeof AppImportRoute
+  '/app/lookup': typeof AppLookupRoute
+  '/app/publish': typeof AppPublishRoute
+  '/app/scan': typeof AppScanRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/shop': typeof AppShopRoute
+  '/app/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
-  '/asset/$assetId': typeof AppAssetAssetIdRoute
-  '/coin/$id': typeof AppCoinIdRoute
-  '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/app/asset/$assetId': typeof AppAssetAssetIdRoute
+  '/app/coin/$id': typeof AppCoinIdRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
   '/manifesto': typeof ManifestoRoute
@@ -227,30 +230,30 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
-  '/admin': typeof AppAdminRoute
-  '/alerts': typeof AppAlertsRoute
-  '/assets': typeof AppAssetsRoute
-  '/home': typeof AppHomeRoute
-  '/import': typeof AppImportRoute
-  '/lookup': typeof AppLookupRoute
-  '/publish': typeof AppPublishRoute
-  '/scan': typeof AppScanRoute
-  '/settings': typeof AppSettingsRoute
-  '/shop': typeof AppShopRoute
-  '/topup': typeof AppTopupRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/home': typeof AppHomeRoute
+  '/app/import': typeof AppImportRoute
+  '/app/lookup': typeof AppLookupRoute
+  '/app/publish': typeof AppPublishRoute
+  '/app/scan': typeof AppScanRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/shop': typeof AppShopRoute
+  '/app/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
-  '/asset/$assetId': typeof AppAssetAssetIdRoute
-  '/coin/$id': typeof AppCoinIdRoute
-  '/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/app/asset/$assetId': typeof AppAssetAssetIdRoute
+  '/app/coin/$id': typeof AppCoinIdRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_app': typeof AppRouteWithChildren
   '/about': typeof AboutRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/handoff': typeof HandoffRoute
   '/manifesto': typeof ManifestoRoute
@@ -259,30 +262,31 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
-  '/_app/admin': typeof AppAdminRoute
-  '/_app/alerts': typeof AppAlertsRoute
-  '/_app/assets': typeof AppAssetsRoute
-  '/_app/home': typeof AppHomeRoute
-  '/_app/import': typeof AppImportRoute
-  '/_app/lookup': typeof AppLookupRoute
-  '/_app/publish': typeof AppPublishRoute
-  '/_app/scan': typeof AppScanRoute
-  '/_app/settings': typeof AppSettingsRoute
-  '/_app/shop': typeof AppShopRoute
-  '/_app/topup': typeof AppTopupRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/alerts': typeof AppAlertsRoute
+  '/app/assets': typeof AppAssetsRoute
+  '/app/home': typeof AppHomeRoute
+  '/app/import': typeof AppImportRoute
+  '/app/lookup': typeof AppLookupRoute
+  '/app/publish': typeof AppPublishRoute
+  '/app/scan': typeof AppScanRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/shop': typeof AppShopRoute
+  '/app/topup': typeof AppTopupRoute
   '/verify/$key': typeof VerifyKeyRoute
-  '/_app/asset/$assetId': typeof AppAssetAssetIdRoute
-  '/_app/coin/$id': typeof AppCoinIdRoute
-  '/_app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/app/asset/$assetId': typeof AppAssetAssetIdRoute
+  '/app/coin/$id': typeof AppCoinIdRoute
   '/api/public/cron/house-balance': typeof ApiPublicCronHouseBalanceRoute
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
+  '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/app'
     | '/auth'
     | '/handoff'
     | '/manifesto'
@@ -291,28 +295,29 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
-    | '/admin'
-    | '/alerts'
-    | '/assets'
-    | '/home'
-    | '/import'
-    | '/lookup'
-    | '/publish'
-    | '/scan'
-    | '/settings'
-    | '/shop'
-    | '/topup'
+    | '/app/admin'
+    | '/app/alerts'
+    | '/app/assets'
+    | '/app/home'
+    | '/app/import'
+    | '/app/lookup'
+    | '/app/publish'
+    | '/app/scan'
+    | '/app/settings'
+    | '/app/shop'
+    | '/app/topup'
     | '/verify/$key'
-    | '/asset/$assetId'
-    | '/coin/$id'
-    | '/verify/$chain/$address'
+    | '/app/asset/$assetId'
+    | '/app/coin/$id'
     | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
+    | '/app/verify/$chain/$address'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/app'
     | '/auth'
     | '/handoff'
     | '/manifesto'
@@ -321,29 +326,29 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
-    | '/admin'
-    | '/alerts'
-    | '/assets'
-    | '/home'
-    | '/import'
-    | '/lookup'
-    | '/publish'
-    | '/scan'
-    | '/settings'
-    | '/shop'
-    | '/topup'
+    | '/app/admin'
+    | '/app/alerts'
+    | '/app/assets'
+    | '/app/home'
+    | '/app/import'
+    | '/app/lookup'
+    | '/app/publish'
+    | '/app/scan'
+    | '/app/settings'
+    | '/app/shop'
+    | '/app/topup'
     | '/verify/$key'
-    | '/asset/$assetId'
-    | '/coin/$id'
-    | '/verify/$chain/$address'
+    | '/app/asset/$assetId'
+    | '/app/coin/$id'
     | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
+    | '/app/verify/$chain/$address'
   id:
     | '__root__'
     | '/'
-    | '/_app'
     | '/about'
+    | '/app'
     | '/auth'
     | '/handoff'
     | '/manifesto'
@@ -352,30 +357,30 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/welcome'
-    | '/_app/admin'
-    | '/_app/alerts'
-    | '/_app/assets'
-    | '/_app/home'
-    | '/_app/import'
-    | '/_app/lookup'
-    | '/_app/publish'
-    | '/_app/scan'
-    | '/_app/settings'
-    | '/_app/shop'
-    | '/_app/topup'
+    | '/app/admin'
+    | '/app/alerts'
+    | '/app/assets'
+    | '/app/home'
+    | '/app/import'
+    | '/app/lookup'
+    | '/app/publish'
+    | '/app/scan'
+    | '/app/settings'
+    | '/app/shop'
+    | '/app/topup'
     | '/verify/$key'
-    | '/_app/asset/$assetId'
-    | '/_app/coin/$id'
-    | '/_app/verify/$chain/$address'
+    | '/app/asset/$assetId'
+    | '/app/coin/$id'
     | '/api/public/cron/house-balance'
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
+    | '/app/verify/$chain/$address'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   HandoffRoute: typeof HandoffRoute
   ManifestoRoute: typeof ManifestoRoute
@@ -448,18 +453,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_app': {
-      id: '/_app'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -476,95 +481,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyKeyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/topup': {
-      id: '/_app/topup'
+    '/app/topup': {
+      id: '/app/topup'
       path: '/topup'
-      fullPath: '/topup'
+      fullPath: '/app/topup'
       preLoaderRoute: typeof AppTopupRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/shop': {
-      id: '/_app/shop'
+    '/app/shop': {
+      id: '/app/shop'
       path: '/shop'
-      fullPath: '/shop'
+      fullPath: '/app/shop'
       preLoaderRoute: typeof AppShopRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/settings': {
-      id: '/_app/settings'
+    '/app/settings': {
+      id: '/app/settings'
       path: '/settings'
-      fullPath: '/settings'
+      fullPath: '/app/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/scan': {
-      id: '/_app/scan'
+    '/app/scan': {
+      id: '/app/scan'
       path: '/scan'
-      fullPath: '/scan'
+      fullPath: '/app/scan'
       preLoaderRoute: typeof AppScanRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/publish': {
-      id: '/_app/publish'
+    '/app/publish': {
+      id: '/app/publish'
       path: '/publish'
-      fullPath: '/publish'
+      fullPath: '/app/publish'
       preLoaderRoute: typeof AppPublishRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/lookup': {
-      id: '/_app/lookup'
+    '/app/lookup': {
+      id: '/app/lookup'
       path: '/lookup'
-      fullPath: '/lookup'
+      fullPath: '/app/lookup'
       preLoaderRoute: typeof AppLookupRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/import': {
-      id: '/_app/import'
+    '/app/import': {
+      id: '/app/import'
       path: '/import'
-      fullPath: '/import'
+      fullPath: '/app/import'
       preLoaderRoute: typeof AppImportRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/home': {
-      id: '/_app/home'
+    '/app/home': {
+      id: '/app/home'
       path: '/home'
-      fullPath: '/home'
+      fullPath: '/app/home'
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/assets': {
-      id: '/_app/assets'
+    '/app/assets': {
+      id: '/app/assets'
       path: '/assets'
-      fullPath: '/assets'
+      fullPath: '/app/assets'
       preLoaderRoute: typeof AppAssetsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/alerts': {
-      id: '/_app/alerts'
+    '/app/alerts': {
+      id: '/app/alerts'
       path: '/alerts'
-      fullPath: '/alerts'
+      fullPath: '/app/alerts'
       preLoaderRoute: typeof AppAlertsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/admin': {
-      id: '/_app/admin'
+    '/app/admin': {
+      id: '/app/admin'
       path: '/admin'
-      fullPath: '/admin'
+      fullPath: '/app/admin'
       preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/coin/$id': {
-      id: '/_app/coin/$id'
+    '/app/coin/$id': {
+      id: '/app/coin/$id'
       path: '/coin/$id'
-      fullPath: '/coin/$id'
+      fullPath: '/app/coin/$id'
       preLoaderRoute: typeof AppCoinIdRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/asset/$assetId': {
-      id: '/_app/asset/$assetId'
+    '/app/asset/$assetId': {
+      id: '/app/asset/$assetId'
       path: '/asset/$assetId'
-      fullPath: '/asset/$assetId'
+      fullPath: '/app/asset/$assetId'
       preLoaderRoute: typeof AppAssetAssetIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/verify/$chain/$address': {
+      id: '/app/verify/$chain/$address'
+      path: '/verify/$chain/$address'
+      fullPath: '/app/verify/$chain/$address'
+      preLoaderRoute: typeof AppVerifyChainAddressRouteImport
       parentRoute: typeof AppRoute
     }
     '/api/public/payments/webhook': {
@@ -587,13 +599,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/public/cron/house-balance'
       preLoaderRoute: typeof ApiPublicCronHouseBalanceRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_app/verify/$chain/$address': {
-      id: '/_app/verify/$chain/$address'
-      path: '/verify/$chain/$address'
-      fullPath: '/verify/$chain/$address'
-      preLoaderRoute: typeof AppVerifyChainAddressRouteImport
-      parentRoute: typeof AppRoute
     }
   }
 }
@@ -636,8 +641,8 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRouteWithChildren,
   AboutRoute: AboutRoute,
+  AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   HandoffRoute: HandoffRoute,
   ManifestoRoute: ManifestoRoute,

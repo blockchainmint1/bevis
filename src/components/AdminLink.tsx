@@ -23,7 +23,7 @@ export function AdminLink() {
 
   return (
     <Link
-      to="/admin"
+      to="/app/admin"
       className="mb-6 flex items-center gap-3 rounded-xl border border-border bg-card p-4 hover:bg-muted"
     >
       <Wrench className="size-5 text-primary" />

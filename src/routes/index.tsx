@@ -27,7 +27,7 @@ function SplashPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (ready && user) navigate({ to: "/assets", replace: true });
+    if (ready && user) navigate({ to: "/app/assets", replace: true });
   }, [ready, user, navigate]);
 
   return (
@@ -60,7 +60,7 @@ function SplashPage() {
             Create an account
           </Link>
           <Link
-            to="/assets"
+            to="/app/assets"
             className="block w-full px-4 py-3 text-xs text-muted-foreground transition hover:text-foreground"
           >
             Continue without an account

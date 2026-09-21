@@ -6,7 +6,7 @@ import { useAutoRestore } from "@/lib/autoRestore";
 import { registerForPush } from "@/lib/push";
 import { enablePrivacyScreen } from "@/lib/nativeSecurity";
 
-export const Route = createFileRoute("/_app")({
+export const Route = createFileRoute("/app")({
   component: AppLayout,
 });
 

@@ -12,7 +12,7 @@ import { fetchLegacyList } from "@/lib/legacyList.functions";
 import { toast } from "sonner";
 
 
-export const Route = createFileRoute("/_app/import")({
+export const Route = createFileRoute("/app/import")({
   head: () => ({ meta: [{ title: "Import old assets — BEVIS" }] }),
   component: ImportPage,
 });
@@ -118,12 +118,12 @@ function ImportPage() {
     if (!preview) return;
     const n = applyLegacyImport(preview);
     toast.success(`Imported ${n} ${n === 1 ? "asset" : "assets"}`);
-    navigate({ to: "/home" });
+    navigate({ to: "/app/home" });
   }
 
   return (
     <div className="px-5 pt-10">
-      <button onClick={() => navigate({ to: "/settings" })} className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+      <button onClick={() => navigate({ to: "/app/settings" })} className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-3.5" /> Settings
       </button>
 

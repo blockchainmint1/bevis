@@ -49,7 +49,7 @@ function AuthPage() {
       }
       const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       if (error) throw error;
-      navigate({ to: "/assets" });
+      navigate({ to: "/app/assets" });
     } catch (err) {
       toast.error((err as Error).message);
       setBusy(null);
@@ -73,7 +73,7 @@ function AuthPage() {
     setBusy(provider);
     try {
       const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: window.location.origin + "/assets",
+        redirect_uri: window.location.origin + "/app/assets",
       });
       if (result.error) {
         toast.error(result.error.message);
@@ -83,7 +83,7 @@ function AuthPage() {
       if (result.redirected) return;
       // Wait for session before redirecting away.
       const { data } = await supabase.auth.getSession();
-      if (data.session) navigate({ to: "/assets" });
+      if (data.session) navigate({ to: "/app/assets" });
       else setBusy(null);
     } catch (err) {
       toast.error((err as Error).message);

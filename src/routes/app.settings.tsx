@@ -8,7 +8,7 @@ import { AnchorWalletCard } from "@/components/AnchorWalletCard";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
 import { AdminLink } from "@/components/AdminLink";
 
-export const Route = createFileRoute("/_app/settings")({
+export const Route = createFileRoute("/app/settings")({
   head: () => ({ meta: [{ title: "Settings — BEVIS" }] }),
   component: SettingsPage,
 });

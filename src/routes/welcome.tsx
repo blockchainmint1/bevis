@@ -40,7 +40,7 @@ function WelcomePage() {
           .upsert({ id: user.id, display_name: displayName.trim() }, { onConflict: "id" });
         if (error) throw error;
       }
-      navigate({ to: "/assets", replace: true });
+      navigate({ to: "/app/assets", replace: true });
     } catch (err) {
       toast.error((err as Error).message);
       setBusy(false);

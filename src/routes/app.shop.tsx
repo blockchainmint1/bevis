@@ -5,7 +5,7 @@ import { CoinMedallion } from "@/components/CoinMedallion";
 import { ExternalLink } from "lucide-react";
 import { listShopProducts } from "@/lib/shop.functions";
 
-export const Route = createFileRoute("/_app/shop")({
+export const Route = createFileRoute("/app/shop")({
   head: () => ({
     meta: [
       { title: "Shop — BEVIS" },
