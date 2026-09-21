@@ -23,7 +23,7 @@
 - [x] Complete go-live so real card payments credit real fuel
 
 ## Android app (Sep 2026)
-- [ ] Produce the first BEVIS APK (Capacitor shell → `https://app.bevis.sg/app`) — needs a machine with JDK 21 + Android SDK, or a GitHub Actions runner
+- [ ] Produce the first BEVIS APK — sideload only, no app stores. Build via GitHub Actions ("Android APK" workflow, download the `bevis-apk` artifact) or the WinPC steps in `ANDROID.md`. Shell opens `https://app.bevis.sg/app/assets`. Publish the site first.
 - [ ] Create the signing keystore and add the four CI secrets before a release build
 
 ## TEXITcoin wallet reliability (Sep 2026)
