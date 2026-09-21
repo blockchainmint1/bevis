@@ -8,6 +8,24 @@ Everything below is copy/paste. Do not retype anything.
 
 ---
 
+## Easiest way — let GitHub make the key for you
+
+1. On GitHub open **Actions → Make signing key → Run workflow → Run workflow**.
+2. Wait for the green check (about a minute), open the run.
+3. Under **Artifacts**, download **bevis-signing-key** and unzip it.
+4. Open `SECRETS.txt` — it lists the four secret names and values.
+5. In **Settings → Secrets and variables → Actions → New repository secret**,
+   add all four. For `BEVIS_KEYSTORE_BASE64`, paste the whole contents of
+   `bevis-base64.txt`.
+6. Back up `bevis.jks` and the password somewhere permanent, then delete the
+   downloaded folder.
+
+That's it — the next **Android APK** build is signed. The manual steps below
+are only needed if you'd rather make the key on your own PC.
+
+---
+
+
 ## Step 1 — Create the signing key (WinPC, one time)
 
 You need Java installed (JDK 21, the same one used to build the app).
