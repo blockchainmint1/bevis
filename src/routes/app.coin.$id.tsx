@@ -20,7 +20,7 @@ export const Route = createFileRoute("/app/coin/$id")({
 });
 
 function CoinPage() {
-  const { id } = useParams({ from: "/_app/coin/$id" });
+  const { id } = useParams({ from: "/app/coin/$id" });
   const navigate = useNavigate();
   const [coin, setCoin] = useState<LocalCoin | undefined>(undefined);
   const [loaded, setLoaded] = useState(false);

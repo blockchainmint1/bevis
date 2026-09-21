@@ -12,7 +12,7 @@ export const Route = createFileRoute("/app/verify/$chain/$address")({
 });
 
 function VerifyPage() {
-  const { chain, address } = useParams({ from: "/_app/verify/$chain/$address" });
+  const { chain, address } = useParams({ from: "/app/verify/$chain/$address" });
   const verifyFn = useVerifyMintRecord();
   const { backend } = useBackend();
   const summaryFn = useLookupAddress();
