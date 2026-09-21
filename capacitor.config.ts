@@ -8,13 +8,13 @@ import type { CapacitorConfig } from "@capacitor/cli";
  * no store resubmission. A native rebuild is only needed when the bundle id,
  * icons, splash, permissions, plugins, or `server.url` change.
  *
- *   Android: sg.bevis.app   (Play Store listing)
+ *   Android: sg.bevis.app   (sideload APK only — no store listing)
  *   iOS:     sg.bevis.app
  *
  * Build:
  *   bun run build        # produces .output/public
  *   bun run cap:sync     # copy web + plugins into native projects
- *   bun run android:apk  # debug APK straight to android/app/build/outputs
+ *   bun run android:apk  # sideloadable APK in android/app/build/outputs
  */
 const config: CapacitorConfig = {
   appId: "sg.bevis.app",
@@ -25,8 +25,8 @@ const config: CapacitorConfig = {
   server: {
     // Point the native shell at the live published web app. Swap to the
     // Lovable preview URL to test unpublished builds.
-    // The app now lives under /app (the site root is the public marketing page).
-    url: "https://app.bevis.sg/app",
+    // Open straight into the app home (asset list), NOT the marketing site root.
+    url: "https://app.bevis.sg/app/assets",
     cleartext: false,
     androidScheme: "https",
     iosScheme: "https",
