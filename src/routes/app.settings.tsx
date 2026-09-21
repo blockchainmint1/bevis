@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Footer } from "@/components/Footer";
-import { LogOut, FileText, Shield, BookOpen, ExternalLink, CloudUpload, UserCircle2, LifeBuoy } from "lucide-react";
+import { LogOut, FileText, Shield, BookOpen, ExternalLink, CloudUpload, UserCircle2, LifeBuoy, Smartphone } from "lucide-react";
 import { useLocalPortfolio } from "@/lib/localPortfolio";
 import { AnchorWalletCard } from "@/components/AnchorWalletCard";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
