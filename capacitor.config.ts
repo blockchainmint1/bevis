@@ -25,7 +25,8 @@ const config: CapacitorConfig = {
   server: {
     // Point the native shell at the live published web app. Swap to the
     // Lovable preview URL to test unpublished builds.
-    url: "https://app.bevis.sg",
+    // The app now lives under /app (the site root is the public marketing page).
+    url: "https://app.bevis.sg/app",
     cleartext: false,
     androidScheme: "https",
     iosScheme: "https",
