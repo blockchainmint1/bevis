@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Footer } from "@/components/Footer";
-import { LogOut, FileText, Shield, BookOpen, ExternalLink, CloudUpload, UserCircle2, LifeBuoy } from "lucide-react";
+import { LogOut, FileText, Shield, BookOpen, ExternalLink, CloudUpload, UserCircle2, LifeBuoy, Smartphone } from "lucide-react";
 import { useLocalPortfolio } from "@/lib/localPortfolio";
 import { AnchorWalletCard } from "@/components/AnchorWalletCard";
 import { CloudBackupCard } from "@/components/CloudBackupCard";
@@ -74,6 +74,7 @@ function SettingsPage() {
             <span className="text-[11px] text-muted-foreground">visit</span>
           </a>
         </li>
+        <SettingLink to="/android" icon={<Smartphone className="size-4" />} title="Android app" />
         <SettingLink to="/about" icon={<BookOpen className="size-4" />} title="About" />
         <SettingLink to="/manifesto" icon={<FileText className="size-4" />} title="Manifesto" />
         <SettingLink to="/terms" icon={<FileText className="size-4" />} title="Terms" />
