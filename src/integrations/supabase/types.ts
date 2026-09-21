@@ -55,6 +55,51 @@ export type Database = {
           },
         ]
       }
+      app_releases: {
+        Row: {
+          created_at: string
+          download_url: string | null
+          id: string
+          ipfs_cid: string | null
+          mandatory: boolean
+          notes: string | null
+          platform: string
+          released_at: string
+          sha256: string | null
+          size_bytes: number | null
+          version: string
+          version_code: number | null
+        }
+        Insert: {
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          ipfs_cid?: string | null
+          mandatory?: boolean
+          notes?: string | null
+          platform: string
+          released_at?: string
+          sha256?: string | null
+          size_bytes?: number | null
+          version: string
+          version_code?: number | null
+        }
+        Update: {
+          created_at?: string
+          download_url?: string | null
+          id?: string
+          ipfs_cid?: string | null
+          mandatory?: boolean
+          notes?: string | null
+          platform?: string
+          released_at?: string
+          sha256?: string | null
+          size_bytes?: number | null
+          version?: string
+          version_code?: number | null
+        }
+        Relationships: []
+      }
       bevis_asset_keys: {
         Row: {
           asset_uuid: string
