@@ -135,5 +135,6 @@ then rebuild.
 
 - The `android` folder is not stored in the repo — `cap add android`
   regenerates it every build. Nothing to commit.
-- The APK is debug-signed. That is all a sideloaded app needs. Play Store
-  signing keys are only required for store uploads, which we are not doing.
+- By default the APK is debug-signed, which is all a sideloaded app needs.
+  To produce a properly signed release APK instead, do the one-time setup in
+  `ANDROID_SIGNING.md` — the GitHub build picks it up automatically.
