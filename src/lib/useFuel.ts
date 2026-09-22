@@ -17,7 +17,8 @@ export function useFuel() {
   return useQuery({
     queryKey: ["fuel", user?.id ?? "device"],
     enabled: ready,
-    staleTime: 30_000,
+    staleTime: 0,
+    gcTime: 0,
     queryFn: () => (user ? mine({}) : device({ data: { deviceId: getDeviceId() } })),
   });
 }
