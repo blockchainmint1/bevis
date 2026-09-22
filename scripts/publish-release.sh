@@ -8,8 +8,18 @@
 #
 set -euo pipefail
 
-APK="${1:?usage: publish-release.sh <apk-path> <version> [notes]}"
-VERSION="${2:?usage: publish-release.sh <apk-path> <version> [notes]}"
+APK="${1:?usage: publish-release.sh <apk-path> [version] [notes]}"
+# Version is optional: taken from the build's filename (bevis-2026.09.22.0641-abc1234.apk),
+# otherwise stamped with the current UTC date/time.
+VERSION="${2:-}"
+if [ -z "$VERSION" ]; then
+  BASE="$(basename "$APK")"
+  case "$BASE" in
+    bevis-*) VERSION="$(echo "$BASE" | sed -E 's/^bevis-(.+)\.apk$/\1/')" ;;
+    *) VERSION="" ;;
+  esac
+fi
+[ -n "$VERSION" ] || VERSION="$(date -u +%Y.%m.%d.%H%M)"
 NOTES="${3:-}"
 APP_BASE="${APP_BASE:-https://app.bevis.sg}"
 
