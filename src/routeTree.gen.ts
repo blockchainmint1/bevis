@@ -57,6 +57,7 @@ import { Route as AppCoinIdRouteImport } from './routes/app.coin.$id'
 import { Route as AppAssetAssetIdRouteImport } from './routes/app.asset.$assetId'
 import { Route as ApiPublicLatestReleaseRouteImport } from './routes/api/public/latest-release'
 import { Route as ApiPublicApkRouteImport } from './routes/api/public/apk'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as AppVerifyChainAddressRouteImport } from './routes/app.verify.$chain.$address'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksWatchTickRouteImport } from './routes/api/public/hooks/watch-tick'
@@ -302,6 +303,12 @@ const ApiPublicApkRoute = ApiPublicApkRouteImport.update({
   path: '/api/public/apk',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AppVerifyChainAddressRoute = AppVerifyChainAddressRouteImport.update({
   id: '/verify/$chain/$address',
   path: '/verify/$chain/$address',
@@ -384,6 +391,7 @@ export interface FileRoutesByFullPath {
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
@@ -437,6 +445,7 @@ export interface FileRoutesByTo {
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -493,6 +502,7 @@ export interface FileRoutesById {
   '/api/public/hooks/watch-tick': typeof ApiPublicHooksWatchTickRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/app/verify/$chain/$address': typeof AppVerifyChainAddressRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -549,6 +559,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
     | '/app/verify/$chain/$address'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -602,6 +613,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
     | '/app/verify/$chain/$address'
+    | '/lovable/email/transactional/preview'
   id:
     | '__root__'
     | '/_site'
@@ -657,6 +669,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/watch-tick'
     | '/api/public/payments/webhook'
     | '/app/verify/$chain/$address'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -687,6 +700,7 @@ export interface RootRouteChildren {
   ApiPublicHooksPublishReleaseRoute: typeof ApiPublicHooksPublishReleaseRoute
   ApiPublicHooksWatchTickRoute: typeof ApiPublicHooksWatchTickRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1027,6 +1041,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicApkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/verify/$chain/$address': {
       id: '/app/verify/$chain/$address'
       path: '/verify/$chain/$address'
@@ -1161,6 +1182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicHooksPublishReleaseRoute: ApiPublicHooksPublishReleaseRoute,
   ApiPublicHooksWatchTickRoute: ApiPublicHooksWatchTickRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
