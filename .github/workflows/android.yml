@@ -38,6 +38,9 @@ jobs:
       - name: Add Android platform
         run: bunx cap add android
 
+      - name: Generate BEVIS app icons and splash screens
+        run: bun run cap:assets
+
       - name: Sync Capacitor
         run: bunx cap sync android
 
