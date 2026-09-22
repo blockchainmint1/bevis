@@ -56,6 +56,7 @@ const KIND_ICON = {
 function PublishPage() {
   const { user } = useAuth();
   const { data: fuel, refetch: refetchFuel } = useFuel();
+  const [checkingFuel, setCheckingFuel] = useState(false);
   const publishFn = useServerFn(publishBevisFile);
   const guestPublishFn = useServerFn(guestPublishBevisFile);
 
