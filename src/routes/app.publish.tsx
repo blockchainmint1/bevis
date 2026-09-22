@@ -280,10 +280,27 @@ function PublishPage() {
                       {fuel.address}
                     </button>
                     <button
-                      onClick={() => void refetchFuel()}
-                      className="mt-2 text-xs font-medium text-primary hover:underline"
+                      disabled={checkingFuel}
+                      onClick={async () => {
+                        setCheckingFuel(true);
+                        try {
+                          const { data } = await refetchFuel();
+                          if (data?.ok && data.funded) {
+                            toast.success("Fuel received — you can post your record now.");
+                          } else if (data?.ok) {
+                            toast("No coins there yet — a payment can take a few minutes to arrive.");
+                          } else {
+                            toast.error(data?.error ?? "Could not check your balance. Try again shortly.");
+                          }
+                        } catch {
+                          toast.error("Could not check your balance. Try again shortly.");
+                        } finally {
+                          setCheckingFuel(false);
+                        }
+                      }}
+                      className="mt-2 text-xs font-medium text-primary hover:underline disabled:opacity-60"
                     >
-                      I&apos;ve sent it — check again
+                      {checkingFuel ? "Checking…" : "I've sent it — check again"}
                     </button>
                   </details>
                 </section>
