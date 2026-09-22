@@ -22,52 +22,49 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState<null | "google" | "apple" | "email">(null);
-  const { mode: initialMode } = Route.useSearch();
-  const [mode, setMode] = useState<"signin" | "signup">(initialMode ?? "signin");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
+  const [step, setStep] = useState<"email" | "code">("email");
 
-  async function submitEmail(e: React.FormEvent) {
+  async function sendCode(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim() || !password) return;
+    if (!email.trim()) return;
     setBusy("email");
     try {
-      if (mode === "signup") {
-        const { data, error } = await supabase.auth.signUp({
-          email: email.trim(),
-          password,
-          options: { emailRedirectTo: window.location.origin + "/welcome" },
-        });
-        if (error) throw error;
-        if (!data.session) {
-          toast.success("Check your email to confirm your account.");
-          setBusy(null);
-          return;
-        }
-        navigate({ to: "/welcome" });
-        return;
-      }
-      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: { shouldCreateUser: true, emailRedirectTo: window.location.origin + "/welcome" },
+      });
       if (error) throw error;
-      navigate({ to: "/app/assets" });
+      setStep("code");
+      toast.success("We emailed you a 6-digit code.");
+    } catch (err) {
+      toast.error((err as Error).message);
+    }
+    setBusy(null);
+  }
+
+  async function verifyCode(e: React.FormEvent) {
+    e.preventDefault();
+    const token = code.replace(/\D/g, "");
+    if (token.length < 6) return;
+    setBusy("email");
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token,
+        type: "email",
+      });
+      if (error) throw error;
+      const isNew =
+        !!data.user?.created_at &&
+        Date.now() - new Date(data.user.created_at).getTime() < 60_000;
+      navigate({ to: isNew ? "/welcome" : "/app/assets" });
     } catch (err) {
       toast.error((err as Error).message);
       setBusy(null);
     }
   }
-
-  async function forgotPassword() {
-    if (!email.trim()) {
-      toast.error("Enter your email address first.");
-      return;
-    }
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: window.location.origin + "/reset-password",
-    });
-    if (error) toast.error(error.message);
-    else toast.success("Password reset link sent.");
-  }
-
 
   async function signInWith(provider: "google" | "apple") {
     setBusy(provider);
@@ -139,46 +136,76 @@ function AuthPage() {
             <span className="h-px flex-1 bg-border" />
           </div>
 
-          <form onSubmit={submitEmail} className="space-y-2">
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
-            />
-            <input
-              type="password"
-              required
-              autoComplete={mode === "signup" ? "new-password" : "current-password"}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
-            />
-            <button
-              type="submit"
-              disabled={!!busy}
-              className="w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
-            >
-              {busy === "email" ? "Working…" : mode === "signup" ? "Create account" : "Sign in"}
-            </button>
-          </form>
-
-          <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
-            <button type="button" className="hover:text-foreground" onClick={() => setMode(mode === "signup" ? "signin" : "signup")}>
-              {mode === "signup" ? "Have an account? Sign in" : "New here? Create an account"}
-            </button>
-            <button type="button" className="hover:text-foreground" onClick={forgotPassword}>
-              Forgot password?
-            </button>
-          </div>
+          {step === "email" ? (
+            <form onSubmit={sendCode} className="space-y-2">
+              <input
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+              />
+              <button
+                type="submit"
+                disabled={!!busy}
+                className="w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
+              >
+                {busy === "email" ? "Sending…" : "Email me a sign-in code"}
+              </button>
+              <p className="pt-1 text-center text-[11px] text-muted-foreground">
+                No password to remember — we email you a 6-digit code.
+              </p>
+            </form>
+          ) : (
+            <form onSubmit={verifyCode} className="space-y-2">
+              <p className="text-center text-xs text-muted-foreground">
+                Enter the 6-digit code we sent to{" "}
+                <span className="font-medium text-foreground">{email.trim()}</span>
+              </p>
+              <input
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                autoFocus
+                required
+                maxLength={6}
+                value={code}
+                onChange={e => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                placeholder="000000"
+                className="w-full rounded-md border border-border bg-background px-3 py-3 text-center font-mono text-2xl tracking-[0.5em] text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary"
+              />
+              <button
+                type="submit"
+                disabled={!!busy || code.length < 6}
+                className="w-full rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
+              >
+                {busy === "email" ? "Checking…" : "Sign in"}
+              </button>
+              <div className="flex items-center justify-between pt-1 text-[11px] text-muted-foreground">
+                <button
+                  type="button"
+                  className="hover:text-foreground"
+                  onClick={() => { setStep("email"); setCode(""); }}
+                >
+                  Use a different email
+                </button>
+                <button
+                  type="button"
+                  disabled={!!busy}
+                  className="hover:text-foreground disabled:opacity-50"
+                  onClick={e => void sendCode(e as unknown as React.FormEvent)}
+                >
+                  Resend code
+                </button>
+              </div>
+            </form>
+          )}
 
           <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
-            Used the old Cold Storage Coins app? Sign in with the same email and password you had there — your existing
-            records come across automatically. Nothing on the old system is deleted or changed.
+            Used the old Cold Storage Coins app? Use the same email address here — your existing records come across
+            automatically. Nothing on the old system is deleted or changed.
           </p>
 
           <div className="mt-5 flex items-start gap-2 rounded-md border border-border/60 bg-secondary/40 p-3 text-[11px] text-muted-foreground">
