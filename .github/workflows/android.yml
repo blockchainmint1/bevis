@@ -98,12 +98,18 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Collect APK
+        id: collect
         run: |
+          STAMP="$(date -u +%Y.%m.%d.%H%M)"
+          NAME="bevis-${STAMP}-${GITHUB_SHA::7}.apk"
           if [ "${{ steps.signing.outputs.enabled }}" = "true" ]; then
-            cp android/app/build/outputs/apk/release/app-release.apk bevis.apk
+            cp android/app/build/outputs/apk/release/app-release.apk "$NAME"
           else
-            cp android/app/build/outputs/apk/debug/app-debug.apk bevis.apk
+            cp android/app/build/outputs/apk/debug/app-debug.apk "$NAME"
           fi
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$STAMP" >> "$GITHUB_OUTPUT"
+          echo "Built $NAME (version $STAMP)"
 
       - name: Clean up secrets
         if: always()
@@ -112,5 +118,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: bevis-apk
-          path: bevis.apk
+          name: bevis-apk-${{ steps.collect.outputs.version }}
+          path: ${{ steps.collect.outputs.name }}
+
