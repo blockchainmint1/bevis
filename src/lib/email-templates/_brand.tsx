@@ -18,16 +18,6 @@ import {
  * web-safe font stacks, table-free layout, white page background.
  */
 
-export const brand = {
-  ink: '#0b0b10',
-  paper: '#ffffff',
-  surface: '#faf8f4',
-  border: '#e7e2d7',
-  text: '#2a2a2f',
-  muted: '#7b7a76',
-  gold: '#c8a köln',
-} as const
-
 const GOLD = '#b08d2f'
 const GOLD_SOFT = '#f5efdd'
 
