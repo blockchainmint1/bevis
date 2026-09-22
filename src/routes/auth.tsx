@@ -37,7 +37,7 @@ function AuthPage() {
       });
       if (error) throw error;
       setStep("code");
-      toast.success("We emailed you a 6-digit code.");
+      toast.success("We emailed you a sign-in code.");
     } catch (err) {
       toast.error((err as Error).message);
     }
@@ -155,13 +155,13 @@ function AuthPage() {
                 {busy === "email" ? "Sending…" : "Email me a sign-in code"}
               </button>
               <p className="pt-1 text-center text-[11px] text-muted-foreground">
-                No password to remember — we email you a 6-digit code.
+                No password to remember — we email you a one-time code.
               </p>
             </form>
           ) : (
             <form onSubmit={verifyCode} className="space-y-2">
               <p className="text-center text-xs text-muted-foreground">
-                Enter the 6-digit code we sent to{" "}
+                Enter the code we sent to{" "}
                 <span className="font-medium text-foreground">{email.trim()}</span>
               </p>
               <input
@@ -170,11 +170,11 @@ function AuthPage() {
                 autoComplete="one-time-code"
                 autoFocus
                 required
-                maxLength={6}
+                maxLength={8}
                 value={code}
-                onChange={e => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                onChange={e => setCode(e.target.value.replace(/\D/g, "").slice(0, 8))}
                 placeholder="000000"
-                className="w-full rounded-md border border-border bg-background px-3 py-3 text-center font-mono text-2xl tracking-[0.5em] text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary"
+                className="w-full rounded-md border border-border bg-background px-3 py-3 text-center font-mono text-2xl tracking-[0.35em] text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary"
               />
               <button
                 type="submit"
