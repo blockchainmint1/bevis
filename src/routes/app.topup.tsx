@@ -19,8 +19,10 @@ import { getDeviceId } from "@/lib/deviceId";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 export const Route = createFileRoute("/app/topup")({
-  validateSearch: (search: Record<string, unknown>): { session_id?: string } =>
-    typeof search["session_id"] === "string" ? { session_id: search["session_id"] } : {},
+  validateSearch: (search: Record<string, unknown>): { session_id?: string; pack?: string } => ({
+    ...(typeof search["session_id"] === "string" ? { session_id: search["session_id"] } : {}),
+    ...(typeof search["pack"] === "string" ? { pack: search["pack"] } : {}),
+  }),
   head: () => ({
     meta: [
       { title: "Top up notarisation fuel — BEVIS" },
@@ -56,7 +58,10 @@ function TopupPage() {
 function TopupPicker() {
   const { user } = useAuth();
   const { data: fuel } = useFuel();
-  const [priceId, setPriceId] = useState<string | null>(null);
+  const preselected = Route.useSearch().pack ?? null;
+  const [priceId, setPriceId] = useState<string | null>(
+    PACKS.some(p => p.priceId === preselected) ? preselected : null,
+  );
   const [error, setError] = useState<string | null>(null);
 
   const configured = paymentsConfigured();
