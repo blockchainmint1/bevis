@@ -47,7 +47,7 @@ async function readFuel(ownerKey: string): Promise<FuelStatus> {
 }
 
 /** The signed-in account's own fuel address and runway. */
-export const getMyFuel = createServerFn({ method: "GET" })
+export const getMyFuel = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => readFuel(`user:${context.userId}`));
 
