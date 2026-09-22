@@ -236,36 +236,56 @@ function PublishPage() {
               </section>
 
               {fuel?.ok && !fuel.funded && (
-                <section className="rounded-xl border border-destructive/50 bg-destructive/5 p-4">
-                  <p className="text-sm font-semibold text-foreground">Your notarisation fuel is empty</p>
+                <section className="rounded-xl border border-primary/50 bg-primary/5 p-4">
+                  <p className="text-sm font-semibold text-foreground">Add credits to post this record</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Stamping a record costs {fuel.costPerAnchorTxc.toFixed(5)} TXC — a $
-                    {fuel.serviceFeeUsd.toFixed(2)} BEVIS service fee plus the chain's own costs. Send TEXITcoin
-                    to your own address below, then come back — the balance is yours and only pays for your
-                    records.
+                    Each record costs about ${fuel.serviceFeeUsd.toFixed(2)} — that&apos;s the BEVIS service fee plus
+                    the chain&apos;s own cost. Credits are prepaid and only ever spent by your own records.
                   </p>
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    {[
+                      { pack: "fuel_5", label: "$5", note: "~50 records" },
+                      { pack: "fuel_10", label: "$10", note: "~100 records" },
+                      { pack: "fuel_25", label: "$25", note: "~250 records" },
+                    ].map(p => (
+                      <Link
+                        key={p.pack}
+                        to="/app/topup"
+                        search={{ pack: p.pack }}
+                        className="rounded-lg border border-border bg-card px-2 py-3 text-center transition hover:border-primary/60"
+                      >
+                        <span className="block text-base font-semibold text-foreground">{p.label}</span>
+                        <span className="mt-0.5 block text-[10px] text-muted-foreground">{p.note}</span>
+                      </Link>
+                    ))}
+                  </div>
                   <Link
                     to="/app/topup"
-                    className="mt-3 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                    className="mt-3 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
                   >
-                    <CreditCard className="size-3.5" /> Top up with a card
+                    <CreditCard className="size-3.5" /> Add credits with a card
                   </Link>
-                  <button
-                    onClick={() => {
-                      void navigator.clipboard.writeText(fuel.address);
-                      toast.success("Your fuel address is copied");
-                    }}
-                    className="mt-2 w-full truncate rounded-md border border-border bg-background px-3 py-2 text-left font-mono text-[11px]"
-                  >
-                    {fuel.address}
-                  </button>
 
-                  <button
-                    onClick={() => void refetchFuel()}
-                    className="mt-2 text-xs font-medium text-primary hover:underline"
-                  >
-                    I've sent it — check again
-                  </button>
+                  <details className="mt-3">
+                    <summary className="cursor-pointer text-[11px] text-muted-foreground hover:text-foreground">
+                      Or send TEXITcoin directly
+                    </summary>
+                    <button
+                      onClick={() => {
+                        void navigator.clipboard.writeText(fuel.address);
+                        toast.success("Your fuel address is copied");
+                      }}
+                      className="mt-2 w-full truncate rounded-md border border-border bg-background px-3 py-2 text-left font-mono text-[11px]"
+                    >
+                      {fuel.address}
+                    </button>
+                    <button
+                      onClick={() => void refetchFuel()}
+                      className="mt-2 text-xs font-medium text-primary hover:underline"
+                    >
+                      I&apos;ve sent it — check again
+                    </button>
+                  </details>
                 </section>
               )}
 

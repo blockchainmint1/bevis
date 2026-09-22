@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { TabBar } from "@/components/TabBar";
+import { FirstRunSplash } from "@/components/FirstRunSplash";
 import { useAlertsAutoSync } from "@/lib/alertsSync";
 import { useAutoRestore } from "@/lib/autoRestore";
 import { registerForPush } from "@/lib/push";
@@ -24,6 +25,7 @@ function AppLayout() {
         <Outlet />
       </div>
       <TabBar />
+      <FirstRunSplash />
     </div>
   );
 }
