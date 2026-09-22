@@ -39,7 +39,13 @@ jobs:
         run: bunx cap add android
 
       - name: Generate BEVIS app icons and splash screens
-        run: bun run cap:assets
+        run: |
+          npm install --no-save --ignore-scripts=false --foreground-scripts @capacitor/assets@3 sharp
+          npx capacitor-assets generate \
+            --iconBackgroundColor '#0b0b10' \
+            --iconBackgroundColorDark '#0b0b10' \
+            --splashBackgroundColor '#0b0b10' \
+            --splashBackgroundColorDark '#0b0b10'
 
       - name: Sync Capacitor
         run: bunx cap sync android
