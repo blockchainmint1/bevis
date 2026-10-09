@@ -249,25 +249,28 @@ function PublishPage() {
                       { pack: "fuel_10", label: "$10", note: "~100 records" },
                       { pack: "fuel_25", label: "$25", note: "~250 records" },
                     ].map(p => (
-                      <Link
+                      <div
                         key={p.pack}
-                        to="/app/topup"
-                        search={{ pack: p.pack }}
-                        className="rounded-lg border border-border bg-card px-2 py-3 text-center transition hover:border-primary/60"
+                        aria-disabled="true"
+                        className="cursor-not-allowed rounded-lg border border-border bg-card px-2 py-3 text-center opacity-50"
                       >
                         <span className="block text-base font-semibold text-foreground">{p.label}</span>
                         <span className="mt-0.5 block text-[10px] text-muted-foreground">{p.note}</span>
-                      </Link>
+                      </div>
                     ))}
                   </div>
-                  <Link
-                    to="/app/topup"
-                    className="mt-3 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90"
+                  <button
+                    type="button"
+                    disabled
+                    className="mt-3 flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-xs font-semibold text-primary-foreground opacity-50"
                   >
-                    <CreditCard className="size-3.5" /> Add credits with a card
-                  </Link>
+                    <CreditCard className="size-3.5" /> Card payments coming soon
+                  </button>
+                  <p className="mt-2 text-center text-[11px] text-muted-foreground">
+                    Card top-ups are paused for now — you can add credits by sending TEXITcoin below.
+                  </p>
 
-                  <details className="mt-3">
+                  <details className="mt-3" open>
                     <summary className="cursor-pointer text-[11px] text-muted-foreground hover:text-foreground">
                       Or send TEXITcoin directly
                     </summary>
