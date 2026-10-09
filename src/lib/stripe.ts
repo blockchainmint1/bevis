@@ -27,6 +27,10 @@ export function getStripeEnvironment(): StripeEnv {
   return paymentsEnvironment();
 }
 
+// Card payments are paused (payment provider disconnected). Flip to re-enable.
+const CARD_PAYMENTS_PAUSED = true;
+
 export function paymentsConfigured(): boolean {
+  if (CARD_PAYMENTS_PAUSED) return false;
   return Boolean(clientToken?.startsWith('pk_test_') || clientToken?.startsWith('pk_live_'));
 }

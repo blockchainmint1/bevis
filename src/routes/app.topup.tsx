@@ -110,8 +110,8 @@ function TopupPicker() {
 
         {!configured ? (
           <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-            Card top-ups aren't switched on for this build yet. You can still fund your fuel address directly with
-            TEXITcoin.
+            <span className="block font-semibold text-foreground">Card payments coming soon</span>
+            Card top-ups are paused for now. You can still add credits by sending TEXITcoin to your fuel address.
           </p>
         ) : !priceId ? (
           <ul className="grid gap-3">
